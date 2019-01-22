@@ -1,41 +1,32 @@
 import pickle
-from tkinter import Tk, Label, Button
-
-
-class GUI:
-	def __init__(self, rt):
-		self.rt = rt
-		rt.title("Calendar")
-
-		self.label = Label(rt, text = "Testing GUI!")
-		self.label.pack()
-
-		self.greetings = Button(rt, text = "Greet", command = self.greet)
-		self.greetings.pack()
-
-		self.close_button = Button(rt, text = "Close", command = rt.quit)
-		self.close_button.pack()
-
-	def greet(self):
-		print("Greetings!")
 
 class event:
-	def __init__(self, time, date, text):
+	def __init__(self, time, date, text, category=None):
 		self.time = time
 		self.date = date
 		self.text = text
+		# For changes in the future
+		self.category = category
 
 	def printEvent(self):
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
+
+	def editEventTime(self, time):
+		self.time = time
+
+	def editEventDate(self, date):
+		self.date = date
+
+	def editEventText(self, text):
+		self.text = text
 
 class calendar:
 	def __init__(self, filename):
 		self.events = [] # Data for saving
 		self.file = filename
-
 	
 	def loadFile(self):
-		# Manipulation of data happens outside of function
+		# obj is a list
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
@@ -49,19 +40,26 @@ class calendar:
 
 	def addEvent(self, event):
 		# create event here or just pass it?
+		#time, date, text
+		#newE = event(time, date, text)
 		self.events.append(event)
 		self.saveFile() 
-		#loadFile() # Need to load for GUI? but not here?
 
 	def removeEvent(self, event):
 		self.events.remove(event)
 		self.saveFile()
-		#loadFile() # Need to load for GUI? but not here?
+
+	def editEvent(self, event, time=None, date=None, text=None):
+		# only add what needs to be changed
+		# must add None(s) if adding an arg after time
+		if time:
+			event.editEventTime(time)
+		if date:
+			event.editEventDate(date)
+		if text:
+			event.editEventText(text)
+		self.saveFile()
 
 	def printCal():
 		for i in self.events:
 			i.printEvent()
-
-root = Tk()
-gui = GUI(root)
-root.mainloop()
