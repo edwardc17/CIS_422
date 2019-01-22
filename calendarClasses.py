@@ -9,14 +9,22 @@ class event:
 	def printEvent(self):
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
+	def editEventTime(self, time):
+		self.time = time
+
+	def editEventDate(self, date):
+		self.date = date
+
+	def editEventText(self, text):
+		self.text = text
+
 class calendar:
 	def __init__(self, filename):
 		self.events = [] # Data for saving
 		self.file = filename
-
 	
 	def loadFile(self):
-		# Manipulation of data happens outside of function
+		# obj is a list
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
@@ -30,14 +38,25 @@ class calendar:
 
 	def addEvent(self, event):
 		# create event here or just pass it?
+		#time, date, text
+		#newE = event(time, date, text)
 		self.events.append(event)
 		self.saveFile() 
-		#loadFile() # Need to load for GUI? but not here?
 
 	def removeEvent(self, event):
 		self.events.remove(event)
 		self.saveFile()
-		#loadFile() # Need to load for GUI? but not here?
+
+	def editEvent(self, event, time=None, date=None, text=None):
+		# only add what needs to be changed
+		# must add None(s) if adding an arg after time
+		if time:
+			event.editEventTime(time)
+		if date:
+			event.editEventDate(date)
+		if text:
+			event.editEventText(text)
+		self.saveFile()
 
 	def printCal():
 		for i in self.events:
