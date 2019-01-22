@@ -1,10 +1,12 @@
 import pickle
 
 class event:
-	def __init__(self, time, date, text):
+	def __init__(self, time, date, text, category=None):
 		self.time = time
 		self.date = date
 		self.text = text
+		# For changes in the future
+		self.category = category
 
 	def printEvent(self):
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
