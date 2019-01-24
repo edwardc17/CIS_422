@@ -42,10 +42,6 @@ class GUI:
 		self.cal.loadFile()
 
 
-
-		#print("Greetings!")
-
-
 root = Tk()
 gui = GUI(root)
 root.mainloop()
