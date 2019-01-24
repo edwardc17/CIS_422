@@ -9,6 +9,7 @@ class event:
 		self.category = category
 
 	def printEvent(self):
+		# Not helpful
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
 	def editEventTime(self, time):
@@ -20,7 +21,11 @@ class event:
 	def editEventText(self, text):
 		self.text = text
 
+	def getEvent(self):
+		return self.time + " " + self.date + " " + self.text
+
 class calendar:
+	# Will add stuff for categories later here
 	def __init__(self, filename):
 		self.events = [] # Data for saving
 		self.file = filename
@@ -44,10 +49,14 @@ class calendar:
 		#newE = event(time, date, text)
 		self.events.append(event)
 		self.saveFile() 
+		new = self.loadFile()
+		return new
 
 	def removeEvent(self, event):
 		self.events.remove(event)
 		self.saveFile()
+		new = self.loadFile()
+		return new
 
 	def editEvent(self, event, time=None, date=None, text=None):
 		# only add what needs to be changed
@@ -59,7 +68,13 @@ class calendar:
 		if text:
 			event.editEventText(text)
 		self.saveFile()
+		new = self.loadFile()
+		return new
 
-	def printCal():
+	def printCal(self):
+		# Not helpful
 		for i in self.events:
 			i.printEvent()
+
+	def getEvents(self):
+		return self.events
