@@ -12,6 +12,9 @@ class event:
 		# Not helpful
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
+	def getEvent(self):
+		return self.time + " " + self.date + " " + self.text
+
 	def editEventTime(self, time):
 		self.time = time
 
@@ -21,8 +24,15 @@ class event:
 	def editEventText(self, text):
 		self.text = text
 
-	def getEvent(self):
-		return self.time + " " + self.date + " " + self.text
+	def getTime(self):
+		return self.time
+
+	def getDate(self):
+		return self.date
+
+	def getText(self):
+		return self.text
+
 
 class calendar:
 	# Will add stuff for categories later here

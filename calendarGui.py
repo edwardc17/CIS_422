@@ -1,4 +1,4 @@
-from Tkinter import Tk, Label, Button, Frame
+from tkinter import Tk, Label, Button, Frame
 from calendarClasses import *
 
 class GUI:
