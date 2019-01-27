@@ -1,5 +1,6 @@
 from tkinter import *
 from calendarClasses import *
+import datetime
 
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
@@ -7,6 +8,13 @@ from calendarClasses import *
 def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	guiObj.modifyDayBox(timeSlot)
+
+def time2():
+		#look at createEvent
+		dates = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+		print(dates)
+		#time1 = datetime.datetime.now()
+		#label=Label(self.rt,text=time1)
 
 class GUI(Frame, object):
 	def __init__(self, rt):
@@ -38,10 +46,42 @@ class GUI(Frame, object):
 		#an empty label for layout
 		self.empty_label = Label(text='', width =10).grid(row=2,column=0)
 
+		#currentDay = datetime.datetime.now().day
+		#currentMonth = datetime.datetime.now().month
+		#time1 = datetime.datetime.now().day
+		#time1.strftime('%m/%d/%Y')
+		##dates = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+		#print(strftime("%B %d %Y, %X %Z",mktime(20,0,0,12,31,98)))
+		#print(time1)
+		self.day1 = Label(width=10)
+		self.day1['text'] = datetime.datetime.now().strftime("%m-%d-%Y")
+		print(self.day1['text'])
+		self.day1.grid(row=3,column=1)
+
+		currentDay = datetime.datetime.now()
+		nextDay = datetime.timedelta(days=1)
+		nextDays = currentDay + nextDay
+		print(nextDays)
+
+		self.day2 = Label(width=10)
+		self.day2['text'] = nextDays.strftime("%m-%d-%Y")
+		print(self.day2['text'])
+		self.day2.grid(row=3,column=2)
+
+
+		dayThree = datetime.timedelta(days=2)
+		twoDays = currentDay + dayThree
+
+
+		self.day3 = Label(width=10)
+		self.day3['text'] = twoDays.strftime("%m-%d-%Y")
+		print(self.day3['text'])
+		self.day3.grid(row=3,column=3)
+
 		#show three day
-		self.day1 = Label(text='Day 1', width=10).grid(row=3,column=1)
-		self.day2 = Label(text='Day 2', width=10).grid(row=3,column=2)
-		self.day3 = Label(text='Day 3', width=10).grid(row=3,column=3)
+		#self.day1 = Label(text='Day 1', width=10).grid(row=3,column=1)
+		#self.day2 = Label(text='Day 2', width=10).grid(row=3,column=2)
+		#self.day3 = Label(text='Day 3', width=10).grid(row=3,column=3)
 
 		#time scale
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
@@ -55,6 +95,9 @@ class GUI(Frame, object):
 		#self.close_button.pack()
 		self.createTimescale()
 		#self.scrollbar = Scrollbar(rt).grid(sticky='ns')
+
+
+
 
 	def createEvent(self):
 		e = event("1pm", "2/1/19", "waffle")
