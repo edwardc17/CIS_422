@@ -1,13 +1,23 @@
 from tkinter import *
 from calendarClasses import *
 
-class GUI(object):
+
+# click recorder for clicking on labels for time 
+def onClick(event, guiObj, timeSlot):
+	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
+	guiObj.modifyDayBox(timeSlot)
+
+class GUI(Frame, object):
 	def __init__(self, rt):
+		super(GUI, self).\
+			__init__(rt)
 		self.rt = rt
 		rt.title("Calendar")
 		self.cal = calendar("saveFile.dat")
 		#self.events = self.cal.loadFile()
 		self.labels = []
+		# array for event spots (so they're clickable)
+		self.eventSpots = []
 
 		self.frame = Frame(height=100, bd=1)
 		#self.frame.pack(fill='x', padx=0, pady=0)
@@ -59,19 +69,67 @@ class GUI(object):
 		self.cal.saveFile()
 		self.cal.loadFile()
 
+
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
 			Label(text=c, relief=RIDGE,width=15, height=2).grid(row=r,column=0)
-			Label(bg= 'white', relief=GROOVE,width=20, height=2).grid(row=r,column=1)
-			Label(bg= 'white', relief=GROOVE,width=20, height=2).grid(row=r,column=2)
-			Label(bg= 'white', relief=GROOVE,width=20, height=2).grid(row=r,column=3)
+			# creates timeslot slots
+			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
+			dayOneTime.grid(row=r, column=1)
+			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
+			dayTwoTime.grid(row=r,column=2)
+			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayThreeTime.grid(row=r,column=3)
 			r = r + 1
 
+	def modifyDayBox(self, timeSlot):
+		self.top = Toplevel()
+		self.top.title("Modify Time Slot")
+		self.top.geometry("300x150+30+30")
+		self.top.transient(self)
+		self.appc=ModTimePopUp(self.top, self.eventSpots)
+	
+class ModTimePopUp(object):
+	def __init__(self, master, eventsList):
+		self.master = master
+		# create new window
+		self.frame = Frame(self.master)
+		self.eventsList = eventsList
+		self.widget()
 
+	# define widgets for first window (buttons)
+	def widget(self):
+		self.b1=Button(self.master, text="Add Event", command=self.AddEvent).grid(row=0, column=0)
+		self.b2=Button(self.master, text="Modify Existing Event", command=self.ModEvent).grid(row=1, column=0)
 
+	# user pressed add event
+	def AddEvent(self):
+		print("adding event")
+		#destroy old layout
+		for widget in self.master.winfo_children():
+			widget.destroy()
+		#TODO: put in fields for modification
+		#	add submit button
+		#	send submission to calendar
+		#	error check
+		# 	detailed documentation, passed parameters, etc
 
-root = Tk()
-gui = GUI(root)
+	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in list)
+	def ModEvent(self):
+		print("modding event")
+		#destroy old layout
+		for widget in self.master.winfo_children():
+			widget.destroy()
+		#TODO: put in fields for modification
+		#	add submit button
+		#	send submission to calendar
+		#	error check
+		# 	detailed documentation, passed parameters, etc
 
-root.mainloop()
+master_window = Tk()
+gui = GUI(master_window)
+master_window.mainloop()
