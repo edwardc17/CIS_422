@@ -70,6 +70,10 @@ class GUI(Frame, object):
 		self.cal.loadFile()
 
 
+	#### creates timescale slots where events can show up (presumably?)
+	# john: "i modified this so the boxes are clickable. is this a layout design
+	#		something you guys have settled on? it seems like we're going
+	#		need to define start and end times for each time slot. "
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
@@ -86,13 +90,17 @@ class GUI(Frame, object):
 			dayThreeTime.grid(row=r,column=3)
 			r = r + 1
 
+	#### creates a new window that is a child to the GUI parent frame
+	# john: "pretty much copied this from the example"
 	def modifyDayBox(self, timeSlot):
 		self.top = Toplevel()
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
 		self.appc=ModTimePopUp(self.top, self.eventSpots)
-	
+
+#### class for the pop up when clicking on a time slot in the day-time breakdown
+# john: "essentially designed from the example"	
 class ModTimePopUp(object):
 	def __init__(self, master, eventsList):
 		self.master = master
@@ -109,19 +117,19 @@ class ModTimePopUp(object):
 	# user pressed add event
 	def AddEvent(self):
 		print("adding event")
-		#destroy old layout
+		#destroy old layout, retains window
 		for widget in self.master.winfo_children():
 			widget.destroy()
-		#TODO: put in fields for modification
+		#TODO:  create fields for event info 
 		#	add submit button
 		#	send submission to calendar
 		#	error check
 		# 	detailed documentation, passed parameters, etc
 
-	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in list)
+	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in event list)
 	def ModEvent(self):
 		print("modding event")
-		#destroy old layout
+		#destroy old layout, retains window
 		for widget in self.master.winfo_children():
 			widget.destroy()
 		#TODO: put in fields for modification
@@ -130,6 +138,10 @@ class ModTimePopUp(object):
 		#	error check
 		# 	detailed documentation, passed parameters, etc
 
+
+
+#### main program area
+# john: "i changed it to work from root to a master window (so it works easier on windows 10 - i'm selfish)"
 master_window = Tk()
 gui = GUI(master_window)
 master_window.mainloop()
