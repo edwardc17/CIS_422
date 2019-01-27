@@ -1,16 +1,20 @@
 from tkinter import *
 from calendarClasses import *
 
-
-# click recorder for clicking on labels for time 
+#### click recorder for clicking on labels for time ###
+# this was also required in order to wait for clicking
+# 	in a box before creating additional windows - john
 def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	guiObj.modifyDayBox(timeSlot)
 
 class GUI(Frame, object):
 	def __init__(self, rt):
+		# this seems like it was required to get windows with data transfer
+		# 	working properly - john
 		super(GUI, self).\
 			__init__(rt)
+
 		self.rt = rt
 		rt.title("Calendar")
 		self.cal = calendar("saveFile.dat")
