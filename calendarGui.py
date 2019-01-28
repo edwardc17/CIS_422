@@ -124,15 +124,15 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=2).grid(row=r,column=0)
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0)
 			# creates timeslot slots
-			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
 			dayOneTime.grid(row=r, column=1)
-			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2)
-			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
+			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
 			dayThreeTime.grid(row=r,column=3)
 			r = r + 1
