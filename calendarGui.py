@@ -149,16 +149,17 @@ class GUI(Frame, object):
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
-		self.appc=ModTimePopUp(self.top, self.eventSpots)
+		self.appc=ModTimePopUp(self.top, self.eventSpots, timeSlot)
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
 class ModTimePopUp(object):
-	def __init__(self, master, eventsList):
+	def __init__(self, master, eventsList, timeSlot):
 		self.master = master
 		# create new window
 		self.frame = Frame(self.master)
 		self.eventsList = eventsList
+		self.timeslot = timeSlot # This is not the correct time
 		self.widget()
 
 	# define widgets for first window (buttons)
@@ -175,13 +176,21 @@ class ModTimePopUp(object):
 		#self.t1 = Text(self.frame)
 		tLabel = Label(self.master, text='Details')
 		tLabel.pack()
-		text = Text(self.master)
-		text.pack()
-		submitButton = Button(self.master, text='Submit', command=self.add)
-		submitButton.pack()
+		self.text = Text(self.master)
+		self.text.pack()
+		self.submitButton = Button(self.master, text='Submit', command=self.add)
+		self.submitButton.pack()
 
 	def add(self):
-		pass
+		# event doesn't appear - don't know how to send it back
+		# need time/date
+		text = self.text.get('1.0', 'end-1c')
+		newEvent = event(self.timeslot, self.timeslot, text)
+		print(self.timeslot) # wonky time
+		print(text)
+		self.eventsList.append(newEvent)
+		print(self.eventsList)
+		self.master.destroy()
 		#TODO:  create fields for event info 
 		#	add submit button
 		#	send submission to calendar
