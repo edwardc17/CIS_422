@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from Tkinter import Tk, Label, Button, Frame
-=======
-from tkinter import *
->>>>>>> 7563365f1890937d2f450cc186a757d4ae7cb11e
+
 from calendarClasses import *
 import datetime
 
