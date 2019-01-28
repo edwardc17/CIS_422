@@ -1,4 +1,4 @@
-from tkinter import Tk, Label, Button, Frame
+from Tkinter import Tk, Label, Button, Frame
 from calendarClasses import *
 
 class GUI:
@@ -24,12 +24,18 @@ class GUI:
 		self.close_button = Button(rt, text = "Close", command = rt.quit)
 		self.close_button.pack()
 
+	
+	def clickEvent(self):
+		self.widget.config(background = "green")
+
+
 	def createEvent(self):
 		e = event("1pm", "2/1/19", "waffle")
 		new = self.cal.addEvent(e)
 		self.events = new
 		# how to load new data?
 		label=Label(self.rt,text=e.getEvent())
+		label.bind("<Button-1>", self.clickEvent)
 		label.pack()
 		self.labels.append(label)
 	

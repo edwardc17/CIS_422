@@ -1,4 +1,4 @@
-from tkinter import *
+from Tkinter import *
 class Application(Frame, object):
 	def __init__(self,  master):
 		super(Application, self).\

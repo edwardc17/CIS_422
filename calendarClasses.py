@@ -1,5 +1,10 @@
 import pickle
 
+class day:
+	def __init__(self, date):
+		self.date = date
+		self.events = []
+
 class event:
 	def __init__(self, time, date, text, category=None):
 		self.time = time
@@ -41,7 +46,7 @@ class calendar:
 		self.file = filename
 	
 	def loadFile(self):
-		# obj is a list
+		# obj is a list always
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
@@ -88,3 +93,14 @@ class calendar:
 
 	def getEvents(self):
 		return self.events
+
+	# put in GUI file
+	# dictionary - events per day
+	def LoadPage(self):
+		# If file isn't empty
+		if os.stat(self.file).st_size != 0:
+			events = self.loadFile()
+			for event in events:
+				# add event label/button to calendar
+				pass
+
