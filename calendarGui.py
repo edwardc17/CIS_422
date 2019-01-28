@@ -1,4 +1,4 @@
-
+from tkinter import *
 from calendarClasses import *
 import datetime
 
@@ -172,6 +172,16 @@ class ModTimePopUp(object):
 		#destroy old layout, retains window
 		for widget in self.master.winfo_children():
 			widget.destroy()
+		#self.t1 = Text(self.frame)
+		tLabel = Label(self.master, text='Details')
+		tLabel.pack()
+		text = Text(self.master)
+		text.pack()
+		submitButton = Button(self.master, text='Submit', command=self.add)
+		submitButton.pack()
+
+	def add(self):
+		pass
 		#TODO:  create fields for event info 
 		#	add submit button
 		#	send submission to calendar
