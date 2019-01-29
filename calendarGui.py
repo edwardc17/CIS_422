@@ -40,7 +40,7 @@ class GUI(Frame, object):
 		self.create = Button(rt, text = "Create", width=8,command = self.createEvent).grid(row=0,column=0)
 		#self.create.pack()
 
-		self.edit = Button(rt, text = "Edit", width=8,command = self.editEvent).grid(row=1,column=0)
+		#self.edit = Button(rt, text = "Edit", width=8,command = self.editEvent).grid(row=1,column=0)
 		#self.edit.pack()
 
 		#an empty label for layout
