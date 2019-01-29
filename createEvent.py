@@ -13,6 +13,7 @@ class Application(Frame, object):
 	def __init__(self,  master):
 		super(Application, self).\
 			__init__(master)
+		self.rt = master
 		self.grid()
 		self.create_widgets()
 
@@ -25,12 +26,13 @@ class Application(Frame, object):
 	def onClick(self):
 		self.top = Toplevel()
 		self.top.title("title")
-		self.top.geometry("1600x720+%d+%d" %(((self.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (self.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
+		self.top.geometry("1600x720+%d+%d" %(((self.rt.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (self.rt.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
 		self.top.transient(self)
-		self.appc = Demo(self.top, self.t1)
+		self.appc = Demo(self, self.top, self.t1)
 
 class Demo(object):
-	def __init__(self, master, t1):
+	def __init__(self, root, master, t1):
+		self.root = root
 		self.master = master
 		self.frame = Frame(self.master)
 		self.t1 = t1
@@ -67,6 +69,8 @@ class Demo(object):
 		pass
 
 	def onSubmit(self):
+		self.root.event = Button(self.root, text = "event")
+		self.root.event.grid(row = 6, column = 1)
 		self.t1.insert(INSERT, self.ename.get())
 
 '''
