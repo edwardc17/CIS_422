@@ -92,6 +92,7 @@ class GUI(Frame, object):
 
 
 		self.close_button = Button(rt, text = "Close", command = rt.quit)
+		self.close_button.grid(row=29 ,column =4)
 		#self.close_button.pack()
 		self.createTimescale()
 		#self.scrollbar = Scrollbar(rt).grid(sticky='ns')
