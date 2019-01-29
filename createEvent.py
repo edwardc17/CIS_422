@@ -25,7 +25,7 @@ class Application(Frame, object):
 	def onClick(self):
 		self.top = Toplevel()
 		self.top.title("title")
-		self.top.geometry("1600x720+%d+%d" %( ( (root.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (root.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
+		self.top.geometry("1600x720+%d+%d" %(((self.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (self.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
 		self.top.transient(self)
 		self.appc = Demo(self.top, self.t1)
 
@@ -68,6 +68,7 @@ class Demo(object):
 
 	def onSubmit(self):
 		self.t1.insert(INSERT, self.ename.get())
+
 '''
 class DatePicker:
     def __init__(self, parent):
