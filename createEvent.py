@@ -63,7 +63,8 @@ class Demo(object):
 		pass
 
 	def onSubmit(self):
-		self.t1.insert(INSERT, self.e1.get())
+		self.t1.insert(INSERT, self.ename.get())
+        
 '''
 class DatePicker:
     def __init__(self, parent):

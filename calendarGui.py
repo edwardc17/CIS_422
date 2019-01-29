@@ -1,4 +1,4 @@
-from tkinter import *
+from Tkinter import *
 from calendarClasses import *
 import datetime
 
@@ -150,6 +150,11 @@ class GUI(Frame, object):
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
 		self.appc=ModTimePopUp(self.top, self.eventSpots, timeSlot)
+		if self.appc.vText:
+			self.eventSlots.append(event(timeSlot, timeSlot, self.appc.vText))
+		print(self.eventSlots)
+
+
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
@@ -178,19 +183,21 @@ class ModTimePopUp(object):
 		tLabel.pack()
 		self.text = Text(self.master)
 		self.text.pack()
-		self.submitButton = Button(self.master, text='Submit', command=self.add)
+		self.submitButton = Button(self.master, text='Submit', command=self.master.destroy)
 		self.submitButton.pack()
 
-	def add(self):
+		self.vText = self.text.get()
+
+	#def add(self):
 		# event doesn't appear - don't know how to send it back
 		# need time/date
-		text = self.text.get('1.0', 'end-1c')
-		newEvent = event(self.timeslot, self.timeslot, text)
-		print(self.timeslot) # wonky time
-		print(text)
-		self.eventsList.append(newEvent)
-		print(self.eventsList)
-		self.master.destroy()
+		#text = self.text.get('1.0', 'end-1c')
+		#newEvent = event(self.timeslot, self.timeslot, text)
+		#print(self.timeslot) # wonky time
+		#print(text)
+		#self.eventsList.append(newEvent)
+		#print(self.eventsList)
+		#self.master.destroy()
 		#TODO:  create fields for event info 
 		#	add submit button
 		#	send submission to calendar
