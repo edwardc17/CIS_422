@@ -43,8 +43,10 @@ class Demo(object):
 		self.edscrp = Text(self.master, width = 30, height = 6)
 		self.lfrom = Label(self.master, text = "From: ")
 		self.efrom = Entry(self.master)
+		self.bfrom = Button(self.master, text = "DatePicker")
 		self.lto = Label(self.master, text = "to: ")
 		self.eto = Entry(self.master)
+		self.bto = Button(self.master, text = "DatePicker")
 
 		self.lname.grid(row = 1, column = 1, pady = 20)
 		self.ename.grid(row = 1, column = 2, sticky=W, pady = 20)
@@ -52,18 +54,20 @@ class Demo(object):
 		self.edscrp.grid(row = 2, column = 2, sticky=W, pady = 20)
 		self.lfrom.grid(row = 3, column = 1, pady = 20)
 		self.efrom.grid(row = 3, column = 2, sticky=W, pady = 20)
-		self.lto.grid(row = 3, column = 3, pady = 20)
-		self.eto.grid(row = 3, column = 4, sticky=W, pady = 20)
+		self.bfrom.grid(row = 3, column = 3, pady = 20)
+		self.lto.grid(row = 4, column = 1, pady = 20)
+		self.eto.grid(row = 4, column = 2, sticky=W, pady = 20)
+		self.bto.grid(row = 4, column = 3, pady = 20)
 
 		self.bsub = Button(self.master, text = "submit",command = self.onSubmit)
 		self.bdel = Button(self.master, text = "delete", command = self.clear)
-		self.bsub.grid(row = 4, column = 3)
-		self.bdel.grid(row = 4, column = 4)
+		self.bsub.grid(row = 5, column = 3)
+		self.bdel.grid(row = 5, column = 4)
 	def clear(self):
 		pass
 
 	def onSubmit(self):
-		self.t1.insert(INSERT, self.e1.get())
+		self.t1.insert(INSERT, self.ename.get())
 '''
 class DatePicker:
     def __init__(self, parent):
