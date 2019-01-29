@@ -78,29 +78,18 @@ class GUI(Frame, object):
 		print(self.day3['text'])
 		self.day3.grid(row=3,column=3)
 
-		#show three day
-		#self.day1 = Label(text='Day 1', width=10).grid(row=3,column=1)
-		#self.day2 = Label(text='Day 2', width=10).grid(row=3,column=2)
-		#self.day3 = Label(text='Day 3', width=10).grid(row=3,column=3)
-
 		#time scale
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
 						'06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
 						'12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM',
-						'06:00 PM', '0:7:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM', '12:00 PM']
+						'06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM', '12:00 PM']
 
 
 
 		self.close_button = Button(rt, text = "Close", command = rt.quit)
 		self.close_button.grid(row=29 ,column =4)
-		#self.close_button.pack()
 		self.createTimescale()
-		#self.scrollbar = Scrollbar(rt).grid(sticky='ns')
 
-
-
-
-	
 	def clickEvent(self):
 		self.widget.config(background = "green")
 
