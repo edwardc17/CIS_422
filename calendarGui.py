@@ -1,6 +1,10 @@
 from tkinter import *
 from calendarClasses import *
 import datetime
+from tkinter import messagebox
+
+#global variable to see if save button was pressed
+credit = 0
 
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
@@ -9,12 +13,6 @@ def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	guiObj.modifyDayBox(timeSlot)
 
-def time2():
-		#look at createEvent
-		dates = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-		print(dates)
-		#time1 = datetime.datetime.now()
-		#label=Label(self.rt,text=time1)
 
 class GUI(Frame, object):
 	def __init__(self, rt):
@@ -55,17 +53,17 @@ class GUI(Frame, object):
 		#print(time1)
 		self.day1 = Label(width=10)
 		self.day1['text'] = datetime.datetime.now().strftime("%m-%d-%Y")
-		print(self.day1['text'])
+		##print(self.day1['text'])
 		self.day1.grid(row=3,column=1)
 
 		currentDay = datetime.datetime.now()
 		nextDay = datetime.timedelta(days=1)
 		nextDays = currentDay + nextDay
-		print(nextDays)
+		##print(nextDays)
 
 		self.day2 = Label(width=10)
 		self.day2['text'] = nextDays.strftime("%m-%d-%Y")
-		print(self.day2['text'])
+		##print(self.day2['text'])
 		self.day2.grid(row=3,column=2)
 
 
@@ -75,7 +73,7 @@ class GUI(Frame, object):
 
 		self.day3 = Label(width=10)
 		self.day3['text'] = twoDays.strftime("%m-%d-%Y")
-		print(self.day3['text'])
+		##print(self.day3['text'])
 		self.day3.grid(row=3,column=3)
 
 		#time scale
@@ -86,12 +84,64 @@ class GUI(Frame, object):
 
 
 
-		self.close_button = Button(rt, text = "Close", command = rt.quit)
+		#this button closes the calendar 
+		#self.close_button = Button(rt, text = "Close", command = rt.quit)
+
+		#self.save_button = Button(rt, text="Save", command = self.addCredit()).grid(row=29, column=2)
+
+		self.close_button = Button(rt, text = "Close", command = self.exit())
+
+
 		self.close_button.grid(row=29 ,column =4)
 		self.createTimescale()
 
 	def clickEvent(self):
 		self.widget.config(background = "green")
+
+	'''
+	#this was for a save button so when the save button was clicked it would go to addCredit function and
+	#add 10 to the global variiable 'credit'. When you pressed exit it would go to a check function
+	# that if credit was < 10 then save was not pressed so would display a warning and if > 10 then exit
+	#
+	def addCredit(self, credit):
+		#found on stackoverflow https://stackoverflow.com/questions/22506298/checking-if-a-button-has-been-pressed-in-python
+		#to see if a button has been pressed
+		##edited though
+		credit = credit + 10
+		###print(credit)
+
+	def check(self, credit):
+		if credit < 10:
+			self.exit()
+	'''
+	
+	def exit(self):
+		#maybe if credit is 0 then exit and if not show warning
+		#global root
+		##print(credit)
+		#if credit < 10:
+			#print("less than 10 in exit")
+
+		#self.rt = rt
+		#self.withdraw()
+		#messagebox.showinfo("Warning", "Are you sure you want to leave without saving?")
+
+		#else:
+			#messagebox.showinfo("You saved you calendar", "Have a nice day!")
+
+		#rt.quit()
+		#root.quit()
+		
+		#if credit < 10:
+		win = Toplevel()
+		win.title('warning')
+		message = "This will delete stuff"
+		Label(win, text=message).pack()
+		Button(win, text='Delete', command=win.destroy).pack()
+		
+		Button(win, text='Bring up Message', command=exit).pack()
+		
+
 
 
 	def createEvent(self):
