@@ -2,9 +2,10 @@
 import sys
 from calendarClasses import *
 import datetime
-import tkinter
-import tkinter.messagebox
-#from tkinter import messagebox
+#import tkinter
+#import tkinter.messagebox
+#from Tkinter import messagebox
+import tkMessageBox as messagebox
 
 if sys.version[0] == '2':
     from Tkinter import *
@@ -144,7 +145,7 @@ class GUI(Frame, object):
 		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 		win = Toplevel()
 		win.title('warning')
-		message = "You may loose any unsaved changes"
+		message = "You may lose any unsaved changes"
 		Label(win, text=message).pack()
 		Button(win, text='Go back to calendar', command=win.destroy).pack()
 		
