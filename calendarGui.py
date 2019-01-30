@@ -1,7 +1,14 @@
-from Tkinter import *
+#from Tkinter import *
+import sys
 from calendarClasses import *
 import datetime
-from tkinter import messagebox
+import tkMessageBox as messagebox
+#from tkinter import messagebox
+
+if sys.version[0] == '2':
+    from Tkinter import *
+else:
+    from tkinter import *
 
 #global variable to see if save button was pressed
 credit = 0
@@ -89,10 +96,10 @@ class GUI(Frame, object):
 
 		#self.save_button = Button(rt, text="Save", command = self.addCredit()).grid(row=29, column=2)
 
-		self.close_button = Button(rt, text = "Close", command = self.exit())
+		self.master.protocol("WM_DELETE_WINDOW", self.exit)
+		#self.close_button = Button(rt, text = "Close", command = self.exit())
+		#self.close_button.grid(row=29 ,column =4)
 
-
-		self.close_button.grid(row=29 ,column =4)
 		self.createTimescale()
 
 	def clickEvent(self):
@@ -141,8 +148,6 @@ class GUI(Frame, object):
 		
 		Button(win, text='Bring up Message', command=exit).pack()
 		
-
-
 
 	def createEvent(self):
 		e = event("1pm", "2/1/19", "waffle")
@@ -212,6 +217,10 @@ class ModTimePopUp(object):
 		self.b1=Button(self.master, text="Add Event", command=self.AddEvent).grid(row=0, column=0)
 		self.b2=Button(self.master, text="Modify Existing Event", command=self.ModEvent).grid(row=1, column=0)
 
+	def on_closing(self):
+		if messagebox.askokcancel("Quit", "Do you want to quit without saving?"):
+			self.master.destroy()
+
 	# user pressed add event
 	def AddEvent(self):
 		print("adding event")
@@ -225,6 +234,8 @@ class ModTimePopUp(object):
 		self.text.pack()
 		self.submitButton = Button(self.master, text='Submit', command=self.master.destroy)
 		self.submitButton.pack()
+
+		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
 		self.vText = self.text.get()
 

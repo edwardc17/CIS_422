@@ -65,7 +65,8 @@ class Demo(object):
 		self.bdel = Button(self.master, text = "delete", command = self.clear)
 		self.bsub.grid(row = 5, column = 3)
 		self.bdel.grid(row = 5, column = 4)
-	def clear(self):
+	
+    def clear(self):
 		pass
 
 	def onSubmit(self):
