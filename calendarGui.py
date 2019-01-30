@@ -5,15 +5,20 @@ import datetime
 #import tkinter
 #import tkinter.messagebox
 #from Tkinter import messagebox
-import tkMessageBox as messagebox
+#import tkMessageBox as messagebox
+# these options work for python3
+from tkinter import *
+from tkinter import messagebox
 
 if sys.version[0] == '2':
     from Tkinter import *
 else:
     from tkinter import *
 
-#global variable to see if save button was pressed
+# global variable to see if save button was pressed
 credit = 0
+# global array for timeslots
+timeSlots = []
 
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
@@ -22,6 +27,13 @@ def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	guiObj.modifyDayBox(timeSlot)
 
+#### timeslot with associated labels and times (clickable spots)
+# TODO: define daytime variables (could just need start -and date- and make ending 1 hour later)
+class TimeSlot:
+	def __init__(self, begin, label):
+		self.label = label
+		self.bTime = begin	# beginning time
+		
 
 class GUI(Frame, object):
 	def __init__(self, rt):
@@ -188,7 +200,16 @@ class GUI(Frame, object):
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
 			dayThreeTime.grid(row=r,column=3)
+			#### declare timeslot to add to array (begintime, label)
+			# (need to input actual date?)
+			slot1 = TimeSlot(c, dayOneTime)
+			slot2 = TimeSlot(c, dayTwoTime)
+			slot3 = TimeSlot(c, dayThreeTime)
+			timeSlots.append(slot1)
+			timeSlots.append(slot2)
+			timeSlots.append(slot3)
 			r = r + 1
+			
 
 	#### creates a new window that is a child to the GUI parent frame
 	# john: "pretty much copied this from the example"
@@ -233,12 +254,6 @@ class ModTimePopUp(object):
 		for widget in self.master.winfo_children():
 			widget.destroy()
 		#self.t1 = Text(self.frame)
-		tLabel = Label(self.master, text='Details')
-		tLabel.pack()
-		self.text = Text(self.master)
-		self.text.pack()
-		self.submitButton = Button(self.master, text='Submit', command=self.add)
-		self.submitButton.pack()
 
 		self.vText = self.text.get("1.0", "end-1c")
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -248,7 +263,7 @@ class ModTimePopUp(object):
 		#print(self.vText)
 		#print(type(self.text.get("1.0", "end-1c")))
 
-	def add(self):
+
 		# event doesn't appear - don't know how to send it back
 		# need time/date
 		#text = self.text.get('1.0', 'end-1c')
