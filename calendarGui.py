@@ -196,8 +196,9 @@ class GUI(Frame, object):
 		self.top.transient(self)
 		self.appc=ModTimePopUp(self.top, self.eventSpots, timeSlot)
 		if self.appc.vText:
-			self.eventSlots.append(event(timeSlot, timeSlot, self.appc.vText))
-		print(self.eventSlots)
+			print(self.appc.vText)
+			#self.eventSlots.append(event(timeSlot, timeSlot, self.appc.vText))
+		#print(self.eventSlots)
 
 
 
@@ -211,6 +212,7 @@ class ModTimePopUp(object):
 		self.eventsList = eventsList
 		self.timeslot = timeSlot # This is not the correct time
 		self.widget()
+		self.vText = ''
 
 	# define widgets for first window (buttons)
 	def widget(self):
@@ -226,7 +228,8 @@ class ModTimePopUp(object):
 		print("adding event")
 		#destroy old layout, retains window
 		for widget in self.master.winfo_children():
-			widget.destroy()
+			if type(widget) != str:
+				widget.destroy()
 		#self.t1 = Text(self.frame)
 		tLabel = Label(self.master, text='Details')
 		tLabel.pack()
@@ -237,7 +240,9 @@ class ModTimePopUp(object):
 
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-		self.vText = self.text.get()
+		self.vText = self.text.get("1.0", "end-1c")
+		print(self.vText)
+		#print(type(self.text.get("1.0", "end-1c")))
 
 	#def add(self):
 		# event doesn't appear - don't know how to send it back
