@@ -2,7 +2,8 @@
 import sys
 from calendarClasses import *
 import datetime
-import tkMessageBox as messagebox
+import tkinter
+import tkinter.messagebox
 #from tkinter import messagebox
 
 if sys.version[0] == '2':
@@ -140,13 +141,14 @@ class GUI(Frame, object):
 		#root.quit()
 		
 		#if credit < 10:
+		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 		win = Toplevel()
 		win.title('warning')
-		message = "This will delete stuff"
+		message = "You may loose any unsaved changes"
 		Label(win, text=message).pack()
-		Button(win, text='Delete', command=win.destroy).pack()
+		Button(win, text='Go back to calendar', command=win.destroy).pack()
 		
-		Button(win, text='Bring up Message', command=exit).pack()
+		Button(win, text='I already saved my changes!', command=exit).pack()
 		
 
 	def createEvent(self):
