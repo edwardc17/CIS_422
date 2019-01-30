@@ -66,8 +66,8 @@ class Demo(object):
 		self.bsub.grid(row = 5, column = 3)
 		self.bdel.grid(row = 5, column = 4)
 	
-    def clear(self):
-		pass
+    #def clear(self):
+        #pass
 
 	def onSubmit(self):
 		self.root.event = Button(self.root, text = "event")

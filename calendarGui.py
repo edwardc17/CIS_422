@@ -92,7 +92,7 @@ class GUI(Frame, object):
 						'06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM', '12:00 PM']
 
 
-
+		self.testEvent = Label(self.rt, text="event").grid(row=0, column=4)
 		#this button closes the calendar 
 		#self.close_button = Button(rt, text = "Close", command = rt.quit)
 
@@ -231,27 +231,30 @@ class ModTimePopUp(object):
 		print("adding event")
 		#destroy old layout, retains window
 		for widget in self.master.winfo_children():
-			if type(widget) != str:
-				widget.destroy()
+			widget.destroy()
 		#self.t1 = Text(self.frame)
 		tLabel = Label(self.master, text='Details')
 		tLabel.pack()
 		self.text = Text(self.master)
 		self.text.pack()
-		self.submitButton = Button(self.master, text='Submit', command=self.master.destroy)
+		self.submitButton = Button(self.master, text='Submit', command=self.add)
 		self.submitButton.pack()
 
+		self.vText = self.text.get("1.0", "end-1c")
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-		self.vText = self.text.get("1.0", "end-1c")
-		print(self.vText)
+		#self.vText = self.text.get("1.0", "end-1c")
+		#self.master.testEvent.insert(INSERT, self.text.get("1.0", "end-1c"))
+		#print(self.vText)
 		#print(type(self.text.get("1.0", "end-1c")))
 
-	#def add(self):
+	def add(self):
 		# event doesn't appear - don't know how to send it back
 		# need time/date
 		#text = self.text.get('1.0', 'end-1c')
+		print(self.vtext)
 		#newEvent = event(self.timeslot, self.timeslot, text)
+		self.master.destroy()
 		#print(self.timeslot) # wonky time
 		#print(text)
 		#self.eventsList.append(newEvent)
