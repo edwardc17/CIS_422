@@ -23,17 +23,13 @@ timeSlots = []
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
 # 	in a box before creating additional windows - john
-<<<<<<< HEAD
-def onClick(event, guiObj, timeSlot, c):
-	print ("you clicked on", guiObj, "and timeslot ", timeSlot, " at time ", c)
-=======
+
 def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	row    = event.widget.grid_info()['row']
 	column = event.widget.grid_info()['column']
 	#this could be helpful for store and write information
 	print ("row =", row, "column = ", column)
->>>>>>> 4aa25176f4f4faa31930fb41033b5e8620597e71
 	guiObj.modifyDayBox(timeSlot)
 
 #### timeslot with associated labels and times (clickable spots)
