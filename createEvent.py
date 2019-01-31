@@ -26,7 +26,7 @@ class Application(Frame, object):
 	def onClick(self):
 		self.top = Toplevel()
 		self.top.title("title")
-		self.top.geometry("1600x720+%d+%d" %(((self.rt.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (self.rt.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
+		self.top.geometry("1600x720")
 		self.top.transient(self)
 		self.appc = Demo(self, self.top, self.t1)
 
@@ -39,44 +39,70 @@ class Demo(object):
 		self.widget()
 
 	def widget(self):
-		self.lname = Label(self.master, width = 30, text = "Event name: ")
-		self.ename = Entry(self.master)
-		self.ldscrp = Label(self.master, text = "Event description: ")
-		self.edscrp = Text(self.master, width = 30, height = 6)
-		self.lfrom = Label(self.master, text = "From: ")
-		self.efrom = Entry(self.master)
-
-		self.tkvar = StringVar(self.master)
-		hourChoices = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', \
+		#Creating two list of options for drop down menus
+		hourChoices = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', \
 		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
 		minuteChoices = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
-		
-		self.tkvar.set('12')
-		self.popUpMenu = OptionMenu(self.master, self.tkvar, *hourChoices)
-		self.lhour = Label(self.master, text="Choose a hour")
-		self.lhour.grid(row = 1, column = 1)
+		# 'l' stands for label, 'e' stands for entry, 'b' stands for button
+		#Creating Labels and Entries for event name and description
+		self.l_name = Label(self.master, width = 17, text = "Event name: ")
+		self.e_name = Entry(self.master)
+		self.l_name.grid(row = 0, column = 0, pady = 20)
+		self.e_name.grid(row = 0, column = 1, sticky= W, pady = 20)
 
-		self.bfrom = Button(self.master, text = "DatePicker", command = self.onDatePicker)
-		self.lto = Label(self.master, text = "to: ")
-		self.eto = Entry(self.master)
-		self.bto = Button(self.master, text = "DatePicker")
+		self.l_dscrp = Label(self.master, width = 17, text = "Event description: ")
+		self.e_dscrp = Text(self.master, width = 30, height = 6)
+		self.l_dscrp.grid(row = 1, column = 0, pady = 20)
+		self.e_dscrp.grid(row = 1, column = 1, columnspan = 2, pady = 20, sticky=W)
 
-		self.lname.grid(row = 1, column = 1, pady = 20)
-		self.ename.grid(row = 1, column = 2, sticky=W, pady = 20)
-		self.ldscrp.grid(row = 2, column = 1, pady = 20)
-		self.edscrp.grid(row = 2, column = 2, sticky=W, pady = 20)
-		self.lfrom.grid(row = 3, column = 1, pady = 20)
-		self.efrom.grid(row = 3, column = 2, sticky=W, pady = 20)
-		self.popUpMenu.grid(row = 3, column = 3, pady = 20)
-		self.bfrom.grid(row = 3, column = 4, pady = 20)
-		self.lto.grid(row = 4, column = 1, pady = 20)
-		self.eto.grid(row = 4, column = 2, sticky=W, pady = 20)
-		self.bto.grid(row = 4, column = 3, pady = 20)
+		#Creating Labels and Entries for choosing time slacks
+		self.tkhvar_from = StringVar(self.master)
+		self.tkmvar_from = StringVar(self.master)
+		self.tkhvar_from.set('00')
+		self.tkmvar_from.set('00')
 
-		self.bsub = Button(self.master, text = "submit",command = self.onSubmit)
-		self.bdel = Button(self.master, text = "delete", command = self.clear)
-		self.bsub.grid(row = 5, column = 3)
-		self.bdel.grid(row = 5, column = 4)
+		self.l_dateFrom = Label(self.master, width = 17, text = "From: ")
+		self.dropDown_hour_from = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
+		self.l_semicolon1 = Label(self.master, width = 2, text = ":")
+		self.dropDown_minute_from = OptionMenu(self.master, self.tkmvar_from, *minuteChoices)
+		self.dropDown_hour_from.config(width = 6)
+		self.dropDown_minute_from.config(width = 6)
+		self.l_dateFrom.grid(row = 2, column = 0, pady = 20)
+		self.dropDown_hour_from.grid(row = 2, column = 1, pady = 20, sticky = W)
+		self.l_semicolon1.grid(row = 2, column = 1)
+		self.dropDown_minute_from.grid(row = 2, column = 1, pady = 20, sticky = E)
+
+		self.l_pickDate_from = Label(self.master, text = "Select date:", width = 15)
+		self.l_pickDate_from.grid(row = 2, column = 2)
+		self.b_dateFrom = Button(self.master, text = "DatePicker", command = self.onDatePicker)
+		self.b_dateFrom.grid(row = 2, column = 3, pady = 20, sticky = W)
+
+		self.l_dateTo = Label(self.master, width = 17, text = "to: ")
+		self.l_dateTo.grid(row = 3, column = 0, pady = 20)
+		self.dropDown_hour_to = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
+		self.l_semicolon2 = Label(self.master, width = 2, text = ":")
+		self.dropDown_minute_to = OptionMenu(self.master, self.tkmvar_from, *minuteChoices)
+		self.dropDown_hour_to.config(width = 6)
+		self.dropDown_minute_to.config(width = 6)
+		self.l_dateTo.grid(row = 3, column = 0, pady = 20)
+		self.dropDown_hour_to.grid(row = 3, column = 1, pady = 20, sticky = W)
+		self.l_semicolon2.grid(row = 3, column = 1)
+		self.dropDown_minute_to.grid(row = 3, column = 1, pady = 20, sticky = E)
+
+		self.l_pickDate_to = Label(self.master, text = "Select date:", width = 15)
+		self.l_pickDate_to.grid(row = 3, column = 2)
+
+		self.b_dateTo = Button(self.master, text = "DatePicker", command = self.onDatePicker)
+		self.b_dateTo.grid(row = 3, column = 3, pady = 20)
+
+		#self.l_hour.grid(row = 3, column = 1, pady = 20)
+		#self.e_.grid(row = 3, column = 2, sticky=W, pady = 20)
+		#self.e_dateTo.grid(row = 4, column = 2, sticky=W, pady = 20)
+
+		self.b_sub = Button(self.master, text = "submit",command = self.onSubmit)
+		self.b_del = Button(self.master, text = "delete", command = self.clear)
+		self.b_sub.grid(row = 4, column = 2)
+		self.b_del.grid(row = 4, column = 3)
 	
 	def clear(self):
 		pass
