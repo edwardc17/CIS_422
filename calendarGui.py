@@ -2,18 +2,19 @@
 import sys
 from calendarClasses import *
 import datetime
-#import tkinter
-#import tkinter.messagebox
+import tkinter
+import tkinter.messagebox
+##import tkinter.messagebox
 #from Tkinter import messagebox
-import tkMessageBox as messagebox
+#import tkMessageBox as messagebox
 # these options work for python3
 #from tkinter import *
 #from tkinter import messagebox
 
 if sys.version[0] == '2':
-    from Tkinter import *
+	from Tkinter import *
 else:
-    from tkinter import *
+	from tkinter import *
 
 # global variable to see if save button was pressed
 credit = 0
@@ -267,14 +268,36 @@ class AddEventPopUp(object):
 		
 		#if credit < 10:
 		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
+		'''
 		win = Toplevel()
 		win.title('warning')
 		message = "You may lose any unsaved changes"
 		Label(win, text=message).pack()
 		Button(win, text='Stay', command=win.destroy).pack()
 		
-		Button(win, text='I already saved my changes!', command=exit).pack()
+		Button(win, text='I already saved my changes!', command=win.quit).pack()
+		'''
+		
+		#if tkinter.messagebox.askyesno("Print", "Print this report?"):
+		result = messagebox.askyesno("Save", "Save the event?")
+		if result == True:
+			print("worked")
+			self.master.destroy()
+			##result.destroy()
+			#result.print()
+			
 
+		
+		
+		#win = Toplevel()
+		#Button(win, text='Exit Application',command=on_closing)
+		#tk.messagebox.askquestion ('Exit Application','Are you sure you want to exit the application',icon = 'warning')
+		#messagebox.showinfo("Warning", "Are you sure you want to leave without saving?")
+		#if MsgBox == 'yes':
+			#win.destroy()
+		#else:
+			#tk.messagebox.showinfo('Return','You will now return to the application screen')
+		
 	def close(self):
 		self.exit()
 		self.master.destroy()
