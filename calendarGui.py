@@ -23,8 +23,17 @@ timeSlots = []
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
 # 	in a box before creating additional windows - john
+<<<<<<< HEAD
 def onClick(event, guiObj, timeSlot, c):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot, " at time ", c)
+=======
+def onClick(event, guiObj, timeSlot):
+	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
+	row    = event.widget.grid_info()['row']
+	column = event.widget.grid_info()['column']
+	#this could be helpful for store and write information
+	print ("row =", row, "column = ", column)
+>>>>>>> 4aa25176f4f4faa31930fb41033b5e8620597e71
 	guiObj.modifyDayBox(timeSlot)
 
 #### timeslot with associated labels and times (clickable spots)
@@ -50,11 +59,13 @@ class GUI(Frame, object):
 		# array for event spots (so they're clickable)
 		self.eventSpots = []
 
+		self.dayOneEvent = []
+		self.dayTwoEvent = []
+		self.dayThreeEvent = []
+
 		self.frame = Frame(height=100, bd=1)
 		#self.frame.pack(fill='x', padx=0, pady=0)
 
-		#self.label = Label(rt, text = "Testing GUI!")
-		#self.label.pack()
 
 		self.create = Button(rt, text = "Create", width=8,command = self.createEvent).grid(row=0,column=0)
 		#self.create.pack()
@@ -97,6 +108,8 @@ class GUI(Frame, object):
 		##print(self.day3['text'])
 		self.day3.grid(row=3,column=3)
 
+
+
 		#time scale
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
 						'06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
@@ -115,6 +128,7 @@ class GUI(Frame, object):
 		#self.close_button.grid(row=29 ,column =4)
 
 		self.createTimescale()
+		self.dayOneEvent[0].config(text='test')
 
 	def clickEvent(self):
 		self.widget.config(background = "green")
@@ -194,12 +208,17 @@ class GUI(Frame, object):
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime, c))
 			dayOneTime.grid(row=r, column=1)
+			self.dayOneEvent.append(dayOneTime)
+
 			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime, c))
 			dayTwoTime.grid(row=r,column=2)
+			self.dayTwoEvent.append(dayTwoTime)
+
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime, c))
 			dayThreeTime.grid(row=r,column=3)
+			self.dayThreeEvent.append(dayThreeTime)
 			#### declare timeslot to add to array (begintime, label)
 			# (need to input actual date?) yep
 			slot1 = TimeSlot(c, dayOneTime)
@@ -213,7 +232,7 @@ class GUI(Frame, object):
 
 	#### creates a new window that is a child to the GUI parent frame
 	# john: "pretty much copied this from the example"
-	def modifyDayBox(self, timeSlot):
+	def modifyDayBox(self,timeSlot):
 		self.top = Toplevel()
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
