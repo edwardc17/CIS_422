@@ -61,6 +61,11 @@ class Demo(object):
 		self.tkhvar_from.set('00')
 		self.tkmvar_from.set('00')
 
+		self.tkhvar_to = StringVar(self.master)
+		self.tkmvar_to = StringVar(self.master)
+		self.tkhvar_to.set('00')
+		self.tkmvar_to.set('00')
+
 		self.l_dateFrom = Label(self.master, width = 17, text = "From: ")
 		self.dropDown_hour_from = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
 		self.l_semicolon1 = Label(self.master, width = 2, text = ":")
@@ -79,9 +84,9 @@ class Demo(object):
 
 		self.l_dateTo = Label(self.master, width = 17, text = "to: ")
 		self.l_dateTo.grid(row = 3, column = 0, pady = 20)
-		self.dropDown_hour_to = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
+		self.dropDown_hour_to = OptionMenu(self.master, self.tkhvar_to, *hourChoices)
 		self.l_semicolon2 = Label(self.master, width = 2, text = ":")
-		self.dropDown_minute_to = OptionMenu(self.master, self.tkmvar_from, *minuteChoices)
+		self.dropDown_minute_to = OptionMenu(self.master, self.tkmvar_to, *minuteChoices)
 		self.dropDown_hour_to.config(width = 6)
 		self.dropDown_minute_to.config(width = 6)
 		self.l_dateTo.grid(row = 3, column = 0, pady = 20)
