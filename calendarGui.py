@@ -113,7 +113,7 @@ class GUI(Frame, object):
 						'06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM', '12:00 PM']
 
 
-		self.testEvent = Label(self.rt, text="event").grid(row=0, column=4)
+		#self.testEvent = Label(self.rt, text="event").grid(row=0, column=4)
 		#this button closes the calendar 
 		#self.close_button = Button(rt, text = "Close", command = rt.quit)
 
@@ -124,7 +124,7 @@ class GUI(Frame, object):
 		#self.close_button.grid(row=29 ,column =4)
 
 		self.createTimescale()
-		self.dayOneEvent[0].config(text='test')
+		#self.dayOneEvent[0].config(text='test')
 
 	def clickEvent(self):
 		self.widget.config(background = "green")
@@ -202,17 +202,17 @@ class GUI(Frame, object):
 			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0)
 			# creates timeslot slots
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime, c))
+			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
 			dayOneTime.grid(row=r, column=1)
 			self.dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime, c))
+			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2)
 			self.dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime, c))
+			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
 			dayThreeTime.grid(row=r,column=3)
 			self.dayThreeEvent.append(dayThreeTime)
 			#### declare timeslot to add to array (begintime, label)
@@ -293,7 +293,7 @@ class AddEventPopUp(object):
 		self.ldscrp.grid(row = 2, column = 1, pady = 20)
 		self.edscrp.grid(row = 2, column = 2, sticky=W, pady = 20)
 
-		self.subButton = Button(self.master, text = "submit",command = self.add)
+		self.subButton = Button(self.master, text = "submit",command = self.SubmitAdd)
 		self.subButton.grid(row=3, column=2, pady = 20)
 
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -322,6 +322,13 @@ class AddEventPopUp(object):
 		self.timeslot["text"] = eventName # accesses last label in day's list
 		print(self.eventsList)
 		self.master.destroy()
+
+	def SubmitAdd(self):
+		print(type(self.timeslot))
+		for slot in self.timeslot:
+			if self.timeslot is slot.label:
+				print("found it")
+				slots.label['text'] = self.ename.get()
 
 	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in event list)
 	def ModEvent(self):
