@@ -6,9 +6,10 @@ class day:
 		self.events = []
 
 class event:
-	def __init__(self, time, date, text, category=None):
+	def __init__(self, time, date, title, text, category=None):
 		self.time = time
 		self.date = date
+		self.title = title
 		self.text = text
 		# For changes in the future
 		self.category = category
@@ -29,11 +30,17 @@ class event:
 	def editEventText(self, text):
 		self.text = text
 
+	def editEventTitle(self, title):
+		self.title = title
+
 	def getTime(self):
 		return self.time
 
 	def getDate(self):
 		return self.date
+
+	def getTitle(self):
+		return self.title
 
 	def getText(self):
 		return self.text
@@ -73,15 +80,18 @@ class calendar:
 		new = self.loadFile()
 		return new
 
-	def editEvent(self, event, time=None, date=None, text=None):
+	def editEvent(self, event, time=None, date=None, title=None, text=None):
 		# only add what needs to be changed
-		# must add None(s) if adding an arg after time
+		# must add None(s) if adding an arg an unavailable arg
 		if time:
 			event.editEventTime(time)
 		if date:
 			event.editEventDate(date)
+		if title:
+			event.editEventTitle(title)
 		if text:
 			event.editEventText(text)
+		
 		self.saveFile()
 		new = self.loadFile()
 		return new

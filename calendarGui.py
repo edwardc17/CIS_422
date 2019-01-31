@@ -5,10 +5,10 @@ import datetime
 #import tkinter
 #import tkinter.messagebox
 #from Tkinter import messagebox
-#import tkMessageBox as messagebox
+import tkMessageBox as messagebox
 # these options work for python3
-from tkinter import *
-from tkinter import messagebox
+#from tkinter import *
+#from tkinter import messagebox
 
 if sys.version[0] == '2':
     from Tkinter import *
@@ -23,8 +23,8 @@ timeSlots = []
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
 # 	in a box before creating additional windows - john
-def onClick(event, guiObj, timeSlot):
-	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
+def onClick(event, guiObj, timeSlot, c):
+	print ("you clicked on", guiObj, "and timeslot ", timeSlot, " at time ", c)
 	guiObj.modifyDayBox(timeSlot)
 
 #### timeslot with associated labels and times (clickable spots)
@@ -192,16 +192,16 @@ class GUI(Frame, object):
 			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0)
 			# creates timeslot slots
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
+			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime, c))
 			dayOneTime.grid(row=r, column=1)
 			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
+			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime, c))
 			dayTwoTime.grid(row=r,column=2)
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime, c))
 			dayThreeTime.grid(row=r,column=3)
 			#### declare timeslot to add to array (begintime, label)
-			# (need to input actual date?)
+			# (need to input actual date?) yep
 			slot1 = TimeSlot(c, dayOneTime)
 			slot2 = TimeSlot(c, dayTwoTime)
 			slot3 = TimeSlot(c, dayThreeTime)
@@ -218,58 +218,78 @@ class GUI(Frame, object):
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
-		self.appc=ModTimePopUp(self.top, self.eventSpots, timeSlot)
-		if self.appc.vText:
-			print(self.appc.vText)
-			#self.eventSlots.append(event(timeSlot, timeSlot, self.appc.vText))
-		#print(self.eventSlots)
-
+		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot)
 
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
-class ModTimePopUp(object):
+class AddEventPopUp(object):
 	def __init__(self, master, eventsList, timeSlot):
 		self.master = master
 		# create new window
 		self.frame = Frame(self.master)
 		self.eventsList = eventsList
 		self.timeslot = timeSlot # This is not the correct time
-		self.widget()
+		self.AddEvent()
 		self.vText = ''
 
-	# define widgets for first window (buttons)
-	def widget(self):
-		self.b1=Button(self.master, text="Add Event", command=self.AddEvent).grid(row=0, column=0)
-		self.b2=Button(self.master, text="Modify Existing Event", command=self.ModEvent).grid(row=1, column=0)
-
 	def on_closing(self):
-		if messagebox.askokcancel("Quit", "Do you want to quit without saving?"):
-			self.master.destroy()
+		#maybe if credit is 0 then exit and if not show warning
+		#global root
+		##print(credit)
+		#if credit < 10:
+			#print("less than 10 in exit")
+
+		#self.rt = rt
+		#self.withdraw()
+		#messagebox.showinfo("Warning", "Are you sure you want to leave without saving?")
+
+		#else:
+			#messagebox.showinfo("You saved you calendar", "Have a nice day!")
+
+		#rt.quit()
+		#root.quit()
+		
+		#if credit < 10:
+		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
+		win = Toplevel()
+		win.title('warning')
+		message = "You may lose any unsaved changes"
+		Label(win, text=message).pack()
+		Button(win, text='Stay', command=win.destroy).pack()
+		
+		Button(win, text='I already saved my changes!', command=exit).pack()
+
+	def close(self):
+		self.exit()
+		self.master.destroy()
 
 	# user pressed add event
 	def AddEvent(self):
 		print("adding event")
-		#destroy old layout, retains window
-		for widget in self.master.winfo_children():
-			widget.destroy()
-		#self.t1 = Text(self.frame)
 
-		self.vText = self.text.get("1.0", "end-1c")
+		self.lname = Label(self.master, width = 30, text = "Event name: ")
+		self.ename = Entry(self.master)
+		self.ldscrp = Label(self.master, text = "Event description: ")
+		self.edscrp = Text(self.master, width = 30, height = 6)
+
+		self.lname.grid(row = 1, column = 1, pady = 20)
+		self.ename.grid(row = 1, column = 2, sticky=W, pady = 20)
+		self.ldscrp.grid(row = 2, column = 1, pady = 20)
+		self.edscrp.grid(row = 2, column = 2, sticky=W, pady = 20)
+
+		self.subButton = Button(self.master, text = "submit",command = self.add)
+		self.subButton.grid(row=3, column=2, pady = 20)
+
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
-
-		#self.vText = self.text.get("1.0", "end-1c")
-		#self.master.testEvent.insert(INSERT, self.text.get("1.0", "end-1c"))
-		#print(self.vText)
-		#print(type(self.text.get("1.0", "end-1c")))
 
 
 		# event doesn't appear - don't know how to send it back
 		# need time/date
 		#text = self.text.get('1.0', 'end-1c')
-		print(self.vtext)
+		#print(self.vtext)
 		#newEvent = event(self.timeslot, self.timeslot, text)
-		self.master.destroy()
+		#self.master.destroy()
 		#print(self.timeslot) # wonky time
 		#print(text)
 		#self.eventsList.append(newEvent)
@@ -280,6 +300,13 @@ class ModTimePopUp(object):
 		#	send submission to calendar
 		#	error check
 		# 	detailed documentation, passed parameters, etc
+	def add(self):
+		eventName = self.ename.get()
+		eventDesc = self.edscrp.get("1.0", "end-1c")
+		self.eventsList.append(event("5", "today", eventName, eventDesc)) # doesn't fill original eventSpots
+		self.timeslot["text"] = eventName # accesses last label in day's list
+		print(self.eventsList)
+		self.master.destroy()
 
 	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in event list)
 	def ModEvent(self):
