@@ -17,7 +17,8 @@ else:
 
 # global variable to see if save button was pressed
 credit = 0
-# global array for timeslots
+# global dict for timeslots, key: day
+#timeSlots = {}
 timeSlots = []
 
 #### click recorder for clicking on labels for time ###
@@ -220,6 +221,8 @@ class GUI(Frame, object):
 			slot1 = TimeSlot(c, dayOneTime)
 			slot2 = TimeSlot(c, dayTwoTime)
 			slot3 = TimeSlot(c, dayThreeTime)
+			#if dayOneTime in timeSlots:
+				#timeSlots[dayOneTime].append(slot1)
 			timeSlots.append(slot1)
 			timeSlots.append(slot2)
 			timeSlots.append(slot3)
@@ -246,7 +249,9 @@ class AddEventPopUp(object):
 		self.eventsList = eventsList
 		self.timeslot = timeSlot # This is not the correct time
 		self.AddEvent()
-		self.vText = ''
+		#self.vText = ''
+
+		print(self.timeslot)
 
 	def on_closing(self):
 		#maybe if credit is 0 then exit and if not show warning
@@ -273,10 +278,10 @@ class AddEventPopUp(object):
 		Label(win, text=message).pack()
 		Button(win, text='Stay', command=win.destroy).pack()
 		
-		Button(win, text='I already saved my changes!', command=exit).pack()
+		Button(win, text='I already saved my changes!', command=self.close).pack()
 
 	def close(self):
-		self.exit()
+		self.frame.destroy()
 		self.master.destroy()
 
 	# user pressed add event
@@ -324,11 +329,11 @@ class AddEventPopUp(object):
 		self.master.destroy()
 
 	def SubmitAdd(self):
-		print(type(self.timeslot))
-		for slot in self.timeslot:
+		#print(type(self.timeslot))
+		for slot in timeSlots:
 			if self.timeslot is slot.label:
 				print("found it")
-				slots.label['text'] = self.ename.get()
+				slot.label['text'] = self.ename.get()
 
 	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in event list)
 	def ModEvent(self):
