@@ -45,7 +45,18 @@ class Demo(object):
 		self.edscrp = Text(self.master, width = 30, height = 6)
 		self.lfrom = Label(self.master, text = "From: ")
 		self.efrom = Entry(self.master)
-		self.bfrom = Button(self.master, text = "DatePicker")
+
+		self.tkvar = StringVar(self.master)
+		hourChoices = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', \
+		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+		minuteChoices = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
+		
+		self.tkvar.set('12')
+		self.popUpMenu = OptionMenu(self.master, self.tkvar, *hourChoices)
+		self.lhour = Label(self.master, text="Choose a hour")
+		self.lhour.grid(row = 1, column = 1)
+
+		self.bfrom = Button(self.master, text = "DatePicker", command = self.onDatePicker)
 		self.lto = Label(self.master, text = "to: ")
 		self.eto = Entry(self.master)
 		self.bto = Button(self.master, text = "DatePicker")
@@ -56,7 +67,8 @@ class Demo(object):
 		self.edscrp.grid(row = 2, column = 2, sticky=W, pady = 20)
 		self.lfrom.grid(row = 3, column = 1, pady = 20)
 		self.efrom.grid(row = 3, column = 2, sticky=W, pady = 20)
-		self.bfrom.grid(row = 3, column = 3, pady = 20)
+		self.popUpMenu.grid(row = 3, column = 3, pady = 20)
+		self.bfrom.grid(row = 3, column = 4, pady = 20)
 		self.lto.grid(row = 4, column = 1, pady = 20)
 		self.eto.grid(row = 4, column = 2, sticky=W, pady = 20)
 		self.bto.grid(row = 4, column = 3, pady = 20)
@@ -66,15 +78,20 @@ class Demo(object):
 		self.bsub.grid(row = 5, column = 3)
 		self.bdel.grid(row = 5, column = 4)
 	
-    #def clear(self):
-        #pass
+	def clear(self):
+		pass
 
 	def onSubmit(self):
 		self.root.event = Button(self.root, text = "event")
 		self.root.event.grid(row = 6, column = 1)
 		self.t1.insert(INSERT, self.ename.get())
 
-'''
+	def onDatePicker(self):
+		self.datePicker = Toplevel()
+		self.child = DatePicker(self.datePicker)
+
+# DatePicker class is an open-sourced work that was done by Max-Planck-Institut für Radioastronomie, Bonn, Germany, 2016.
+# Our implementation did some modifications.  
 class DatePicker:
     def __init__(self, parent):
         self.parent = parent
@@ -132,36 +149,36 @@ class DatePicker:
         self.setup(self.year, self.month)
          
     def setup(self, y, m):
-        left = tk.Button(self.parent, text='<', command=self.go_prev)
+        left = Button(self.parent, text='<', command=self.go_prev)
         self.wid.append(left)
         left.grid(row=0, column=1)
          
-        header = tk.Label(self.parent, height=2, text='{}   {}'.format(calendar.month_abbr[m], str(y)))
+        header = Label(self.parent, height=2, text='{}   {}'.format(calendar.month_abbr[m], str(y)))
         self.wid.append(header)
         header.grid(row=0, column=2, columnspan=3)
          
-        right = tk.Button(self.parent, text='>', command=self.go_next)
+        right = Button(self.parent, text='>', command=self.go_next)
         self.wid.append(right)
         right.grid(row=0, column=5)
          
         days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         for num, name in enumerate(days):
-            t = tk.Label(self.parent, text=name[:3])
+            t = Label(self.parent, text=name[:3])
             self.wid.append(t)
             t.grid(row=1, column=num)
          
         for w, week in enumerate(self.cal.monthdayscalendar(y, m), 2):
             for d, day in enumerate(week):
                 if day:
-                    b = tk.Button(self.parent, width=1, text=day, command=lambda day=day:self.selection(day, calendar.day_name[(day-1) % 7]))
+                    b = Button(self.parent, width=1, text=day, command=lambda day=day:self.selection(day, calendar.day_name[(day-1) % 7]))
                     self.wid.append(b)
                     b.grid(row=w, column=d)
                      
-        sel = tk.Label(self.parent, height=2, text='{} {} {} {}'.format(
+        sel = Label(self.parent, height=2, text='{} {} {} {}'.format(
             self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
         self.wid.append(sel)
         sel.grid(row=8, column=0, columnspan=7)
-'''
+
 root=Tk()
 app=Application(root)
 app.mainloop()
