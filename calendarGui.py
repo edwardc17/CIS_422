@@ -25,6 +25,10 @@ timeSlots = []
 # 	in a box before creating additional windows - john
 def onClick(event, guiObj, timeSlot):
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
+	row    = event.widget.grid_info()['row']
+	column = event.widget.grid_info()['column']
+	#this could be helpful for store and write information
+	print ("row =", row, "column = ", column)
 	guiObj.modifyDayBox(timeSlot)
 
 #### timeslot with associated labels and times (clickable spots)
@@ -223,7 +227,7 @@ class GUI(Frame, object):
 
 	#### creates a new window that is a child to the GUI parent frame
 	# john: "pretty much copied this from the example"
-	def modifyDayBox(self, timeSlot):
+	def modifyDayBox(self,timeSlot):
 		self.top = Toplevel()
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
@@ -250,8 +254,10 @@ class ModTimePopUp(object):
 
 	# define widgets for first window (buttons)
 	def widget(self):
-		self.b1=Button(self.master, text="Add Event", command=self.AddEvent).grid(row=0, column=0)
-		self.b2=Button(self.master, text="Modify Existing Event", command=self.ModEvent).grid(row=1, column=0)
+		self.b1=Button(self.master, text="Add Event", command=self.AddEvent)
+		self.b1.grid(row=0, column=0)
+		self.b2=Button(self.master, text="Modify Existing Event", command=self.ModEvent)
+		self.b2.grid(row=1, column=0)
 
 	def on_closing(self):
 		if messagebox.askokcancel("Quit", "Do you want to quit without saving?"):
@@ -265,12 +271,14 @@ class ModTimePopUp(object):
 			if type(widget) != str:
 				widget.destroy()
 		#self.t1 = Text(self.frame)
+		v = StringVar(self.master, value = 'Please enter a event name')
 		self.lname = Label(self.master, width = 12, text='Event Name')
-		self.ename = Entry(self.master)
+		self.ename = Entry(self.master, textvariable = v)
 		self.lname.grid(row = 1, column = 1, pady = 20)
 		self.ename.grid(row = 1, column = 2, sticky=W, pady = 20)
 		self.bSub = Button(self.master, text = "submit", command = self.SubmitAdd)
 		self.bSub.grid(row = 2, column = 1)
+
 		#tLabel.pack()
 		#self.text = Text(self.master)
 		#self.text.pack()
@@ -279,8 +287,8 @@ class ModTimePopUp(object):
 
 		self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-		self.vText = self.text.get("1.0", "end-1c")
-		print(self.vText)
+		#self.vText = self.text.get("1.0", "end-1c")
+		#print(self.vText)
 		#print(type(self.text.get("1.0", "end-1c")))
 
 	# makes changes to label
