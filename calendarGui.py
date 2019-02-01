@@ -3,7 +3,6 @@ import sys
 from calendarClasses import *
 import datetime
 import calendar
-import os
 #import tkinter
 #import tkinter.messagebox
 ##import tkinter.messagebox
@@ -55,8 +54,7 @@ class GUI(Frame, object):
 
 		self.rt = rt
 		rt.title("Calendar")
-		self.file = "saveFile.dat"
-		self.cal = Calendar(self.file)
+		self.cal = Calendar("saveFile.dat")
 		#self.events = self.cal.loadFile()
 		self.labels = []
 		# array for event spots (so they're clickable)
@@ -68,7 +66,7 @@ class GUI(Frame, object):
 		self.create_widgets()
 
 	def create_widgets(self):
-		self.create = Button(self.rt, text = "Create", width=8,command = self.onClick).grid(row=0,column=0)
+		self.create = Button(self.rt, text = "Create", width=8,command = lambda: self.onClick("", "", "", "", "")).grid(row=0,column=0)
 		#self.create.pack()
 
 		#self.edit = Button(rt, text = "Edit", width=8,command = self.editEvent).grid(row=1,column=0)
@@ -132,27 +130,7 @@ class GUI(Frame, object):
 		#self.close_button.grid(row=29 ,column =4)
 
 		self.createTimescale()
-		# better name?
-		self.loadCalendar()
 		#self.dayOneEvent[0].config(text='test')
-
-	def loadCalendar(self):
-		if os.stat(self.file).st_size != 0:
-			events = self.cal.loadFile()
-			for day in events:
-				# add event label/button to calendar
-				for e in events[day]:
-					# add in appropriate column
-					if e.getDate() == self.day1['text']:
-						dayOneEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
-					elif e.getDate() == self.day2['text']:
-						dayTwoEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
-					elif e.getDate() == self.day3['text']:
-						dayThreeEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-					# if day == day on screen, get index
-					# change onClick function
-					
-					# get label, label.bind()
 
 	def clickEvent(self):
 		self.widget.config(background = "green")
@@ -212,13 +190,13 @@ class GUI(Frame, object):
 
 		self.labels.append(label)
 	'''
-	#def editEvent(self):
-		#events = self.cal.getEvents()
-		#for i in range(0, len(events)):
-			#events[i].editEventTime("2:30pm")
-			#self.labels[i]['text'] = events[i].getEvent()
-		#self.cal.saveFile()
-		#self.cal.loadFile()
+	def editEvent(self):
+		events = self.cal.getEvents()
+		for i in range(0, len(events)):
+			events[i].editEventTime("2:30pm")
+			self.labels[i]['text'] = events[i].getEvent()
+		self.cal.saveFile()
+		self.cal.loadFile()
 
 
 	#### creates timescale slots where events can show up (presumably?)
@@ -228,8 +206,7 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r*12,column=0, rowspan=12)
-
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan = 12)
 			# creates timeslot slots
 			
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
@@ -237,7 +214,7 @@ class GUI(Frame, object):
 			dayOneTime.grid(row=r, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
-			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
+			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=1)
 			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
@@ -269,12 +246,12 @@ class GUI(Frame, object):
 		self.top.transient(self)
 		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot,row,column)
 
-	def onClick(self):
+	def onClick(self, event_name, start_time, end_time, date, description):
 		self.top = Toplevel()
 		self.top.title("title")
 		self.top.geometry("1200x720")
 		self.top.transient(self)
-		self.appc = CreateEvent(self, self.top)
+		self.appc = CreateEvent(self, self.top, event_name, start_time, end_time, date, description)
 
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
@@ -452,10 +429,15 @@ class Application(Frame, object):
 '''
 
 class CreateEvent(object):
-	def __init__(self, root, master):
+	def __init__(self, root, master, event_name, start_time, end_time, date, description):
 		self.root = root
 		self.master = master
 		self.frame = Frame(self.master)
+		self.event_name = event_name
+		self.start_time = start_time
+		self.end_time = end_time
+		self.date = date
+		self.description = description
 		self.pickDateOpened = False
 		self.count = 6
 		self.widget()
@@ -479,6 +461,9 @@ class CreateEvent(object):
 		self.e_dscrp.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky=N+S+W+E)
 
 		# Creating tk variable for drop down menus
+		# tkvar stands for tk variable
+		# h stands for hour, m stands for minute
+		# _from and _to to distinguish start time choosing and end time choosing
 		self.tkhvar_from = StringVar(self.master)
 		self.tkmvar_from = StringVar(self.master)
 		self.tkhvar_from.set('00')
@@ -532,6 +517,15 @@ class CreateEvent(object):
 		self.b_sub.grid(row = 4, column = 2, pady = 20)
 		self.b_del.grid(row = 4, column = 3, pady = 20)
 
+		if self.event_name != "":
+			self.e_name.insert(0, "{}".format(self.event_name))
+			self.e_dscrp.insert(1.0, "{}".format(self.description))
+			self.tkhvar_from.set("{}".format(self.start_time[0]+self.start_time[1]))
+			self.tkmvar_from.set("{}".format(self.start_time[2]+self.start_time[3]))
+			self.tkhvar_to.set("{}".format(self.end_time[0]+self.end_time[1]))
+			self.tkmvar_to.set("{}".format(self.end_time[2]+self.end_time[3]))
+			self.l_pickDate["text"] = self.date
+
 		# Creating Error Message 
 		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red")
 		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red")
@@ -574,24 +568,29 @@ class CreateEvent(object):
 			self.l_pickDate["fg"] = "black"
 
 		if self.ready_to_submit:
-			temp = self.l_pickDate.cget("text")
-			if temp in self.root.currentThreeDays:
-				row_num = int(self.root.currentThreeDays[temp].grid_info()['row']) + 1
-				col_num = int(self.root.currentThreeDays[temp].grid_info()['column'])
+			tempDate = self.l_pickDate.cget("text")
+			if tempDate in self.root.currentThreeDays:
+				row_num = int(self.root.currentThreeDays[tempDate].grid_info()['row']) + 1
+				col_num = int(self.root.currentThreeDays[tempDate].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
 				end_h = int(self.tkhvar_to.get())
 				start_m = int(self.tkmvar_from.get())
 				end_m = int(self.tkmvar_to.get())
+				start_time = self.tkhvar_from.get() + self.tkmvar_from.get()
+				end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
 				span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
+				dscrp = self.e_dscrp.get("1.0", END)
 				self.event = Label(self.root.rt, text = "{}".format(self.e_name.get()), bg = "red")
 				self.event.grid(row = int(row_num + start_h * 12 + start_m * 12 / 60) , \
 					column = col_num, rowspan = int(span), sticky = N+S+W+E)
-				self.event.bind("<1>", lambda event, obj=self: self.root.onClick())
+				self.event.bind("<1>", lambda event : self.root.onClick(self.event.cget("text"), \
+					start_time, end_time, tempDate, dscrp))
 				self.master.destroy()
 				#print(row_num + ((end_h-start_h) * 60 + end_m - start_m), col_num)
 			#self.event = Label()
 			#self.event.grid(row = self.count * 6, column = 1, rowspan = 6)
 			#self.count += 1
+
 
 	# pop up the datePicker
 	# if there's already a datePicker onpened, close it and pop up a new one
@@ -603,7 +602,7 @@ class CreateEvent(object):
 			self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
 
-# DatePicker class is an open-sourced work that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
+# DatePicker class is an open-sourced work that was done by Max-Planck-Institut für Radioastronomie, Bonn, Germany, 2016.
 # Our implementation did some modifications.  
 class DatePicker:
 	def __init__(self, parent, p_label):
