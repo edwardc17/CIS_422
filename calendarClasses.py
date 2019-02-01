@@ -126,16 +126,3 @@ class Calendar:
 			for event in events:
 				# add event label/button to calendar
 				pass
-
-cal = calendar("saveFile.dat")
-e1 = event("time", "date", "title", "text", 1, 2)
-e2 = event("time1", "date1", "title1", "text1", 3, 2)
-e3 = event("time12", "date12", "title12", "text12", 5, 2)
-cal.addEvent(e1, "today")
-cal.addEvent(e2, "today")
-cal.addEvent(e3, "today")
-#cal.printCal()
-data = cal.loadFile()
-for day in data:
-	for event in data[day]:
-		event.printEvent()

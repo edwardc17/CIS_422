@@ -173,7 +173,7 @@ class GUI(Frame, object):
 		
 		Button(win, text='I already saved my changes!', command=exit).pack()
 		
-
+	# getting ridof these
 	def createEvent(self):
 		e = event("1pm", "2/1/19", "waffle")
 		new = self.cal.addEvent(e)
@@ -199,21 +199,21 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0)
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan=12)
 			# creates timeslot slots
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
-			dayOneTime.grid(row=r, column=1)
+			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
+			dayOneTime.grid(row=r*12, column=1)
 			dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
-			dayTwoTime.grid(row=r,column=2)
+			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
+			dayTwoTime.grid(row=r*12,column=2)
 			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
-			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-			dayThreeTime.grid(row=r,column=3)
+			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayThreeTime.grid(row=r*12,column=3)
 			dayThreeEvent.append(dayThreeTime)
 			#### declare timeslot to add to array (begintime, label)
 			# (need to input actual date?) yep
