@@ -206,22 +206,22 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r*12,column=0,rowspan = 12)
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan = 12)
 			# creates timeslot slots
 			
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
-			dayOneTime.grid(row=r*12, column=1)
+			dayOneTime.grid(row=r, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
-			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
+			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=1)
 			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
-			dayTwoTime.grid(row=r*12,column=2)
+			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-			dayThreeTime.grid(row=r*12,column=3)
+			dayThreeTime.grid(row=r,column=3,  rowspan = 12)
 			dayThreeEvent.append(dayThreeTime)
 			#### declare timeslot to add to array (begintime, label)
 			# (need to input actual date?) yep
@@ -234,7 +234,7 @@ class GUI(Frame, object):
 			timeSlots.append(slot2)
 			timeSlots.append(slot3)
 
-			r = r + 1
+			r = r + 12 
 			
 
 	#### creates a new window that is a child to the GUI parent frame
@@ -508,6 +508,10 @@ class CreateEvent(object):
 		self.b_del = Button(self.master, width = 8, text = "clear", command = self.clear)
 		self.b_sub.grid(row = 4, column = 2, pady = 20)
 		self.b_del.grid(row = 4, column = 3, pady = 20)
+
+		# Creating Error Message 
+		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red")
+		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red")
 	
 	# Reset all the entries, drop down menus
 	def clear(self):
@@ -526,30 +530,41 @@ class CreateEvent(object):
 	# store the event, display it at the right spot
 	def onSubmit(self):
 		#self.event = Button(self.root, height = 6, text = "event")
+		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
 		if not self.e_name.get():
-			self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red")
 			self.l_n_error.grid(row = 0, column = 2, columnspan = 2)
-		
-		if time_slack <= 0:
-			self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red")
-			self.l_t_error.grid(row = 3, column = 2, columnspan = 2)
+			self.ready_to_submit = False
 		else:
+			self.l_n_error["text"] = ""
+
+		if time_slack <= 0:
+			self.l_t_error.grid(row = 3, column = 2, columnspan = 2)
+			self.ready_to_submit = False
+		else:
+			self.l_t_error["text"] = ""
+
+		if self.l_pickDate.cget("text") == "Select date:":
+			self.l_pickDate["fg"] = "red"
+			self.ready_to_submit = False
+		else:
+			self.l_pickDate["fg"] = "black"
+
+		if self.ready_to_submit:
 			temp = self.l_pickDate.cget("text")
 			if temp in self.root.currentThreeDays:
 				row_num = int(self.root.currentThreeDays[temp].grid_info()['row']) + 1
-				row_num *= 12
 				col_num = int(self.root.currentThreeDays[temp].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
 				end_h = int(self.tkhvar_to.get())
 				start_m = int(self.tkmvar_from.get())
-				end_m = int(self.tkmvar_from.get())
+				end_m = int(self.tkmvar_to.get())
 				span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
-				self.event = Button(self.root.rt, width = 18, text = "{}".format(self.e_name.get()), bg = "red")
-				self.event.grid(row = int(row_num + start_h * 12 + start_m * 12 / 60), column = col_num, rowspan = int(span), sticky = N+S+W+E)
-				print(self.e_name.get())
-				print(row_num)
-				print(start_h)
+				self.event = Label(self.root.rt, text = "{}".format(self.e_name.get()), bg = "red")
+				self.event.grid(row = int(row_num + start_h * 12 + start_m * 12 / 60) , \
+					column = col_num, rowspan = int(span), sticky = N+S+W+E)
+				self.event.bind("<1>", lambda event, obj=self: self.root.onClick())
+				self.master.destroy()
 				#print(row_num + ((end_h-start_h) * 60 + end_m - start_m), col_num)
 			#self.event = Label()
 			#self.event.grid(row = self.count * 6, column = 1, rowspan = 6)
