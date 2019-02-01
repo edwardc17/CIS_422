@@ -2,11 +2,11 @@
 import sys
 from calendarClasses import *
 import datetime
-import tkinter
-import tkinter.messagebox
+#import tkinter
+#import tkinter.messagebox
 ##import tkinter.messagebox
 #from Tkinter import messagebox
-#import tkMessageBox as messagebox
+import tkMessageBox as messagebox
 # these options work for python3
 #from tkinter import *
 #from tkinter import messagebox
@@ -53,7 +53,7 @@ class GUI(Frame, object):
 
 		self.rt = rt
 		rt.title("Calendar")
-		self.cal = calendar("saveFile.dat")
+		self.cal = Calendar("saveFile.dat")
 		#self.events = self.cal.loadFile()
 		self.labels = []
 		# array for event spots (so they're clickable)
@@ -249,7 +249,7 @@ class AddEventPopUp(object):
 		self.timeslot = timeSlot # This is not the correct time
 
 		self.AddEvent(row,column)
-		self.vText = ''
+		#self.vText = ''
 
 	def on_closing(self):
 		#maybe if credit is 0 then exit and if not show warning
@@ -342,6 +342,8 @@ class AddEventPopUp(object):
 	def add(self):
 		eventName = self.ename.get()
 		eventDesc = self.edscrp.get("1.0", "end-1c")
+		print(eventDesc)
+		#event = event(row, )
 		self.eventsList.append(event("5", "today", eventName, eventDesc)) # doesn't fill original eventSpots
 		self.timeslot["text"] = eventName # accesses last label in day's list
 		print(self.eventsList)
@@ -360,6 +362,8 @@ class AddEventPopUp(object):
 			dayTwoEvent[rowInt - 4].config(text=self.event_name)
 		else:
 			dayThreeEvent[rowInt - 4].config(text=self.event_name)
+
+		eventObject = event(rowInt, day, self.event_name)
 
 		'''
 		

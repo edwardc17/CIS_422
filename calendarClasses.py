@@ -6,20 +6,20 @@ class day:
 		self.events = []
 
 class event:
-	def __init__(self, time, date, title, text, category=None):
+	def __init__(self, time, date, title, text, row, column):
 		self.time = time
 		self.date = date
 		self.title = title
 		self.text = text
-		# For changes in the future
-		self.category = category
+		self.row = row
+		self.column = column
 
 	def printEvent(self):
 		# Not helpful
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
 	def getEvent(self):
-		return self.time + " " + self.date + " " + self.text
+		return self.time + " " + self.date + " " + self.title + " " + self.text
 
 	def editEventTime(self, time):
 		self.time = time
@@ -45,11 +45,17 @@ class event:
 	def getText(self):
 		return self.text
 
+	def getRow(self):
+		return self.row
 
-class calendar:
+	def getColumn(self):
+		return self.column
+
+
+class Calendar:
 	# Will add stuff for categories later here
 	def __init__(self, filename):
-		self.events = [] # Data for saving
+		self.events = {} # Data for saving, by day
 		self.file = filename
 	
 	def loadFile(self):
@@ -65,21 +71,27 @@ class calendar:
 		with open(self.file, 'wb') as file:
 			pickle.dump(self.events, file, protocol=2)
 
-	def addEvent(self, event):
+	def addEvent(self, event, day):
 		# create event here or just pass it?
 		#time, date, text
 		#newE = event(time, date, text)
-		self.events.append(event)
+		if day in self.events:
+			self.events[day].append(event)
+		else:
+			self.events[day] = [event]
+		#self.events.append(event)
 		self.saveFile() 
 		new = self.loadFile()
 		return new
 
-	def removeEvent(self, event):
-		self.events.remove(event)
+	def removeEvent(self, event, day):
+		self.events[day].remove(event)
+		#self.events.remove(event)
 		self.saveFile()
 		new = self.loadFile()
 		return new
 
+	# ignore for now
 	def editEvent(self, event, time=None, date=None, title=None, text=None):
 		# only add what needs to be changed
 		# must add None(s) if adding an arg an unavailable arg
@@ -98,8 +110,9 @@ class calendar:
 
 	def printCal(self):
 		# Not helpful
-		for i in self.events:
-			i.printEvent()
+		for day in self.events:
+			for e in self.events[day]:
+				e.printEvent()
 
 	def getEvents(self):
 		return self.events
@@ -114,3 +127,15 @@ class calendar:
 				# add event label/button to calendar
 				pass
 
+cal = calendar("saveFile.dat")
+e1 = event("time", "date", "title", "text", 1, 2)
+e2 = event("time1", "date1", "title1", "text1", 3, 2)
+e3 = event("time12", "date12", "title12", "text12", 5, 2)
+cal.addEvent(e1, "today")
+cal.addEvent(e2, "today")
+cal.addEvent(e3, "today")
+#cal.printCal()
+data = cal.loadFile()
+for day in data:
+	for event in data[day]:
+		event.printEvent()
