@@ -6,7 +6,7 @@ import datetime
 #import tkinter.messagebox
 ##import tkinter.messagebox
 #from Tkinter import messagebox
-import tkMessageBox as messagebox
+#import tkMessageBox as messagebox
 # these options work for python3
 #from tkinter import *
 #from tkinter import messagebox
@@ -199,7 +199,7 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan=12)
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r*12,column=0, rowspan=12)
 			# creates timeslot slots
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
