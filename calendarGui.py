@@ -3,6 +3,7 @@ import sys
 from calendarClasses import *
 import datetime
 import calendar
+import os
 #import tkinter
 #import tkinter.messagebox
 ##import tkinter.messagebox
@@ -137,7 +138,7 @@ class GUI(Frame, object):
 
 	def loadCalendar(self):
 		if os.stat(self.file).st_size != 0:
-			events = self.loadFile()
+			events = self.cal.loadFile()
 			for day in events:
 				# add event label/button to calendar
 				for e in events[day]:
@@ -211,13 +212,13 @@ class GUI(Frame, object):
 
 		self.labels.append(label)
 	'''
-	def editEvent(self):
-		events = self.cal.getEvents()
-		for i in range(0, len(events)):
-			events[i].editEventTime("2:30pm")
-			self.labels[i]['text'] = events[i].getEvent()
-		self.cal.saveFile()
-		self.cal.loadFile()
+	#def editEvent(self):
+		#events = self.cal.getEvents()
+		#for i in range(0, len(events)):
+			#events[i].editEventTime("2:30pm")
+			#self.labels[i]['text'] = events[i].getEvent()
+		#self.cal.saveFile()
+		#self.cal.loadFile()
 
 
 	#### creates timescale slots where events can show up (presumably?)
@@ -236,7 +237,7 @@ class GUI(Frame, object):
 			dayOneTime.grid(row=r, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
-			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=1)
+			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
@@ -592,7 +593,6 @@ class CreateEvent(object):
 			#self.event.grid(row = self.count * 6, column = 1, rowspan = 6)
 			#self.count += 1
 
-
 	# pop up the datePicker
 	# if there's already a datePicker onpened, close it and pop up a new one
 	def onDatePicker(self, fromOrTo):
@@ -603,7 +603,7 @@ class CreateEvent(object):
 			self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
 
-# DatePicker class is an open-sourced work that was done by Max-Planck-Institut für Radioastronomie, Bonn, Germany, 2016.
+# DatePicker class is an open-sourced work that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
 # Our implementation did some modifications.  
 class DatePicker:
 	def __init__(self, parent, p_label):
