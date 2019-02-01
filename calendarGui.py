@@ -56,7 +56,7 @@ class GUI(Frame, object):
 		self.rt = rt
 		rt.title("Calendar")
 		self.file = "saveFile.dat"
-		self.cal = Calendar(self.file)
+		self.logicCal = Calendar(self.file)
 		#self.events = self.cal.loadFile()
 		self.labels = []
 		# array for event spots (so they're clickable)
@@ -138,7 +138,7 @@ class GUI(Frame, object):
 
 	def loadCalendar(self):
 		if os.stat(self.file).st_size != 0:
-			events = self.cal.loadFile()
+			events = self.logicCal.loadFile()
 			for day in events:
 				# add event label/button to calendar
 				for e in events[day]:
@@ -280,11 +280,12 @@ class GUI(Frame, object):
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
 class AddEventPopUp(object):
-	def __init__(self, master, eventsList, timeSlot,row,column):
+	def __init__(self, master, logicCal, timeSlot,row,column):
 		self.master = master
 		# create new window
 		self.frame = Frame(self.master)
-		self.eventsList = eventsList
+		#self.eventsList = eventsList
+		self.logicCal = logicCal
 		self.timeslot = timeSlot # This is not the correct time
 
 		self.AddEvent(row,column)
@@ -389,7 +390,7 @@ class AddEventPopUp(object):
 		self.master.destroy()
 
 	def SubmitAdd(self):
-
+		print("submit add")
 		self.event_name = self.v.get()
 		print(self.event_name)
 		#print(type(self.row),type(self.column))
@@ -402,7 +403,10 @@ class AddEventPopUp(object):
 		else:
 			dayThreeEvent[rowInt - 4].config(text=self.event_name)
 
+		print("placed event")
 		eventObject = event(rowInt, day, self.event_name)
+		self.logicCal.addEvent(eventObject)
+		self.logicCal.printCal()
 
 		'''
 		
@@ -518,7 +522,7 @@ class CreateEvent(object):
 		self.dropDown_hour_to.config(width = 6)
 		self.dropDown_minute_to.config(width = 6)
 
-		# Arraning grids
+		# Arranging grids
 		self.l_dateTo.grid(row = 4, column = 0, pady = 20)
 		self.dropDown_hour_to.grid(row = 4, column = 1, pady = 20, sticky = W)
 		self.l_semicolon2.grid(row = 4, column = 1)

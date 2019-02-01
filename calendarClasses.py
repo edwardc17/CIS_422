@@ -81,8 +81,8 @@ class Calendar:
 			self.events[day] = [event]
 		#self.events.append(event)
 		self.saveFile() 
-		new = self.loadFile()
-		return new
+		#new = self.loadFile()
+		#return new
 
 	def removeEvent(self, event, day):
 		self.events[day].remove(event)
