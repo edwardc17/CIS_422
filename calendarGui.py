@@ -3,6 +3,7 @@ import sys
 from calendarClasses import *
 import datetime
 import calendar
+import random
 #import tkinter
 #import tkinter.messagebox
 ##import tkinter.messagebox
@@ -62,11 +63,13 @@ class GUI(Frame, object):
 
 		self.frame = Frame(height=100, bd=1)
 		self.currentThreeDays = {}
+		self.idx = 0
+		self.eventLabelList = []
 		#self.frame.pack(fill='x', padx=0, pady=0)
 		self.create_widgets()
 
 	def create_widgets(self):
-		self.create = Button(self.rt, text = "Create", width=8,command = lambda: self.onClick("", "", "", "", "")).grid(row=0,column=0)
+		self.create = Button(self.rt, text = "Create", width=8,command = lambda: self.onClick("", "", "", "", "", self.idx, 0)).grid(row=0,column=0)
 		#self.create.pack()
 
 		#self.edit = Button(rt, text = "Edit", width=8,command = self.editEvent).grid(row=1,column=0)
@@ -246,12 +249,12 @@ class GUI(Frame, object):
 		self.top.transient(self)
 		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot,row,column)
 
-	def onClick(self, event_name, start_time, end_time, date, description):
+	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
 		self.top = Toplevel()
 		self.top.title("title")
 		self.top.geometry("1200x720")
 		self.top.transient(self)
-		self.appc = CreateEvent(self, self.top, event_name, start_time, end_time, date, description)
+		self.appc = CreateEvent(self, self.top, event_name, start_time, end_time, date, description, idx, exist)
 
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
@@ -429,7 +432,7 @@ class Application(Frame, object):
 '''
 
 class CreateEvent(object):
-	def __init__(self, root, master, event_name, start_time, end_time, date, description):
+	def __init__(self, root, master, event_name, start_time, end_time, date, description, idx, exist):
 		self.root = root
 		self.master = master
 		self.frame = Frame(self.master)
@@ -438,6 +441,8 @@ class CreateEvent(object):
 		self.end_time = end_time
 		self.date = date
 		self.description = description
+		self.idx = idx
+		self.exist = exist
 		self.pickDateOpened = False
 		self.count = 6
 		self.widget()
@@ -513,9 +518,13 @@ class CreateEvent(object):
 		# submit will call onSubmit, it stores entered event and display it on the main window
 		# delete will call clear, it clears all entries
 		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit)
-		self.b_del = Button(self.master, width = 8, text = "clear", command = self.clear)
+		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear)
 		self.b_sub.grid(row = 4, column = 2, pady = 20)
-		self.b_del.grid(row = 4, column = 3, pady = 20)
+		self.b_clr.grid(row = 4, column = 3, pady = 20)
+		if self.exist != 0:
+			self.b_rm = Button(self.master, width = 8, text = "Delete this event", \
+				command = self.onRemove)
+			self.b_rm.grid(row = 5, column = 2, columnspan = 2, sticky = W+E)
 
 		if self.event_name != "":
 			self.e_name.insert(0, "{}".format(self.event_name))
@@ -568,8 +577,12 @@ class CreateEvent(object):
 			self.l_pickDate["fg"] = "black"
 
 		if self.ready_to_submit:
+			if self.exist == 1:
+				self.root.eventLabelList[self.idx].destroy()
+				del self.root.eventLabelList[self.idx]
 			tempDate = self.l_pickDate.cget("text")
 			if tempDate in self.root.currentThreeDays:
+				colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 				row_num = int(self.root.currentThreeDays[tempDate].grid_info()['row']) + 1
 				col_num = int(self.root.currentThreeDays[tempDate].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
@@ -580,17 +593,22 @@ class CreateEvent(object):
 				end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
 				span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
 				dscrp = self.e_dscrp.get("1.0", END)
-				self.event = Label(self.root.rt, text = "{}".format(self.e_name.get()), bg = "red")
+				self.event = Label(self.root.rt, text = "{}".format(self.e_name.get()), bg = random.choice(colors))
 				self.event.grid(row = int(row_num + start_h * 12 + start_m * 12 / 60) , \
 					column = col_num, rowspan = int(span), sticky = N+S+W+E)
 				self.event.bind("<1>", lambda event : self.root.onClick(self.event.cget("text"), \
-					start_time, end_time, tempDate, dscrp))
+					start_time, end_time, tempDate, dscrp, self.idx, 1))
+				self.root.eventLabelList.append(self.event)
+				print(self.idx, self.root.idx)
+				if self.exist == 0:
+					self.root.idx += 1
 				self.master.destroy()
-				#print(row_num + ((end_h-start_h) * 60 + end_m - start_m), col_num)
-			#self.event = Label()
-			#self.event.grid(row = self.count * 6, column = 1, rowspan = 6)
-			#self.count += 1
 
+	# remove an event, will add prompt later
+	def onRemove(self):
+		self.root.eventLabelList[self.idx].destroy()
+		del self.root.eventLabelList[self.idx]
+		self.master.destroy()
 
 	# pop up the datePicker
 	# if there's already a datePicker onpened, close it and pop up a new one
