@@ -606,8 +606,10 @@ class CreateEvent(object):
 
 	# remove an event, will add prompt later
 	def onRemove(self):
+		print(self.idx)
 		self.root.eventLabelList[self.idx].destroy()
 		del self.root.eventLabelList[self.idx]
+		self.root.idx -= 1
 		self.master.destroy()
 
 	# pop up the datePicker
