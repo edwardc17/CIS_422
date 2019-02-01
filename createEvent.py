@@ -36,15 +36,17 @@ class Demo(object):
 		self.master = master
 		self.frame = Frame(self.master)
 		self.t1 = t1
+		self.pickDateOpened = False
 		self.widget()
 
 	def widget(self):
-		#Creating two list of options for drop down menus
+		# Creating two list of options for drop down menus
 		hourChoices = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', \
 		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
 		minuteChoices = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
+		
 		# 'l' stands for label, 'e' stands for entry, 'b' stands for button
-		#Creating Labels and Entries for event name and description
+		# Creating Labels and Entries for event name and description
 		self.l_name = Label(self.master, width = 17, text = "Event name: ")
 		self.e_name = Entry(self.master)
 		self.l_name.grid(row = 0, column = 0, pady = 20)
@@ -53,9 +55,9 @@ class Demo(object):
 		self.l_dscrp = Label(self.master, width = 17, text = "Event description: ")
 		self.e_dscrp = Text(self.master, width = 30, height = 6)
 		self.l_dscrp.grid(row = 1, column = 0, pady = 20)
-		self.e_dscrp.grid(row = 1, column = 1, columnspan = 2, pady = 20, sticky=W)
+		self.e_dscrp.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky=N+S+W+E)
 
-		#Creating Labels and Entries for choosing time slacks
+		# Creating tk variable for drop down menus
 		self.tkhvar_from = StringVar(self.master)
 		self.tkmvar_from = StringVar(self.master)
 		self.tkhvar_from.set('00')
@@ -66,6 +68,7 @@ class Demo(object):
 		self.tkhvar_to.set('00')
 		self.tkmvar_to.set('00')
 
+		# Creating Labels and Entries for choosing time slacks
 		self.l_dateFrom = Label(self.master, width = 17, text = "From: ")
 		self.dropDown_hour_from = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
 		self.l_semicolon1 = Label(self.master, width = 2, text = ":")
@@ -79,7 +82,7 @@ class Demo(object):
 
 		self.l_pickDate_from = Label(self.master, text = "Select date:", width = 15)
 		self.l_pickDate_from.grid(row = 2, column = 2)
-		self.b_dateFrom = Button(self.master, text = "DatePicker", command = self.onDatePicker)
+		self.b_dateFrom = Button(self.master, text = "DatePicker", command = self.onDatePickerFrom)
 		self.b_dateFrom.grid(row = 2, column = 3, pady = 20, sticky = W)
 
 		self.l_dateTo = Label(self.master, width = 17, text = "to: ")
@@ -96,8 +99,7 @@ class Demo(object):
 
 		self.l_pickDate_to = Label(self.master, text = "Select date:", width = 15)
 		self.l_pickDate_to.grid(row = 3, column = 2)
-
-		self.b_dateTo = Button(self.master, text = "DatePicker", command = self.onDatePicker)
+		self.b_dateTo = Button(self.master, text = "DatePicker", command = self.onDatePickerTo)
 		self.b_dateTo.grid(row = 3, column = 3, pady = 20)
 
 		#self.l_hour.grid(row = 3, column = 1, pady = 20)
@@ -106,25 +108,42 @@ class Demo(object):
 
 		self.b_sub = Button(self.master, text = "submit",command = self.onSubmit)
 		self.b_del = Button(self.master, text = "delete", command = self.clear)
-		self.b_sub.grid(row = 4, column = 2)
-		self.b_del.grid(row = 4, column = 3)
+		self.b_sub.grid(row = 4, column = 2, pady = 20)
+		self.b_del.grid(row = 4, column = 3, pady = 20)
 	
 	def clear(self):
-		pass
+		self.e_name.delete(0, END)
+		self.e_dscrp.delete(1.0, END)
+		self.l_pickDate_from['text'] = "Select date:"
+		self.l_pickDate_to['text'] = "Select date:"
+		self.tkhvar_from.set('00')
+		self.tkmvar_from.set('00')
+		self.tkhvar_from.set('00')
+		self.tkmvar_from.set('00')
 
 	def onSubmit(self):
 		self.root.event = Button(self.root, text = "event")
 		self.root.event.grid(row = 6, column = 1)
 		self.t1.insert(INSERT, self.ename.get())
 
-	def onDatePicker(self):
+	def onDatePickerFrom(self):
+		if self.pickDateOpened == True:
+			self.datePicker.destroy()
 		self.datePicker = Toplevel()
-		self.child = DatePicker(self.datePicker)
+		self.child = DatePicker(self.datePicker, self.l_pickDate_from)
+		self.pickDateOpened = True
+
+	def onDatePickerTo(self):
+		if self.pickDateOpened == True:
+			self.datePicker.destroy()
+		self.datePicker = Toplevel()
+		self.child = DatePicker(self.datePicker, self.l_pickDate_to)
+		self.pickDateOpened = True
 
 # DatePicker class is an open-sourced work that was done by Max-Planck-Institut für Radioastronomie, Bonn, Germany, 2016.
 # Our implementation did some modifications.  
 class DatePicker:
-    def __init__(self, parent):
+    def __init__(self, parent, p_label):
         self.parent = parent
         self.cal = calendar.TextCalendar(calendar.SUNDAY)
         self.year = datetime.date.today().year
@@ -135,7 +154,7 @@ class DatePicker:
         self.year_selected = self.year
         self.day_name = ''
         self.selectedDate = datetime.date.today()
-
+        self.p_label = p_label
         self.setup(self.year, self.month)
          
 
@@ -209,6 +228,15 @@ class DatePicker:
             self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
         self.wid.append(sel)
         sel.grid(row=8, column=0, columnspan=7)
+
+        done = Button(self.parent, text = "Done Choosing", command=self.onDone)
+        self.wid.append(done)
+        done.grid(row=9, column=0, columnspan=7, pady = 10)
+
+    def onDone(self):
+    	self.p_label['text'] = self.selectedDate
+    	self.parent.pickDateOpened = False
+    	self.parent.destroy()
 
 root=Tk()
 app=Application(root)
