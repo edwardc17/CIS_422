@@ -14,6 +14,7 @@ class Application(Frame, object):
 		super(Application, self).\
 			__init__(master)
 		self.rt = master
+		#self.buttonList = []
 		self.grid()
 		self.create_widgets()
 
@@ -26,7 +27,7 @@ class Application(Frame, object):
 	def onClick(self):
 		self.top = Toplevel()
 		self.top.title("title")
-		self.top.geometry("1600x720")
+		self.top.geometry("1200x720")
 		self.top.transient(self)
 		self.appc = Demo(self, self.top, self.t1)
 
@@ -37,6 +38,7 @@ class Demo(object):
 		self.frame = Frame(self.master)
 		self.t1 = t1
 		self.pickDateOpened = False
+		self.count = 6
 		self.widget()
 
 	def widget(self):
@@ -122,9 +124,11 @@ class Demo(object):
 		self.tkmvar_from.set('00')
 
 	def onSubmit(self):
-		self.root.event = Button(self.root, text = "event")
-		self.root.event.grid(row = 6, column = 1)
-		self.t1.insert(INSERT, self.ename.get())
+		self.event = Button(self.root, height = 6, text = "event")
+		#self.root.buttonList.append(event)
+		self.event.grid(row = self.count * 6, column = 1, rowspan = 6)
+		#self.t1.insert(INSERT, self.ename.get())
+		self.count += 1
 
 	def onDatePickerFrom(self):
 		if self.pickDateOpened == True:
