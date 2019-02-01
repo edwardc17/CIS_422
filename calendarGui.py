@@ -53,7 +53,8 @@ class GUI(Frame, object):
 
 		self.rt = rt
 		rt.title("Calendar")
-		self.cal = Calendar("saveFile.dat")
+		self.file = "saveFile.dat"
+		self.cal = Calendar(self.file)
 		#self.events = self.cal.loadFile()
 		self.labels = []
 		# array for event spots (so they're clickable)
@@ -124,7 +125,27 @@ class GUI(Frame, object):
 		#self.close_button.grid(row=29 ,column =4)
 
 		self.createTimescale()
+		# better name?
+		self.loadCalendar()
 		#self.dayOneEvent[0].config(text='test')
+
+	def loadCalendar(self):
+		if os.stat(self.file).st_size != 0:
+			events = self.loadFile()
+			for day in events:
+				# add event label/button to calendar
+				for e in events[day]:
+					# add in appropriate column
+					if e.getDate() == self.day1['text']:
+						dayOneEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
+					elif e.getDate() == self.day2['text']:
+						dayTwoEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
+					elif e.getDate() == self.day3['text']:
+						dayThreeEvent[e.getRow() - 4].config(text=self.event_name).bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+					# if day == day on screen, get index
+					# change onClick function
+					
+					# get label, label.bind()
 
 	def clickEvent(self):
 		self.widget.config(background = "green")
@@ -199,7 +220,7 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan=12)
+			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r*12,column=0, rowspan=12)
 			# creates timeslot slots
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
