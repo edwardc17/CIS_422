@@ -21,7 +21,9 @@ credit = 0
 # global dict for timeslots, key: day
 #timeSlots = {}
 timeSlots = []
-
+dayOneEvent = []
+dayTwoEvent = []
+dayThreeEvent = []
 #### click recorder for clicking on labels for time ###
 # this was also required in order to wait for clicking
 # 	in a box before creating additional windows - john
@@ -32,7 +34,7 @@ def onClick(event, guiObj, timeSlot):
 	column = event.widget.grid_info()['column']
 	#this could be helpful for store and write information
 	print ("row =", row, "column = ", column)
-	guiObj.modifyDayBox(timeSlot)
+	guiObj.modifyDayBox(timeSlot,row,column)
 
 #### timeslot with associated labels and times (clickable spots)
 # TODO: define daytime variables (could just need start -and date- and make ending 1 hour later)
@@ -56,10 +58,6 @@ class GUI(Frame, object):
 		self.labels = []
 		# array for event spots (so they're clickable)
 		self.eventSpots = []
-
-		self.dayOneEvent = []
-		self.dayTwoEvent = []
-		self.dayThreeEvent = []
 
 		self.frame = Frame(height=100, bd=1)
 		#self.frame.pack(fill='x', padx=0, pady=0)
@@ -206,17 +204,17 @@ class GUI(Frame, object):
 			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
 			dayOneTime.grid(row=r, column=1)
-			self.dayOneEvent.append(dayOneTime)
+			dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2)
-			self.dayTwoEvent.append(dayTwoTime)
+			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
 			dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
 			dayThreeTime.grid(row=r,column=3)
-			self.dayThreeEvent.append(dayThreeTime)
+			dayThreeEvent.append(dayThreeTime)
 			#### declare timeslot to add to array (begintime, label)
 			# (need to input actual date?) yep
 			slot1 = TimeSlot(c, dayOneTime)
@@ -232,27 +230,26 @@ class GUI(Frame, object):
 
 	#### creates a new window that is a child to the GUI parent frame
 	# john: "pretty much copied this from the example"
-	def modifyDayBox(self,timeSlot):
+	def modifyDayBox(self,timeSlot,row,column):
 		self.top = Toplevel()
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
-		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot)
+		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot,row,column)
 
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
 class AddEventPopUp(object):
-	def __init__(self, master, eventsList, timeSlot):
+	def __init__(self, master, eventsList, timeSlot,row,column):
 		self.master = master
 		# create new window
 		self.frame = Frame(self.master)
 		self.eventsList = eventsList
 		self.timeslot = timeSlot # This is not the correct time
-		self.AddEvent()
-		#self.vText = ''
 
-		print(self.timeslot)
+		self.AddEvent(row,column)
+		self.vText = ''
 
 	def on_closing(self):
 		#maybe if credit is 0 then exit and if not show warning
@@ -279,13 +276,7 @@ class AddEventPopUp(object):
 		message = "You may lose any unsaved changes"
 		Label(win, text=message).pack()
 		Button(win, text='Stay', command=win.destroy).pack()
-		
-<<<<<<< HEAD
-		Button(win, text='I already saved my changes!', command=self.close).pack()
-=======
-		Button(win, text='I already saved my changes!', command=win.quit).pack()
 		'''
-		
 		#if tkinter.messagebox.askyesno("Print", "Print this report?"):
 		result = messagebox.askyesno("Save", "Save the event?")
 		if result == True:
@@ -293,10 +284,6 @@ class AddEventPopUp(object):
 			self.master.destroy()
 			##result.destroy()
 			#result.print()
-			
->>>>>>> af9cbd4d7de1b42530d4e7a1e383a94d24e1e20a
-
-		
 		
 		#win = Toplevel()
 		#Button(win, text='Exit Application',command=on_closing)
@@ -312,11 +299,16 @@ class AddEventPopUp(object):
 		self.master.destroy()
 
 	# user pressed add event
-	def AddEvent(self):
+	def AddEvent(self,row,column):
 		print("adding event")
-
+		print(row,column)
+		self.row = row
+		self.column = column
 		self.lname = Label(self.master, width = 30, text = "Event name: ")
-		self.ename = Entry(self.master)
+		self.v = StringVar()
+		self.v.set('default')
+		self.ename = Entry(self.master, textvariable = self.v)
+		self.event_name = self.v.get()
 		self.ldscrp = Label(self.master, text = "Event description: ")
 		self.edscrp = Text(self.master, width = 30, height = 6)
 
@@ -356,11 +348,27 @@ class AddEventPopUp(object):
 		self.master.destroy()
 
 	def SubmitAdd(self):
-		#print(type(self.timeslot))
-		for slot in timeSlots:
+
+		self.event_name = self.v.get()
+		print(self.event_name)
+		#print(type(self.row),type(self.column))
+		rowInt = int(self.row)
+		columnInt = int(self.column)
+		if columnInt == 1:
+			dayOneEvent[rowInt - 4].config(text=self.event_name)
+		elif columnInt == 2:
+			dayTwoEvent[rowInt - 4].config(text=self.event_name)
+		else:
+			dayThreeEvent[rowInt - 4].config(text=self.event_name)
+
+		'''
+		
+		print(type(self.timeslot))
+		for slot in self.timeslot:
 			if self.timeslot is slot.label:
 				print("found it")
-				slot.label['text'] = self.ename.get()
+				slots.label['text'] = self.ename.get()
+		'''
 
 	#user pressed mod event	(could work identical to add event except modify just replaces previous entry in event list)
 	def ModEvent(self):
