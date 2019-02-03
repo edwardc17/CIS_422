@@ -1,11 +1,15 @@
 import pickle
 
+''' Get rid of?
 class day:
 	def __init__(self, date):
 		self.date = date
 		self.events = []
-
+'''
 class event:
+	'''
+
+	'''
 	def __init__(self, time, date, title, text, row, column):
 		self.time = time
 		self.date = date
@@ -15,7 +19,6 @@ class event:
 		self.column = column
 
 	def printEvent(self):
-		# Not helpful
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
 	def getEvent(self):
@@ -59,12 +62,18 @@ class Calendar:
 		self.file = filename
 	
 	def loadFile(self):
+		'''
+
+		'''
 		# obj is a list always
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
 
 	def saveFile(self):
+		'''
+
+		'''
 		# Any new additions must be appended to the whole data collection.
 		# Problematic if data collection becomes very large,
 		# but would be working with the collection anyway.
@@ -72,6 +81,9 @@ class Calendar:
 			pickle.dump(self.events, file, protocol=2)
 
 	def addEvent(self, event, day):
+		'''
+
+		'''
 		# create event here or just pass it?
 		#time, date, text
 		#newE = event(time, date, text)
@@ -85,6 +97,9 @@ class Calendar:
 		#return new
 
 	def removeEvent(self, event, day):
+		'''
+
+		'''
 		self.events[day].remove(event)
 		#self.events.remove(event)
 		self.saveFile()
@@ -93,6 +108,9 @@ class Calendar:
 
 	# ignore for now
 	def editEvent(self, event, time=None, date=None, title=None, text=None):
+		'''
+
+		'''
 		# only add what needs to be changed
 		# must add None(s) if adding an arg an unavailable arg
 		if time:
@@ -109,6 +127,9 @@ class Calendar:
 		return new
 
 	def printCal(self):
+		'''
+
+		'''
 		# Not helpful
 		for day in self.events:
 			for e in self.events[day]:
@@ -116,13 +137,3 @@ class Calendar:
 
 	def getEvents(self):
 		return self.events
-
-	# put in GUI file
-	# dictionary - events per day
-	def LoadPage(self):
-		# If file isn't empty
-		if os.stat(self.file).st_size != 0:
-			events = self.loadFile()
-			for event in events:
-				# add event label/button to calendar
-				pass
