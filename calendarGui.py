@@ -56,7 +56,7 @@ class GUI(Frame):
 		self.labels = []
 		self.currentDays = {}
 		self.idx = 0
-		self.eventLabelList = []
+		self.eventLabels = {}
 		self.create_widgets()
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
 		print(self.winfo_width())

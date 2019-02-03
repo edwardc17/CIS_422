@@ -161,8 +161,8 @@ class CreateEvent(object):
 
 		if self.ready_to_submit:
 			if self.exist == 1:
-				self.root.eventLabelList[self.idx].destroy()
-				del self.root.eventLabelList[self.idx]
+				self.root.eventLabels[self.idx].destroy()
+				self.root.eventLabels.pop(self.idx, None)
 			tempDate = self.l_pickDate.cget("text")
 			if tempDate in self.root.currentDays:
 				colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
@@ -180,7 +180,7 @@ class CreateEvent(object):
 					column = col_num, rowspan = int(span), sticky = N+S+W+E)
 				self.event.bind("<1>", lambda event : self.root.onClick(self.event.cget("text"), \
 					start_time, end_time, tempDate, dscrp, self.idx, 1))
-				self.root.eventLabelList.append(self.event)
+				self.root.eventLabels[self.idx] = self.event
 				print(self.idx, self.root.idx)
 				if self.exist == 0:
 					self.root.idx += 1
@@ -189,8 +189,8 @@ class CreateEvent(object):
 	# remove an event, will add prompt later
 	def onRemove(self):
 		print(self.idx)
-		self.root.eventLabelList[self.idx].destroy()
-		del self.root.eventLabelList[self.idx]
+		self.root.eventLabels[self.idx].destroy()
+		self.root.eventLabels.pop(self.idx, None)
 		self.root.idx -= 1
 		self.master.destroy()
 

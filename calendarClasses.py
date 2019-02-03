@@ -1,11 +1,15 @@
 import pickle
 
+''' Get rid of?
 class day:
 	def __init__(self, date):
 		self.date = date
 		self.events = []
-
+'''
 class event:
+	'''
+
+	'''
 	def __init__(self, time, date, title, text, row, column):
 		self.time = time
 		self.date = date
@@ -14,13 +18,14 @@ class event:
 		self.row = row
 		self.column = column
 
+	# For testing
 	def printEvent(self):
-		# Not helpful
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
 	def getEvent(self):
 		return self.time + " " + self.date + " " + self.title + " " + self.text
 
+	# Edit individual values
 	def editEventTime(self, time):
 		self.time = time
 
@@ -33,6 +38,7 @@ class event:
 	def editEventTitle(self, title):
 		self.title = title
 
+	# Get individual values
 	def getTime(self):
 		return self.time
 
@@ -59,12 +65,18 @@ class Calendar:
 		self.file = filename
 	
 	def loadFile(self):
+		'''
+
+		'''
 		# obj is a list always
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
 
 	def saveFile(self):
+		'''
+
+		'''
 		# Any new additions must be appended to the whole data collection.
 		# Problematic if data collection becomes very large,
 		# but would be working with the collection anyway.
@@ -72,6 +84,9 @@ class Calendar:
 			pickle.dump(self.events, file, protocol=2)
 
 	def addEvent(self, event, day):
+		'''
+
+		'''
 		# create event here or just pass it?
 		#time, date, text
 		#newE = event(time, date, text)
@@ -81,10 +96,13 @@ class Calendar:
 			self.events[day] = [event]
 		#self.events.append(event)
 		self.saveFile() 
-		new = self.loadFile()
-		return new
+		#new = self.loadFile()
+		#return new
 
 	def removeEvent(self, event, day):
+		'''
+
+		'''
 		self.events[day].remove(event)
 		#self.events.remove(event)
 		self.saveFile()
@@ -93,6 +111,9 @@ class Calendar:
 
 	# ignore for now
 	def editEvent(self, event, time=None, date=None, title=None, text=None):
+		'''
+
+		'''
 		# only add what needs to be changed
 		# must add None(s) if adding an arg an unavailable arg
 		if time:
@@ -109,6 +130,9 @@ class Calendar:
 		return new
 
 	def printCal(self):
+		'''
+
+		'''
 		# Not helpful
 		for day in self.events:
 			for e in self.events[day]:
@@ -116,13 +140,3 @@ class Calendar:
 
 	def getEvents(self):
 		return self.events
-
-	# put in GUI file
-	# dictionary - events per day
-	def LoadPage(self):
-		# If file isn't empty
-		if os.stat(self.file).st_size != 0:
-			events = self.loadFile()
-			for event in events:
-				# add event label/button to calendar
-				pass
