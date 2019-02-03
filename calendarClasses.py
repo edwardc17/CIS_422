@@ -8,7 +8,8 @@ class day:
 '''
 class event:
 	'''
-
+	Stores events in a file to use between program uses.
+	AS
 	'''
 	def __init__(self, time, date, title, text, row, column):
 		self.time = time
@@ -131,9 +132,8 @@ class Calendar:
 
 	def printCal(self):
 		'''
-
+		For testing.
 		'''
-		# Not helpful
 		for day in self.events:
 			for e in self.events[day]:
 				e.printEvent()

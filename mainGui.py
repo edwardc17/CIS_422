@@ -7,11 +7,15 @@ if sys.version[0] == '2':
     from Tkinter import *
 else:
     from tkinter import *
+
 class UpdateCalendar():
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
 
 	def createFiveDays(self, currentDay, mainFrame, frame):
+		'''
+		
+		'''
 		for i in range(5):
 			dateDelta = datetime.timedelta(days=i)
 			tempDate = currentDay + dateDelta
@@ -20,6 +24,9 @@ class UpdateCalendar():
 			frame.currentDays[l_date.cget("text")] = l_date	
 
 	def updateFiveDays(self, frame, plusOrMinus, currentCoef):
+		'''
+
+		'''
 		for i in range(5):
 			oldDateDelta = datetime.timedelta(days = i + self.dayPtr)
 			newDateDelta = datetime.timedelta(days = i + (self.dayPtr + plusOrMinus * 5) * currentCoef)
@@ -30,6 +37,9 @@ class UpdateCalendar():
 		self.dayPtr = (self.dayPtr + 5 * plusOrMinus) * currentCoef
 
 if __name__ == "__main__":
+	'''
+
+	'''
 	root=Tk()
 	root.resizable(width=False, height=False)
 	f1 = Frame()

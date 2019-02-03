@@ -204,7 +204,7 @@ class CreateEvent(object):
 			self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
 
-# DatePicker class is an open-sourced work that was done by Max-Planck-Institut für Radioastronomie, Bonn, Germany, 2016.
+# DatePicker class is an open-sourced work that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
 # Our implementation did some modifications.  
 class DatePicker:
 	def __init__(self, parent, p_label):

@@ -13,19 +13,15 @@ if sys.version[0] == '2':
 else:
 	from tkinter import *
 
-# global variable to see if save button was pressed
-credit = 0
-# global dict for timeslots, key: day
-#timeSlots = {}
 timeSlots = []
 dayOneEvent = []
 dayTwoEvent = []
 dayThreeEvent = []
-#### click recorder for clicking on labels for time ###
-# this was also required in order to wait for clicking
-# 	in a box before creating additional windows - john
 
 def onClick(event, guiObj, timeSlot):
+	'''
+
+	'''
 	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
 	row    = event.widget.grid_info()['row']
 	column = event.widget.grid_info()['column']
@@ -36,12 +32,20 @@ def onClick(event, guiObj, timeSlot):
 #### timeslot with associated labels and times (clickable spots)
 # TODO: define daytime variables (could just need start -and date- and make ending 1 hour later)
 class TimeSlot:
+	'''
+	GC
+	'''
 	def __init__(self, begin, label):
 		self.label = label
 		self.bTime = begin	# beginning time
 		
 
 class GUI(Frame):
+	'''
+	Main window.
+
+	JC, GC
+	'''
 	def __init__(self, rt):
 		# this seems like it was required to get windows with data transfer
 		# 	working properly - john
@@ -52,99 +56,120 @@ class GUI(Frame):
 		self.scrollFrame = ScrollFrame(self)
 		self.rt = rt
 		rt.title("Calendar")
+		# For storing events
 		self.cal = Calendar("saveFile.dat")
 		self.labels = []
 		self.currentDays = {}
+		# EXPLAIN THIS
 		self.idx = 0
 		self.eventLabels = {}
 		self.create_widgets()
+		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
 		print(self.winfo_width())
 
 	def create_widgets(self):
-		#time scale
+		'''
+		Creates initial layout of main window with time scale labels
+		and a popup window upon clicking the upper left corner exit button.
+
+		GC? JC?
+		'''
+		#Time scale label text
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
 						'06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
 						'12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM',
 						'06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM']
-
+		# Handles upper left corner red x button
 		self.master.protocol("WM_DELETE_WINDOW", self.exit)
 		self.createTimescale()
 
-	def clickEvent(self):
-		self.widget.config(background = "green")
-
-	
 	def exit(self):
-		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
-		win = Toplevel()
-		win.title('warning')
-		message = "You may lose any unsaved changes"
-		Label(win, text=message).pack()
-		Button(win, text='Go back to calendar', command=win.destroy).pack()
+		'''
+		Popup window asking user whether to exit calendar program or continue using.
+
+		Based on: https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 		
-		Button(win, text='I already saved my changes!', command=self.deleteAll).pack()
+		CP
+		'''
+		window = Toplevel()
+
+		window.title('warning')
+		message = "You may lose any unsaved changes"
+		Label(window, text=message).pack()
+		# Destroys current popup window, returns to main window
+		Button(window, text='Go back to calendar', command=window.destroy).pack()
+		# destroys current popup window and main window, exits program
+		Button(window, text='I already saved my changes!', command=self.deleteAll).pack()
 
 	def deleteAll(self):
+		'''
+		Destroy everything in main window and close program.
+
+		JC, CP
+		'''
 		gc.collect()
 		self.scrollFrame.viewPort.destroy()
 		self.rt.destroy()
 
-	#### creates timescale slots where events can show up (presumably?)
-	# john: "i modified this so the boxes are clickable. is this a layout design
-	#		something you guys have settled on? it seems like we're going
-	#		need to define start and end times for each time slot. "
+
 	def createTimescale(self):
-		r = 0
-		for c in self.timeScale:
-			Label(self.scrollFrame.viewPort, text=c, relief=RIDGE,width=15, height=2).grid(row=r,column=0, rowspan = 12)
-			# creates timeslot slots
+		'''
+		Creates timescale slots in each of three dates for events to appear.
+		Each label has 12 parts horizontally to allow for choosing at 5 minute intervals.
+
+		GC, JN
+		'''
+		row = 0
+		for time in self.timeScale:
+			# Timeslot label
+			Label(self.scrollFrame.viewPort, text=time, relief=RIDGE,width=15, height=2).grid(row=row,column=0, rowspan = 12)
 			
+			# creates empty timeslot slots
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
-			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
-			dayOneTime.grid(row=r, column=1, rowspan = 12)
+			dayOneTime.grid(row=row, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
-			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
-			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
+			dayTwoTime.grid(row=row,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
-			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-			dayThreeTime.grid(row=r,column=3,  rowspan = 12)
+			dayThreeTime.grid(row=row,column=3,  rowspan = 12)
 			dayThreeEvent.append(dayThreeTime)
 
 			dayFourTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
-			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-			dayFourTime.grid(row=r,column=4,  rowspan = 12)
+			dayFourTime.grid(row=row,column=4,  rowspan = 12)
 
 			dayFiveTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
-			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
-			dayFiveTime.grid(row=r,column=5,  rowspan = 12)
+			dayFiveTime.grid(row=row,column=5,  rowspan = 12)
+			
 			#### declare timeslot to add to array (begintime, label)
-			# (need to input actual date?) yep
-			slot1 = TimeSlot(c, dayOneTime)
-			slot2 = TimeSlot(c, dayTwoTime)
-			slot3 = TimeSlot(c, dayThreeTime)
-						#if dayOneTime in timeSlots:
-							#timeSlots[dayOneTime].append(slot1))
+			slot1 = TimeSlot(time, dayOneTime)
+			slot2 = TimeSlot(time, dayTwoTime)
+			slot3 = TimeSlot(time, dayThreeTime)
+
 			timeSlots.append(slot1)
 			timeSlots.append(slot2)
 			timeSlots.append(slot3)
 
-			r = r + 12 
+			row = row + 12 
 			
 
 	#### creates a new window that is a child to the GUI parent frame
 	# john: "pretty much copied this from the example"
 	def modifyDayBox(self,timeSlot,row,column):
+		'''
+		
+		JN - find source
+		'''
 		self.top = Toplevel()
 		self.top.title("Modify Time Slot")
 		self.top.geometry("300x150+30+30")
 		self.top.transient(self)
 		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot,row,column)
 
+	# THIS IS OLD?
 	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
 
 		self.top = Toplevel()
@@ -152,10 +177,10 @@ class GUI(Frame):
 			self.top.title("Adding an Event")
 		else:
 			self.top.title("Editing Or Removing an Event")
-		#self.top.geometry("1200x720")
-		#self.top.transient(self.scrollFrame.viewPort)
+
 		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, event_name, start_time, end_time, date, description, idx, exist)
 
+# ARE WE STILL USING THIS?
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
 class AddEventPopUp(object):
@@ -164,55 +189,23 @@ class AddEventPopUp(object):
 		# create new window
 		self.frame = Frame(self.master)
 		self.eventsList = eventsList
-		self.timeslot = timeSlot # This is not the correct time
+		self.timeslot = timeSlot # This is not the correct time?
 
 		self.AddEvent(row,column)
-		#self.vText = ''
 
 	def on_closing(self):
-		#maybe if credit is 0 then exit and if not show warning
-		#global root
-		##print(credit)
-		#if credit < 10:
-			#print("less than 10 in exit")
-
-		#self.scrollFrame.viewPort = rt
-		#self.withdraw()
-		#messagebox.showinfo("Warning", "Are you sure you want to leave without saving?")
-
-		#else:
-			#messagebox.showinfo("You saved you calendar", "Have a nice day!")
-
-		#rt.quit()
-		#root.quit()
-		
-		#if credit < 10:
-		#https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 		'''
-		win = Toplevel()
-		win.title('warning')
-		message = "You may lose any unsaved changes"
-		Label(win, text=message).pack()
-		Button(win, text='Stay', command=win.destroy).pack()
+
 		'''
-		#if tkinter.messagebox.askyesno("Print", "Print this report?"):
 		result = messagebox.askyesno("Save", "Save the event?")
 		if result == True:
 			print("worked")
 			self.master.destroy()
-			##result.destroy()
-			#result.print()
-		
-		#win = Toplevel()
-		#Button(win, text='Exit Application',command=on_closing)
-		#tk.messagebox.askquestion ('Exit Application','Are you sure you want to exit the application',icon = 'warning')
-		#messagebox.showinfo("Warning", "Are you sure you want to leave without saving?")
-		#if MsgBox == 'yes':
-			#win.destroy()
-		#else:
-			#tk.messagebox.showinfo('Return','You will now return to the application screen')
 		
 	def close(self):
+		'''
+
+		'''
 		self.frame.destroy()
 		self.master.destroy()
 
