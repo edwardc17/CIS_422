@@ -54,7 +54,7 @@ class GUI(Frame):
 		rt.title("Calendar")
 		self.cal = Calendar("saveFile.dat")
 		self.labels = []
-		self.currentThreeDays = {}
+		self.currentDays = {}
 		self.idx = 0
 		self.eventLabelList = []
 		self.create_widgets()

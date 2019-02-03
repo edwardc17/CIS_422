@@ -164,9 +164,9 @@ class CreateEvent(object):
 				self.root.eventLabelList[self.idx].destroy()
 				del self.root.eventLabelList[self.idx]
 			tempDate = self.l_pickDate.cget("text")
-			if tempDate in self.root.currentThreeDays:
+			if tempDate in self.root.currentDays:
 				colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
-				col_num = int(self.root.currentThreeDays[tempDate].grid_info()['column'])
+				col_num = int(self.root.currentDays[tempDate].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
 				end_h = int(self.tkhvar_to.get())
 				start_m = int(self.tkmvar_from.get())
