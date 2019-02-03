@@ -7,7 +7,7 @@ if sys.version[0] == '2':
 	from Tkinter import *
 else:
 	from tkinter import *
-	
+
 class CreateEvent(object):
 	def __init__(self, root, master, event_name, start_time, end_time, date, description, idx, exist):
 		self.root = root
@@ -27,7 +27,7 @@ class CreateEvent(object):
 	def widget(self):
 		# Creating two list of options for drop down menus
 		hourChoices = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', \
-		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24']
+		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
 		minuteChoices = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
 		
 		# 'l' stands for label, 'e' stands for entry, 'b' stands for button
@@ -38,9 +38,9 @@ class CreateEvent(object):
 		self.e_name.grid(row = 0, column = 1, sticky= W, pady = 20)
 
 		self.l_dscrp = Label(self.master, width = 17, text = "Event description: ")
-		self.e_dscrp = Text(self.master, width = 30, height = 6)
+		self.e_dscrp = Text(self.master, width = 40, height = 6)
 		self.l_dscrp.grid(row = 1, column = 0, pady = 20)
-		self.e_dscrp.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky=N+S+W+E)
+		self.e_dscrp.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky=W)
 
 		# Creating tk variable for drop down menus
 		# tkvar stands for tk variable
@@ -48,12 +48,12 @@ class CreateEvent(object):
 		# _from and _to to distinguish start time choosing and end time choosing
 		self.tkhvar_from = StringVar(self.master)
 		self.tkmvar_from = StringVar(self.master)
-		self.tkhvar_from.set('00')
+		self.tkhvar_from.set('12')
 		self.tkmvar_from.set('00')
 
 		self.tkhvar_to = StringVar(self.master)
 		self.tkmvar_to = StringVar(self.master)
-		self.tkhvar_to.set('00')
+		self.tkhvar_to.set('13')
 		self.tkmvar_to.set('00')
 
 		# Creating Labels, Entries, and drop down menus for choosing time slacks FROM
@@ -66,9 +66,11 @@ class CreateEvent(object):
 		
 		# Adding datePicker button and arranging
 		# the button calls the onDatePicker with argument 0, which means the caller is "From"
-		self.l_pickDate = Label(self.master, text = "Select date:", width = 15)
+		self.l_selectDate = Label(self.master, text = "Select date:", width = 15)
+		self.l_selectDate.grid(row = 2, column = 0)
+		self.l_pickDate = Label(self.master, text = datetime.datetime.now().strftime("%Y-%m-%d"), width = 15)
 		self.l_pickDate.grid(row = 2, column = 1)
-		self.b_dateFrom = Button(self.master, text = "DatePicker", command = lambda: self.onDatePicker(0))
+		self.b_dateFrom = Button(self.master, width = 8, text = "DatePicker", command = lambda: self.onDatePicker(0))
 		self.b_dateFrom.grid(row = 2, column = 2, padx = 10, pady = 20, sticky = W)
 
 		# Arranging grids
@@ -96,12 +98,12 @@ class CreateEvent(object):
 		# delete will call clear, it clears all entries
 		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit)
 		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear)
-		self.b_sub.grid(row = 4, column = 2, pady = 20)
-		self.b_clr.grid(row = 4, column = 3, pady = 20)
+		self.b_sub.grid(row = 4, column = 2, padx = 10)
+		self.b_clr.grid(row = 4, column = 3, padx = 10)
 		if self.exist != 0:
-			self.b_rm = Button(self.master, width = 8, text = "Delete this event", \
+			self.b_rm = Button(self.master, width = 15, text = "Delete this event", \
 				command = self.onRemove)
-			self.b_rm.grid(row = 5, column = 2, columnspan = 2, sticky = W+E)
+			self.b_rm.grid(row = 5, column = 2, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
 			self.e_name.insert(0, "{}".format(self.event_name))
@@ -120,11 +122,18 @@ class CreateEvent(object):
 	def clear(self):
 		self.e_name.delete(0, END)
 		self.e_dscrp.delete(1.0, END)
-		self.l_pickDate['text'] = "Select date:"
-		self.tkhvar_from.set('00')
+		self.l_pickDate['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
+		self.tkhvar_from.set('12')
 		self.tkmvar_from.set('00')
-		self.tkhvar_to.set('00')
+		self.tkhvar_to.set('13')
 		self.tkmvar_to.set('00')
+
+	def check_empty(self, event_name):
+		for i in event_name:
+			if i != ' ':
+				return False
+		return True
+
 
 	def cal_time_slack(self):
 		return int(self.tkhvar_to.get()) * 100 + int(self.tkmvar_to.get())\
@@ -135,7 +144,7 @@ class CreateEvent(object):
 		#self.event = Button(self.root, height = 6, text = "event")
 		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
-		if not self.e_name.get():
+		if not self.e_name.get() or self.check_empty(self.e_name.get()):
 			self.l_n_error.grid(row = 0, column = 2, columnspan = 2)
 			self.ready_to_submit = False
 		else:
@@ -285,6 +294,7 @@ class DatePicker:
 		sel = Label(self.parent, height=2, text='{} {} {} {}'.format(
 			self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
 		self.wid.append(sel)
+		sel['text'] = self.selectedDate
 		sel.grid(row=8, column=0, columnspan=7)
 
 		done = Button(self.parent, text = "Done Choosing", command=self.onDone)
@@ -293,5 +303,6 @@ class DatePicker:
 
 	def onDone(self):
 		self.p_label['text'] = self.selectedDate
+		self.p_label['fg'] = "black"
 		self.parent.pickDateOpened = False
 		self.parent.destroy()

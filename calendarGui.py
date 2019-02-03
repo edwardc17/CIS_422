@@ -63,11 +63,16 @@ class GUI(Frame, object):
 		self.eventSpots = []
 
 		self.frame = Frame(height=100, bd=1)
+
 		self.currentThreeDays = {}
 		self.idx = 0
 		self.eventLabelList = []
 		#self.frame.pack(fill='x', padx=0, pady=0)
 		self.create_widgets()
+
+
+	def myfunction(self, event):
+		canvas.configure(scrollregion=self.canvas.bbox("all"),width=200,height=200)
 
 	def create_widgets(self):
 		self.create = Button(self.rt, text = "Create", width=8,command = lambda: self.onClick("", "", "", "", "", self.idx, 0)).grid(row=0,column=0)
@@ -181,7 +186,11 @@ class GUI(Frame, object):
 		Label(win, text=message).pack()
 		Button(win, text='Go back to calendar', command=win.destroy).pack()
 		
-		Button(win, text='I already saved my changes!', command=exit).pack()
+		Button(win, text='I already saved my changes!', command=self.deleteAll).pack()
+
+	def deleteAll(self):
+		self.rt.destroy()
+		#self.rt.exit()
 		
 	# getting ridof these
 	'''
@@ -210,20 +219,20 @@ class GUI(Frame, object):
 	def createTimescale(self):
 		r = 4
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=1).grid(row=r,column=0, rowspan = 12)
+			Label(text=c, relief=RIDGE,width=15, height=2).grid(row=r,column=0, rowspan = 12)
 			# creates timeslot slots
 			
-			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
+			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
 			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
 			dayOneTime.grid(row=r, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
-			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=1)
+			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=2)
 			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
 			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
 
-			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=1)
+			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
 			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
 			dayThreeTime.grid(row=r,column=3,  rowspan = 12)
 			dayThreeEvent.append(dayThreeTime)
@@ -253,7 +262,7 @@ class GUI(Frame, object):
 	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
 		self.top = Toplevel()
 		self.top.title("title")
-		self.top.geometry("1200x720")
+		#self.top.geometry("1200x720")
 		self.top.transient(self)
 		self.appc = CreateEvent(self, self.top, event_name, start_time, end_time, date, description, idx, exist)
 
@@ -434,6 +443,7 @@ class Application(Frame, object):
 
 #### main program area
 # john: "i changed it to work from root to a master window (so it works easier on windows 10 - i'm selfish)"
+
 master_window = Tk()
 gui = GUI(master_window)
 master_window.mainloop()
