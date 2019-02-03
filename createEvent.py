@@ -9,7 +9,8 @@ else:
 	from tkinter import *
 
 class CreateEvent(object):
-	def __init__(self, root, master, event_name, start_time, end_time, date, description, idx, exist):
+	def __init__(self, canvas, root, master, event_name, start_time, end_time, date, description, idx, exist):
+		self.canvas = canvas
 		self.root = root
 		self.master = master
 		self.frame = Frame(self.master)
@@ -35,10 +36,10 @@ class CreateEvent(object):
 		self.l_name = Label(self.master, width = 17, text = "Event name: ")
 		self.e_name = Entry(self.master)
 		self.l_name.grid(row = 0, column = 0, pady = 20)
-		self.e_name.grid(row = 0, column = 1, sticky= W, pady = 20)
+		self.e_name.grid(row = 0, column = 1, columnspan = 3, sticky= W, pady = 20)
 
 		self.l_dscrp = Label(self.master, width = 17, text = "Event description: ")
-		self.e_dscrp = Text(self.master, width = 40, height = 6)
+		self.e_dscrp = Text(self.master, width = 30, height = 6)
 		self.l_dscrp.grid(row = 1, column = 0, pady = 20)
 		self.e_dscrp.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky=W)
 
@@ -69,15 +70,15 @@ class CreateEvent(object):
 		self.l_selectDate = Label(self.master, text = "Select date:", width = 15)
 		self.l_selectDate.grid(row = 2, column = 0)
 		self.l_pickDate = Label(self.master, text = datetime.datetime.now().strftime("%Y-%m-%d"), width = 15)
-		self.l_pickDate.grid(row = 2, column = 1)
+		self.l_pickDate.grid(row = 2, column = 1, columnspan = 3)
 		self.b_dateFrom = Button(self.master, width = 8, text = "DatePicker", command = lambda: self.onDatePicker(0))
-		self.b_dateFrom.grid(row = 2, column = 2, padx = 10, pady = 20, sticky = W)
+		self.b_dateFrom.grid(row = 2, column = 4, padx = 10, pady = 20, sticky = W)
 
 		# Arranging grids
 		self.l_dateFrom.grid(row = 3, column = 0, pady = 20)
-		self.dropDown_hour_from.grid(row = 3, column = 1, pady = 20, sticky = W)
-		self.l_semicolon1.grid(row = 3, column = 1)
-		self.dropDown_minute_from.grid(row = 3, column = 1, pady = 20, sticky = E)
+		self.dropDown_hour_from.grid(row = 3, column = 1, pady = 20, sticky = E)
+		self.l_semicolon1.grid(row = 3, column = 2, sticky = N+S+W+E)
+		self.dropDown_minute_from.grid(row = 3, column = 3, pady = 20, sticky = W)
 
 		# Creating Labels, Entries, and drop down menus for choosing time slacks TO
 		self.l_dateTo = Label(self.master, width = 17, text = "to: ")
@@ -89,21 +90,21 @@ class CreateEvent(object):
 
 		# Arraning grids
 		self.l_dateTo.grid(row = 4, column = 0, pady = 20)
-		self.dropDown_hour_to.grid(row = 4, column = 1, pady = 20, sticky = W)
-		self.l_semicolon2.grid(row = 4, column = 1)
-		self.dropDown_minute_to.grid(row = 4, column = 1, pady = 20, sticky = E)
+		self.dropDown_hour_to.grid(row = 4, column = 1, pady = 20, sticky = E)
+		self.l_semicolon2.grid(row = 4, column = 2, sticky = N+S+W+E)
+		self.dropDown_minute_to.grid(row = 4, column = 3, pady = 20, sticky = W)
 
 		# Adding "Submit" and "Delete" buttons
 		# submit will call onSubmit, it stores entered event and display it on the main window
 		# delete will call clear, it clears all entries
 		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit)
 		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear)
-		self.b_sub.grid(row = 4, column = 2, padx = 10)
-		self.b_clr.grid(row = 4, column = 3, padx = 10)
+		self.b_sub.grid(row = 4, column = 4, padx = 10)
+		self.b_clr.grid(row = 4, column = 5, padx = 10)
 		if self.exist != 0:
 			self.b_rm = Button(self.master, width = 15, text = "Delete this event", \
 				command = self.onRemove)
-			self.b_rm.grid(row = 5, column = 2, columnspan = 2, pady = 20)
+			self.b_rm.grid(row = 5, column = 4, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
 			self.e_name.insert(0, "{}".format(self.event_name))
@@ -145,22 +146,18 @@ class CreateEvent(object):
 		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
-			self.l_n_error.grid(row = 0, column = 2, columnspan = 2)
+			self.l_n_error["text"] = "Name is empty!"
+			self.l_n_error.grid(row = 0, column = 3, columnspan = 2)
 			self.ready_to_submit = False
 		else:
 			self.l_n_error["text"] = ""
 
 		if time_slack <= 0:
-			self.l_t_error.grid(row = 3, column = 2, columnspan = 2)
+			self.l_t_error["text"] = "Time slack incorrect!"
+			self.l_t_error.grid(row = 3, column = 4, columnspan = 2)
 			self.ready_to_submit = False
 		else:
 			self.l_t_error["text"] = ""
-
-		if self.l_pickDate.cget("text") == "Select date:":
-			self.l_pickDate["fg"] = "red"
-			self.ready_to_submit = False
-		else:
-			self.l_pickDate["fg"] = "black"
 
 		if self.ready_to_submit:
 			if self.exist == 1:
@@ -169,7 +166,6 @@ class CreateEvent(object):
 			tempDate = self.l_pickDate.cget("text")
 			if tempDate in self.root.currentThreeDays:
 				colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
-				row_num = int(self.root.currentThreeDays[tempDate].grid_info()['row']) + 1
 				col_num = int(self.root.currentThreeDays[tempDate].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
 				end_h = int(self.tkhvar_to.get())
@@ -179,8 +175,8 @@ class CreateEvent(object):
 				end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
 				span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
 				dscrp = self.e_dscrp.get("1.0", END)
-				self.event = Label(self.root.rt, text = "{}".format(self.e_name.get()), bg = random.choice(colors))
-				self.event.grid(row = int(row_num + start_h * 12 + start_m * 12 / 60) , \
+				self.event = Label(self.canvas, text = "{}".format(self.e_name.get()), bg = random.choice(colors))
+				self.event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
 					column = col_num, rowspan = int(span), sticky = N+S+W+E)
 				self.event.bind("<1>", lambda event : self.root.onClick(self.event.cget("text"), \
 					start_time, end_time, tempDate, dscrp, self.idx, 1))
