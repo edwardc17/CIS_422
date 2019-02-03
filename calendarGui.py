@@ -2,17 +2,11 @@
 import sys
 from calendarClasses import *
 from createEvent import *
+from scrollFrame import *
 import datetime
 import calendar
 import random
-#import tkinter
-#import tkinter.messagebox
-##import tkinter.messagebox
-#from Tkinter import messagebox
-#import tkMessageBox as messagebox
-# these options work for python3
-#from tkinter import *
-#from tkinter import messagebox
+import gc
 
 if sys.version[0] == '2':
 	from Tkinter import *
@@ -54,7 +48,7 @@ class TimeSlot:
 		self.bTime = begin	# beginning time
 		
 
-class GUI(Frame, object):
+class GUI(Frame):
 	'''
 	Main window of program. The time (00:00am to 12:00pm) appears on the left side. 
 	Today and the next two days appear next to the time.
@@ -67,66 +61,29 @@ class GUI(Frame, object):
 		'''
 		# this seems like it was required to get windows with data transfer
 		# 	working properly - john
-		super(GUI, self).\
-			__init__(rt)
+		#super(GUI, self).\
+		#	__init__(rt)
 
+		Frame.__init__(self, rt)
+		self.scrollFrame = ScrollFrame(self)
 		self.rt = rt
 		rt.title("Calendar")
 
 		# Stores events between uses of the program
 		self.cal = Calendar("saveFile.dat")
-
 		self.labels = []
-		# array for event spots (so they're clickable)
-		self.eventSpots = []
-
-		self.frame = Frame(height=100, bd=1)
-
 		self.currentThreeDays = {}
 		self.idx = 0
 		self.eventLabelList = []
 
 		self.create_widgets()
-
-
-	def myfunction(self, event):
-		'''
-
-		'''
-		canvas.configure(scrollregion=self.canvas.bbox("all"),width=200,height=200)
+		self.scrollFrame.pack(side="top", fill="both", expand=True)
+		print(self.winfo_width())
 
 	def create_widgets(self):
 		'''
-		Creates initial layout - timescale, 3 days with slots and dates, exit warning
 
 		'''
-		self.create = Button(self.rt, text = "Create", width=8,command = lambda: self.onClick("", "", "", "", "", self.idx, 0)).grid(row=0,column=0)
-		#an empty label for layout
-		self.empty_label = Label(self.rt, text='', width =10).grid(row=2,column=0)
-
-		self.day1 = Label(self.rt, width=10)
-		self.day1['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
-		self.day1.grid(row=3,column=1)
-
-		currentDay = datetime.datetime.now()
-		nextDay = datetime.timedelta(days=1)
-		nextDays = currentDay + nextDay
-
-		self.day2 = Label(self.rt, width=10)
-		self.day2['text'] = nextDays.strftime("%Y-%m-%d")
-		self.day2.grid(row=3,column=2)
-
-		dayThree = datetime.timedelta(days=2)
-		twoDays = currentDay + dayThree
-
-		self.day3 = Label(self.rt, width=10)
-		self.day3['text'] = twoDays.strftime("%Y-%m-%d")
-		self.day3.grid(row=3,column=3)
-
-		self.currentThreeDays[self.day1.cget("text")] = self.day1
-		self.currentThreeDays[self.day2.cget("text")] = self.day2
-		self.currentThreeDays[self.day3.cget("text")] = self.day3
-
 		#time scale
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
 						'06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM',
@@ -164,6 +121,8 @@ class GUI(Frame, object):
 		'''
 		
 		'''
+		gc.collect()
+		self.scrollFrame.viewPort.destroy()
 		self.rt.destroy()
 
 	#### creates timescale slots where events can show up (presumably?)
@@ -174,22 +133,33 @@ class GUI(Frame, object):
 		'''
 
 		'''
-		row = 4
+		r = 0
 		for c in self.timeScale:
-			Label(text=c, relief=RIDGE,width=15, height=2).grid(row=row,column=0, rowspan = 12)
+			Label(self.scrollFrame.viewPort, text=c, relief=RIDGE,width=15, height=2).grid(row=r,column=0, rowspan = 12)
 			# creates timeslot slots
 			
-			dayOneTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
-			dayOneTime.grid(row=row, column=1, rowspan = 12)
+			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
+			#dayOneTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayOneTime))
+			dayOneTime.grid(row=r, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
 
-			dayTwoTime = Label(bg= 'grey', relief=GROOVE,width=20, height=2)
-			dayTwoTime.grid(row=row,column=2,  rowspan = 12)
+			dayTwoTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
+			#dayTwoTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayTwoTime))
+			dayTwoTime.grid(row=r,column=2,  rowspan = 12)
 			dayTwoEvent.append(dayTwoTime)
 
-			dayThreeTime = Label(bg= 'white', relief=GROOVE,width=20, height=2)
-			dayThreeTime.grid(row=row,column=3,  rowspan = 12)
+			dayThreeTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
+			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayThreeTime.grid(row=r,column=3,  rowspan = 12)
 			dayThreeEvent.append(dayThreeTime)
+
+			dayFourTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
+			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayFourTime.grid(row=r,column=4,  rowspan = 12)
+
+			dayFiveTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
+			#dayThreeTime.bind("<1>", lambda event, obj=self: onClick(event, obj, dayThreeTime))
+			dayFiveTime.grid(row=r,column=5,  rowspan = 12)
 			#### declare timeslot to add to array (begintime, label)
 			slot1 = TimeSlot(c, dayOneTime)
 			slot2 = TimeSlot(c, dayTwoTime)
@@ -219,11 +189,13 @@ class GUI(Frame, object):
 
 		'''
 		self.top = Toplevel()
-		self.top.title("title")
+		if exist == 0:
+			self.top.title("Adding an Event")
+		else:
+			self.top.title("Editing Or Removing an Event")
 		#self.top.geometry("1200x720")
-		self.top.transient(self)
-		self.appc = CreateEvent(self, self.top, event_name, start_time, end_time, date, description, idx, exist)
-
+		#self.top.transient(self.scrollFrame.viewPort)
+		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, event_name, start_time, end_time, date, description, idx, exist)
 
 #### class for the pop up when clicking on a time slot in the day-time breakdown
 # john: "essentially designed from the example"	
@@ -256,6 +228,7 @@ class AddEventPopUp(object):
 		self.frame.destroy()
 		self.master.destroy()
 
+#<<<<<<< HEAD
 	# user pressed add event
 	def AddEvent(self,row,column):
 		'''
@@ -530,7 +503,7 @@ class CreateEvent(object):
 	# remove an event, will add prompt later
 	def onRemove(self):
 		'''
-		Removes an event
+		Removes an event.
 		'''
 		self.root.eventLabelList[self.idx].destroy()
 		del self.root.eventLabelList[self.idx]
@@ -638,11 +611,13 @@ class DatePicker:
 		right.grid(row=0, column=5)
 		
 		days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+		#EXPLAIN THIS
 		for num, name in enumerate(days):
 			t = Label(self.parent, text=name[:3])
 			self.wid.append(t)
 			t.grid(row=1, column=num)
 
+		#EXPLAIN THIS
 		for w, week in enumerate(self.cal.monthdayscalendar(y, m), 2):
 			for d, day in enumerate(week):
 				if day:
@@ -650,6 +625,7 @@ class DatePicker:
 					self.wid.append(b)
 					b.grid(row=w, column=d)
 					
+		#EXPLAIN THIS
 		sel = Label(self.parent, height=2, text='{} {} {} {}'.format(
 			self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
 		self.wid.append(sel)
@@ -669,7 +645,9 @@ class DatePicker:
 
 #### main program area
 # john: "i changed it to work from root to a master window (so it works easier on windows 10 - i'm selfish)"
-
+'''
 master_window = Tk()
 gui = GUI(master_window)
+gui.pack(side="top", fill="both", expand=True)
 master_window.mainloop()
+'''

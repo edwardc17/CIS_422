@@ -18,12 +18,14 @@ class event:
 		self.row = row
 		self.column = column
 
+	# For testing
 	def printEvent(self):
 		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
 
 	def getEvent(self):
 		return self.time + " " + self.date + " " + self.title + " " + self.text
 
+	# Edit individual values
 	def editEventTime(self, time):
 		self.time = time
 
@@ -36,6 +38,7 @@ class event:
 	def editEventTitle(self, title):
 		self.title = title
 
+	# Get individual values
 	def getTime(self):
 		return self.time
 
