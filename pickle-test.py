@@ -1,5 +1,6 @@
 import pickle
 
+#dictionary format  dataDic = {'date':{'event_name':['event_description','start_time','end_time']}}
 data = {'2019-02-03': {'event1':['description for event1','8:00','9:00']}}
 data['2019-02-03']['event2'] = ['description for event2','10:00','11:30']
 #data['2019-02-04'] = {}
