@@ -7,6 +7,7 @@ import datetime
 import calendar
 import random
 import gc
+import pickle #test part for pickle save load data
 
 if sys.version[0] == '2':
 	from Tkinter import *
@@ -17,6 +18,7 @@ timeSlots = []
 dayOneEvent = []
 dayTwoEvent = []
 dayThreeEvent = []
+calendarData = {}	#test part for pickle save load data
 
 def onClick(event, guiObj, timeSlot):
 	'''
@@ -66,7 +68,18 @@ class GUI(Frame):
 		self.create_widgets()
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
+		self.load_data()	#test part for pickle
 		print(self.winfo_width())
+
+
+	def load_data(self):	#test part for pickle
+		with open('calendar.pickle','rb') as f:
+			calendar = pickle.load(f)
+		calendarData = calendar
+		for date,event_dic in calendarData.items():   
+			if date == '2019-02-03':
+				for event,eventItem in event_dic.items():
+					print(eventItem[0])
 
 	def create_widgets(self):
 		'''
