@@ -20,22 +20,10 @@ dayTwoEvent = []
 dayThreeEvent = []
 calendarData = {}	#test part for pickle save load data
 
-def onClick(event, guiObj, timeSlot):
-	'''
-
-	'''
-	print ("you clicked on", guiObj, "and timeslot ", timeSlot)
-	row    = event.widget.grid_info()['row']
-	column = event.widget.grid_info()['column']
-	#this could be helpful for store and write information
-	print ("row =", row, "column = ", column)
-	guiObj.modifyDayBox(timeSlot,row,column)
-
-#### timeslot with associated labels and times (clickable spots)
-# TODO: define daytime variables (could just need start -and date- and make ending 1 hour later)
+#### timeslot class used for time labels
 class TimeSlot:
 	'''
-	GC
+	JN, GC
 	'''
 	def __init__(self, begin, label):
 		self.label = label
@@ -169,20 +157,7 @@ class GUI(Frame):
 			row = row + 12 
 			
 
-	#### creates a new window that is a child to the GUI parent frame
-	# john: "pretty much copied this from the example"
-	def modifyDayBox(self,timeSlot,row,column):
-		'''
-		
-		JN - find source
-		'''
-		self.top = Toplevel()
-		self.top.title("Modify Time Slot")
-		self.top.geometry("300x150+30+30")
-		self.top.transient(self)
-		self.appc=AddEventPopUp(self.top, self.eventSpots, timeSlot,row,column)
-
-	# THIS IS OLD?
+	# when clicking on event display
 	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
 
 		self.top = Toplevel()
@@ -192,41 +167,3 @@ class GUI(Frame):
 			self.top.title("Editing Or Removing an Event")
 
 		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, event_name, start_time, end_time, date, description, idx, exist)
-
-# ARE WE STILL USING THIS?
-#### class for the pop up when clicking on a time slot in the day-time breakdown
-# john: "essentially designed from the example"	
-class AddEventPopUp(object):
-	def __init__(self, master, eventsList, timeSlot,row,column):
-		self.master = master
-		# create new window
-		self.frame = Frame(self.master)
-		self.eventsList = eventsList
-		self.timeslot = timeSlot # This is not the correct time?
-
-		self.AddEvent(row,column)
-
-	def on_closing(self):
-		'''
-
-		'''
-		result = messagebox.askyesno("Save", "Save the event?")
-		if result == True:
-			print("worked")
-			self.master.destroy()
-		
-	def close(self):
-		'''
-
-		'''
-		self.frame.destroy()
-		self.master.destroy()
-
-#### main program area
-# john: "i changed it to work from root to a master window (so it works easier on windows 10 - i'm selfish)"
-'''
-master_window = Tk()
-gui = GUI(master_window)
-gui.pack(side="top", fill="both", expand=True)
-master_window.mainloop()
-'''
