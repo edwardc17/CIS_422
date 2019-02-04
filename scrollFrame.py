@@ -9,10 +9,7 @@ else:
 # ************************
 class ScrollFrame(tk.Frame):
     def __init__(self, parent):
-        #super().__init__(parent) # create a frame (self)
-
-        #parent.update()
-        #print(parent.winfo_width())
+        super().__init__(parent) # create a frame (self)
 
         self.canvas = tk.Canvas(self, height = 720, borderwidth=0)          #place canvas on self
         self.viewPort = tk.Frame(self.canvas)                    #place a frame on the canvas, this frame will hold the child widgets 
