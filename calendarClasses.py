@@ -1,62 +1,64 @@
 import pickle
 
-''' Get rid of?
-class day:
-	def __init__(self, date):
-		self.date = date
-		self.events = []
-'''
+
 class event:
 	'''
 	Stores events in a file to use between program uses.
 	AS
 	'''
-	def __init__(self, time, date, title, text, row, column):
-		self.time = time
-		self.date = date
-		self.title = title
-		self.text = text
-		self.row = row
-		self.column = column
+	def __init__(self, start_time, end_time, name, desc, category, color, index):
+		self.start_time = start_time
+		self.end_time = end_time
+		self.name = name
+		self.desc = desc
+		self.category = category
+		self.color = color
+		self.index = index
 
-	# For testing
-	def printEvent(self):
-		print("date: " + self.date + " time: " + self.time + " text: " + self.text)
-
-	def getEvent(self):
-		return self.time + " " + self.date + " " + self.title + " " + self.text
 
 	# Edit individual values
-	def editEventTime(self, time):
-		self.time = time
+	def editEventStartTime(self, start_time):
+		self.start_time = start_time
 
-	def editEventDate(self, date):
-		self.date = date
+	def editEventEndTime(self, end_time):
+		self.end_time = end_time
 
-	def editEventText(self, text):
-		self.text = text
+	def editEventDesc(self, desc):
+		self.desc = desc
 
-	def editEventTitle(self, title):
-		self.title = title
+	def editEventTitle(self, name):
+		self.name = name
+
+	def editEventCategory(self, category):
+		self.category = category
+
+	def editEventColor(self, color):
+		self.color = color
+
+	def getEventIndex(self, index):
+		self.index = index
 
 	# Get individual values
-	def getTime(self):
-		return self.time
+	def getStartTime(self):
+		return self.start_time
 
-	def getDate(self):
-		return self.date
+	def getEndTime(self):
+		return self.end_time
 
-	def getTitle(self):
-		return self.title
+	def getName(self):
+		return self.name
 
-	def getText(self):
-		return self.text
+	def getDesc(self):
+		return self.desc
 
-	def getRow(self):
-		return self.row
+	def getCategory(self):
+		return self.category
 
-	def getColumn(self):
-		return self.column
+	def getColor(self):
+		return self.color
+
+	def getIndex(self):
+		return self.index
 
 
 class Calendar:
@@ -105,26 +107,32 @@ class Calendar:
 
 		'''
 		self.events[day].remove(event)
-		#self.events.remove(event)
 		self.saveFile()
 		new = self.loadFile()
 		return new
 
-	# ignore for now
-	def editEvent(self, event, time=None, date=None, title=None, text=None):
+	def editEvent(self, event, start_time=None, end_time=None, name=None, desc=None, category=None, color=None):
 		'''
+		Must add None(s) up to the last argument you want to use.
 
 		'''
 		# only add what needs to be changed
-		# must add None(s) if adding an arg an unavailable arg
-		if time:
-			event.editEventTime(time)
-		if date:
-			event.editEventDate(date)
-		if title:
-			event.editEventTitle(title)
-		if text:
-			event.editEventText(text)
+		# must add None(s) if adding an arg past an unavailable arg
+		if start_time:
+			event.editEventTime(start_time)
+		if end_time:
+			event.editEventDate(end_time)
+		if name:
+			event.editEventName(name)
+		if desc:
+			event.editEventDesc(desc)
+		if category:
+			event.editEventCategory(category)
+		if color:
+			event.editEventColor(color)
+		if index:
+			event.editEventIndex(index)
+
 		
 		self.saveFile()
 		new = self.loadFile()

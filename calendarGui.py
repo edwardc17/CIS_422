@@ -39,8 +39,8 @@ class GUI(Frame):
 	def __init__(self, rt):
 		# this seems like it was required to get windows with data transfer
 		# 	working properly - john
-		super(GUI, self).\
-			__init__(rt)
+		#super(GUI, self).\
+			#__init__(rt)
 
 		#Frame.__init__(self, rt)
 		self.scrollFrame = ScrollFrame(self)
