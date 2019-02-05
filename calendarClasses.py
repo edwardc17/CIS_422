@@ -161,6 +161,4 @@ class Calendar:
 	def getEvents(self):
 		return self.events
 
-cal = Calendar("sover.dat")
-obj = cal.loadFile()
 
