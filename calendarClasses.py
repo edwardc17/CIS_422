@@ -147,12 +147,4 @@ class Calendar:
 
 	def getEvents(self):
 		return self.events
-e1 = event("p", "p", "p", "p", "p", "p", "p")
-e2 = event("pw", "pw", "wp", "wp", "pw", "wpw", "wpw")
-cal = Calendar("saveFile.dat")
-cal.addEvent(e1, "tomorrow")
-data = cal.loadFile()
-print(data)
-cal.addEvent(e2, "today")
-data = cal.loadFile()
-print(data)
+

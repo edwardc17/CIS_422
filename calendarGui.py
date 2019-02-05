@@ -14,22 +14,7 @@ if sys.version[0] == '2':
 else:
 	from tkinter import *
 
-timeSlots = []
-dayOneEvent = []
-dayTwoEvent = []
-dayThreeEvent = []
 calendarData = {}	#test part for pickle save load data
-
-#### timeslot class used for time labels
-class TimeSlot:
-	'''
-	Used to store labels used in main window
-	JN, GC
-	'''
-	def __init__(self, begin, label):
-		self.label = label
-		self.bTime = begin	# beginning time
-		
 
 class GUI(Frame):
 	'''
@@ -40,8 +25,8 @@ class GUI(Frame):
 	def __init__(self, rt):
 		# this seems like it was required to get windows with data transfer
 		# 	working properly - john
-		#super(GUI, self).\
-			#__init__(rt)
+		super(GUI, self).\
+			__init__(rt)
 
 		Frame.__init__(self, rt)
 		self.scrollFrame = ScrollFrame(self)
@@ -58,8 +43,6 @@ class GUI(Frame):
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
 		self.load_data()	#test part for pickle
-		print(self.winfo_width())
-
 
 	def load_data(self):	#test part for pickle
 		'''
@@ -133,15 +116,12 @@ class GUI(Frame):
 			# Creates empty timeslot slots
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayOneTime.grid(row=row, column=1, rowspan = 12)
-			dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
 			dayTwoTime.grid(row=row,column=2,  rowspan = 12)
-			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayThreeTime.grid(row=row,column=3,  rowspan = 12)
-			dayThreeEvent.append(dayThreeTime)
 
 			dayFourTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
 			dayFourTime.grid(row=row,column=4,  rowspan = 12)
@@ -149,23 +129,13 @@ class GUI(Frame):
 			dayFiveTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayFiveTime.grid(row=row,column=5,  rowspan = 12)
 			
-			#### declare timeslot to add to array (begintime, label)
-			slot1 = TimeSlot(time, dayOneTime)
-			slot2 = TimeSlot(time, dayTwoTime)
-			slot3 = TimeSlot(time, dayThreeTime)
-
-			timeSlots.append(slot1)
-			timeSlots.append(slot2)
-			timeSlots.append(slot3)
-
 			row = row + 12 
 			
 
 	# when clicking on event display
-	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
+	def onClick(self, event_name, start_time, end_time, date, category, color, description, idx, exist):
 		'''
-		Called after clicking on a label within the column of a day?
-		JC
+
 		'''
 		self.top = Toplevel()
 		if exist == 0:
@@ -173,4 +143,5 @@ class GUI(Frame):
 		else:
 			self.top.title("Editing Or Removing an Event")
 
-		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, event_name, start_time, end_time, date, description, idx, exist)
+		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, \
+			event_name, start_time, end_time, date, category, color, description, idx, exist)
