@@ -1,7 +1,7 @@
 import pickle
 import os.path
 
-class event:
+class EventObj:
 	'''
 	Contains all data needed to show and manipulate event.
 	
@@ -35,7 +35,7 @@ class event:
 	def editEventColor(self, color):
 		self.color = color
 
-	def getEventIndex(self, index):
+	def editEventIndex(self, index):
 		self.index = index
 
 	# Get individual values
@@ -60,6 +60,14 @@ class event:
 	def getIndex(self):
 		return self.index
 
+	def printEvent(self):
+		print("Event: ", self.name)
+		print("Event category: ", self.category)
+		print("Event description: ", self.desc)
+		print("Start from ", self.start_time, " to ", self.end_time)
+		print("Event color: ", self.color)
+		print("Event index: ", self.index)
+		print("-----------------------------------------------------------------------")
 
 class Calendar:
 	'''
@@ -82,7 +90,7 @@ class Calendar:
 			# If self.filename doesn't exist, create it with 'w+'
 			with open(self.filename, 'w+') as file:
 				# Don't do anything else with file, as it's empty
-				pass
+				return {}
 		
 		else:
 			# self.filename exists, so open and read it

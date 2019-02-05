@@ -1,5 +1,6 @@
 import sys
 from calendarGui import *
+from calendarClasses import *
 import datetime
 import calendar
 import random
@@ -44,6 +45,9 @@ class UpdateCalendar():
 			frame.currentDays[newTempDate]["text"] = newTempDate
 		self.dayPtr = (self.dayPtr + 5 * plusOrMinus) * currentCoef
 
+	def initCalendar(self, frame):
+		frame.loadLabels()
+
 if __name__ == "__main__":
 	'''
 	Runs the program.
@@ -57,10 +61,14 @@ if __name__ == "__main__":
 	dayPtr = 0
 	update = UpdateCalendar(dayPtr)
 	currentDay = datetime.datetime.now()
-	
+
+	#
+	update.createFiveDays(currentDay, f1, f2)
+
 	# Create main window buttons
+	eventObj = EventObj("", "", "", "", "", "", f2.idx)
 	createButton = Button(f1, text = "Create", width=13,\
-		command = lambda: f2.onClick("", "", "", "", "", "", "", f2.idx, 0)).grid(row = 0,column=0, padx = 1, pady = 20)
+		command = lambda: f2.onClick(eventObj, "", f2.idx, 0)).grid(row = 0,column=0, padx = 1, pady = 20)
 	
 	previousButton = Button(f1, text = "Previous Five Days", command = lambda : update.updateFiveDays(f2, -1, 1))
 	previousButton.grid(row = 0, column = 1, columnspan = 2)
@@ -75,7 +83,7 @@ if __name__ == "__main__":
 	time_region.grid(row = 1, column = 0)
 
 	#
-	update.createFiveDays(currentDay, f1, f2)
+	update.initCalendar(f2)
 
 	# 
 	f1.grid(row = 0, column = 0, padx = 10, sticky=W)

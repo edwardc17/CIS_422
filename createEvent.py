@@ -15,8 +15,7 @@ class CreateEvent(object):
 	AS - binding functions to labels
 	JC - everything else
 	'''
-	def __init__(self, canvas, root, master, event_name, start_time, \
-		end_time, date, category, color, description, idx, exist):
+	def __init__(self, canvas, root, master, eventObject, date, idx, exist):
 		# WHAT IS THIS
 		self.canvas = canvas
 		# WHAT IS THIS
@@ -25,13 +24,14 @@ class CreateEvent(object):
 		self.master = master
 		# Window
 		self.frame = Frame(self.master)
-		self.event_name = event_name
-		self.start_time = start_time
-		self.end_time = end_time
+		self.eventObj = eventObject
+		self.event_name = eventObject.name
+		self.start_time = eventObject.start_time
+		self.end_time = eventObject.end_time
+		self.category = eventObject.category
+		self.color = eventObject.color
+		self.description = eventObject.desc
 		self.date = date
-		self.category = category
-		self.color = color
-		self.description = description
 		# Index for placement
 		self.idx = idx
 		# To check whether user is accessing "Create" button (0) or event label (>0)
@@ -171,7 +171,7 @@ class CreateEvent(object):
 		# 'l' stands for label, 'b' stands for button, 'e' stands for event
 		self.e_name.delete(0, END)
 		self.e_category.delete(0, END)
-		self.e_dscrp.delete(1.0, END)
+		self.e_desc.delete(1.0, END)
 		self.b_color["text"] = "Event Color"
 		self.b_color["bg"] = self.master.cget('bg')
 		self.l_pickDate['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -234,36 +234,42 @@ class CreateEvent(object):
 				self.root.eventLabels.pop(self.idx, None)
 			tempDate = self.l_pickDate.cget("text")
 			# EXPLAIN THIS
+			start_h = int(self.tkhvar_from.get())
+			end_h = int(self.tkhvar_to.get())
+			start_m = int(self.tkmvar_from.get())
+			end_m = int(self.tkmvar_to.get())
+			start_time = self.tkhvar_from.get() + self.tkmvar_from.get()
+			end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
+			name = self.e_name.get()
+			category = self.e_category.get()
+			color = self.b_color["bg"]
+			desc = self.e_desc.get("1.0", END)
+			eventObj = EventObj(start_time, end_time, name, desc, category, color, self.idx)
 			if tempDate in self.root.currentDays:
-				col_num = int(self.root.currentDays[tempDate].grid_info()['column'])
-				start_h = int(self.tkhvar_from.get())
-				end_h = int(self.tkhvar_to.get())
-				start_m = int(self.tkmvar_from.get())
-				end_m = int(self.tkmvar_to.get())
-				start_time = self.tkhvar_from.get() + self.tkmvar_from.get()
-				end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
-				span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
-				category = self.e_category.get()
-				color = self.b_color["bg"]
-				dscrp = self.e_dscrp.get("1.0", END)
-				self.event = Label(self.canvas, text = "{}".format(self.e_name.get()), \
-					bg = color)
-				self.event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
-					column = col_num, rowspan = int(span), sticky = N+S+W+E)
-				self.event.bind("<1>", lambda event : self.root.onClick(self.event.cget("text"), \
-					start_time, end_time, tempDate, category, color, dscrp, self.idx, 1))
-				self.root.eventLabels[self.idx] = self.event
-				print(self.idx, self.root.idx)
-				# EXPLAIN THIS
-				if self.exist == 0:
-					self.root.idx += 1
-				self.master.destroy()
+				self.createLabels(start_h, end_h, start_m, end_m, tempDate, name, eventObj)	
+			self.root.cal.addEvent(eventObj, tempDate)
+			#self.root.cal.printCal()
+			self.master.destroy()
+
+	def createLabels(self, start_h, end_h, start_m, end_m, tempDate, name, eventObj):
+		col_num = int(self.root.currentDays[tempDate].grid_info()['column'])
+		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
+		self.event = Label(self.canvas, text = "{}".format(name), \
+			bg = eventObj.color)
+		self.event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
+			column = col_num, rowspan = int(span), sticky = N+S+W+E)
+		self.event.bind("<1>", lambda event : self.root.onClick(eventObj, \
+			tempDate, self.idx, 1))
+		self.root.eventLabels[self.idx] = self.event
+		# EXPLAIN THIS
+		if self.exist == 0:
+			self.root.idx += 1
 
 	def onRemove(self):
 		'''
 		Removes an event from window. Prompt will be added later.
 		'''
-		print(self.idx)
+		self.root.cal.removeEvent(self.eventObj, self.date)
 		self.root.eventLabels[self.idx].destroy()
 		self.root.eventLabels.pop(self.idx, None)
 		# EXPLAIN THIS
