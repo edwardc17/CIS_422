@@ -39,8 +39,8 @@ class GUI(Frame):
 	def __init__(self, rt):
 		# this seems like it was required to get windows with data transfer
 		# 	working properly - john
-		#super(GUI, self).\
-			#__init__(rt)
+		super(GUI, self).\
+			__init__(rt)
 
 		#Frame.__init__(self, rt)
 		self.scrollFrame = ScrollFrame(self)
@@ -57,8 +57,6 @@ class GUI(Frame):
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
 		self.load_data()	#test part for pickle
-		print(self.winfo_width())
-
 
 	def load_data(self):	#test part for pickle
 		with open('calendar.pickle','rb') as f:
@@ -158,7 +156,7 @@ class GUI(Frame):
 			
 
 	# when clicking on event display
-	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
+	def onClick(self, event_name, start_time, end_time, date, category, color, description, idx, exist):
 
 		self.top = Toplevel()
 		if exist == 0:
@@ -166,4 +164,5 @@ class GUI(Frame):
 		else:
 			self.top.title("Editing Or Removing an Event")
 
-		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, event_name, start_time, end_time, date, description, idx, exist)
+		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, \
+			event_name, start_time, end_time, date, category, color, description, idx, exist)

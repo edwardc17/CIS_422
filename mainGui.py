@@ -48,7 +48,7 @@ if __name__ == "__main__":
 	update = UpdateCalendar(dayPtr)
 	currentDay = datetime.datetime.now()
 	createButton = Button(f1, text = "Create", width=13,\
-		command = lambda: f2.onClick("", "", "", "", "", f2.idx, 0)).grid(row = 0,column=0, padx = 1, pady = 20)
+		command = lambda: f2.onClick("", "", "", "", "", "", "", f2.idx, 0)).grid(row = 0,column=0, padx = 1, pady = 20)
 	
 	previousButton = Button(f1, text = "Previous Five Days", command = lambda : update.updateFiveDays(f2, -1, 1))
 	previousButton.grid(row = 0, column = 1, columnspan = 2)
