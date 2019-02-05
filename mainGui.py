@@ -43,6 +43,10 @@ class UpdateCalendar():
 			newTempDate = (currentDay + newDateDelta).strftime("%Y-%m-%d")
 			frame.currentDays[newTempDate] = frame.currentDays.pop(oldTempDate)
 			frame.currentDays[newTempDate]["text"] = newTempDate
+		for dayKey in frame.eventLabels:
+			frame.eventLabels[dayKey].destroy()
+			frame.eventLabels.pop(dayKey)
+		frame.loadLabels()
 		self.dayPtr = (self.dayPtr + 5 * plusOrMinus) * currentCoef
 
 	def initCalendar(self, frame):
