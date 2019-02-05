@@ -3,18 +3,17 @@ import pickle
 
 class event:
 	'''
-	Stores events in a file to use between program uses.
+	Contains all data needed to show and manipulate event.
 	AS
 	'''
 	def __init__(self, start_time, end_time, name, desc, category, color, index):
 		self.start_time = start_time
 		self.end_time = end_time
 		self.name = name
-		self.desc = desc
+		self.desc = desc # Description
 		self.category = category
 		self.color = color
 		self.index = index
-
 
 	# Edit individual values
 	def editEventStartTime(self, start_time):
@@ -62,62 +61,63 @@ class event:
 
 
 class Calendar:
-	# Will add stuff for categories later here
+	'''
+	Stores events in a file to use between program uses.
+	AS
+	'''
 	def __init__(self, filename):
-		self.events = {} # Data for saving, by day
-		self.file = filename
+		self.events = {} # Keys are date strings, values are event objects
+		self.file = filename # String filename
 	
 	def loadFile(self):
 		'''
-
+		Returns a dictionary: keys are date strings and values are event objects.
 		'''
-		# obj is a list always
 		with open(self.file, 'rb') as file:
 			obj = pickle.load(file)
 			return obj
 
 	def saveFile(self):
 		'''
-
+		Saves entire dictionary to file. Every save overwrites previous data.
 		'''
-		# Any new additions must be appended to the whole data collection.
-		# Problematic if data collection becomes very large,
-		# but would be working with the collection anyway.
 		with open(self.file, 'wb') as file:
 			pickle.dump(self.events, file, protocol=2)
 
 	def addEvent(self, event, day):
 		'''
-
+		Adds an already created event to the events dict and save the new data to the file.
 		'''
-		# create event here or just pass it?
-		#time, date, text
-		#newE = event(time, date, text)
+		# List already exists
 		if day in self.events:
 			self.events[day].append(event)
 		else:
+			# Create new list for that day
 			self.events[day] = [event]
-		#self.events.append(event)
+		
 		self.saveFile() 
-		#new = self.loadFile()
-		#return new
+
 
 	def removeEvent(self, event, day):
 		'''
-
+		Remove event from events dict, save and load new 
 		'''
 		self.events[day].remove(event)
 		self.saveFile()
-		new = self.loadFile()
-		return new
+		#new = self.loadFile()
+		#return new
 
 	def editEvent(self, event, start_time=None, end_time=None, name=None, desc=None, category=None, color=None):
 		'''
-		Must add None(s) up to the last argument you want to use.
-
+		All editing functions of an event are grouped into one place.
+		This makes it easier to change the event class in future updates, 
+		None(s) must be used for non-existant parameters up until the last existant parameter.
+		
+		Examples:
+		cal.editEvent(event, None, None, "Running")
+		cal.editEvent(event, "01:30am")
+		cal.editEvent(event, None, None, "10:05pm", None, None, "Blue")
 		'''
-		# only add what needs to be changed
-		# must add None(s) if adding an arg past an unavailable arg
 		if start_time:
 			event.editEventTime(start_time)
 		if end_time:
@@ -132,11 +132,10 @@ class Calendar:
 			event.editEventColor(color)
 		if index:
 			event.editEventIndex(index)
-
 		
 		self.saveFile()
-		new = self.loadFile()
-		return new
+		#new = self.loadFile()
+		#return new
 
 	def printCal(self):
 		'''
@@ -148,3 +147,12 @@ class Calendar:
 
 	def getEvents(self):
 		return self.events
+e1 = event("p", "p", "p", "p", "p", "p", "p")
+e2 = event("pw", "pw", "wp", "wp", "pw", "wpw", "wpw")
+cal = Calendar("saveFile.dat")
+cal.addEvent(e1, "tomorrow")
+data = cal.loadFile()
+print(data)
+cal.addEvent(e2, "today")
+data = cal.loadFile()
+print(data)

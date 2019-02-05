@@ -23,6 +23,7 @@ calendarData = {}	#test part for pickle save load data
 #### timeslot class used for time labels
 class TimeSlot:
 	'''
+	Used to store labels used in main window
 	JN, GC
 	'''
 	def __init__(self, begin, label):
@@ -42,7 +43,7 @@ class GUI(Frame):
 		#super(GUI, self).\
 			#__init__(rt)
 
-		#Frame.__init__(self, rt)
+		Frame.__init__(self, rt)
 		self.scrollFrame = ScrollFrame(self)
 		self.rt = rt
 		rt.title("Calendar")
@@ -50,7 +51,7 @@ class GUI(Frame):
 		self.cal = Calendar("saveFile.dat")
 		self.labels = []
 		self.currentDays = {}
-		# EXPLAIN THIS
+		# Current index
 		self.idx = 0
 		self.eventLabels = {}
 		self.create_widgets()
@@ -61,6 +62,9 @@ class GUI(Frame):
 
 
 	def load_data(self):	#test part for pickle
+		'''
+
+		'''
 		with open('calendar.pickle','rb') as f:
 			calendar = pickle.load(f)
 		calendarData = calendar
@@ -74,7 +78,7 @@ class GUI(Frame):
 		Creates initial layout of main window with time scale labels
 		and a popup window upon clicking the upper left corner exit button.
 
-		GC? JC?
+		GC, JC
 		'''
 		#Time scale label text
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
@@ -87,7 +91,7 @@ class GUI(Frame):
 
 	def exit(self):
 		'''
-		Popup window asking user whether to exit calendar program or continue using.
+		Popup window asks user whether to exit calendar program or continue using it.
 
 		Based on: https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 		
@@ -107,7 +111,7 @@ class GUI(Frame):
 		'''
 		Destroy everything in main window and close program.
 
-		JC, CP
+		CP, JC
 		'''
 		gc.collect()
 		self.scrollFrame.viewPort.destroy()
@@ -126,7 +130,7 @@ class GUI(Frame):
 			# Timeslot label
 			Label(self.scrollFrame.viewPort, text=time, relief=RIDGE,width=15, height=2).grid(row=row,column=0, rowspan = 12)
 			
-			# creates empty timeslot slots
+			# Creates empty timeslot slots
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayOneTime.grid(row=row, column=1, rowspan = 12)
 			dayOneEvent.append(dayOneTime)
@@ -159,7 +163,10 @@ class GUI(Frame):
 
 	# when clicking on event display
 	def onClick(self, event_name, start_time, end_time, date, description, idx, exist):
-
+		'''
+		Called after clicking on a label within the column of a day?
+		JC
+		'''
 		self.top = Toplevel()
 		if exist == 0:
 			self.top.title("Adding an Event")

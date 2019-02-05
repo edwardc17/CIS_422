@@ -14,18 +14,23 @@ class UpdateCalendar():
 
 	def createFiveDays(self, currentDay, mainFrame, frame):
 		'''
-		
+		Creates template for 5 days on main window. 
+		One column per day with the date at the top.
+		JC
 		'''
 		for i in range(5):
+			# Get correct day based on current day and number of days in the future.
 			dateDelta = datetime.timedelta(days=i)
 			tempDate = currentDay + dateDelta
+			# Date label
 			l_date = Label(mainFrame, width = 20, text = "{}".format(tempDate.strftime("%Y-%m-%d")))
 			l_date.grid(row = 1, column = i + 1)
 			frame.currentDays[l_date.cget("text")] = l_date	
 
 	def updateFiveDays(self, frame, plusOrMinus, currentCoef):
 		'''
-
+		
+		JC
 		'''
 		for i in range(5):
 			oldDateDelta = datetime.timedelta(days = i + self.dayPtr)
@@ -39,6 +44,7 @@ class UpdateCalendar():
 if __name__ == "__main__":
 	'''
 
+	JC
 	'''
 	root=Tk()
 	root.resizable(width=False, height=False)
@@ -47,6 +53,8 @@ if __name__ == "__main__":
 	dayPtr = 0
 	update = UpdateCalendar(dayPtr)
 	currentDay = datetime.datetime.now()
+	
+	# Create main window buttons
 	createButton = Button(f1, text = "Create", width=13,\
 		command = lambda: f2.onClick("", "", "", "", "", f2.idx, 0)).grid(row = 0,column=0, padx = 1, pady = 20)
 	
