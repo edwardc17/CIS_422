@@ -19,6 +19,7 @@ class CreateEvent(object):
 		end_time, date, category, color, description, idx, exist):
 		# WHAT IS THIS
 		self.canvas = canvas
+		# WHAT IS THIS
 		self.root = root
 		# WHAT IS THIS
 		self.master = master
@@ -35,9 +36,12 @@ class CreateEvent(object):
 		self.idx = idx
 		# To check whether user is accessing "Create" button (0) or event label (>0)
 		self.exist = exist
+		# Whether a date picker window is open
 		self.pickDateOpened = False
+
 		# WHAT IS THIS
-		self.count = 6
+		#self.count = 6
+
 		# Create layout of popup window
 		self.widget()
 
@@ -144,6 +148,7 @@ class CreateEvent(object):
 			self.b_rm.grid(row = 6, column = 4, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
+			# EXPLAIN THIS
 			self.e_name.insert(0, "{}".format(self.event_name))
 			self.e_category.insert(0, "{}".format(self.category))
 			self.b_color["bg"] = self.color
@@ -170,6 +175,7 @@ class CreateEvent(object):
 		self.b_color["text"] = "Event Color"
 		self.b_color["bg"] = self.master.cget('bg')
 		self.l_pickDate['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
+		# EXPLAIN THESE
 		self.tkhvar_from.set('12')
 		self.tkmvar_from.set('00')
 		self.tkhvar_to.set('13')
@@ -194,7 +200,7 @@ class CreateEvent(object):
 
 	def cal_time_slack(self):
 		'''
-
+		# EXPLAIN THIS
 		'''
 		return int(self.tkhvar_to.get()) * 100 + int(self.tkmvar_to.get())\
 		 - int(self.tkhvar_from.get()) * 100 - int(self.tkmvar_from.get())
@@ -202,30 +208,32 @@ class CreateEvent(object):
 	# store the event, display it at the right spot
 	def onSubmit(self):
 		'''
-
+		# EXPLAIN THIS
 		'''
 		#self.event = Button(self.root, height = 6, text = "event")
 		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
+		# EXPLAIN THIS
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
 			self.l_n_error["text"] = "Name is empty!"
 			self.l_n_error.grid(row = 0, column = 3, columnspan = 2)
 			self.ready_to_submit = False
 		else:
 			self.l_n_error["text"] = ""
-
+		# EXPLAIN THIS
 		if time_slack <= 0:
 			self.l_t_error["text"] = "Time slack incorrect!"
 			self.l_t_error.grid(row = 3, column = 4, columnspan = 2)
 			self.ready_to_submit = False
 		else:
 			self.l_t_error["text"] = ""
-
+		# EXPLAIN THIS
 		if self.ready_to_submit:
 			if self.exist == 1:
 				self.root.eventLabels[self.idx].destroy()
 				self.root.eventLabels.pop(self.idx, None)
 			tempDate = self.l_pickDate.cget("text")
+			# EXPLAIN THIS
 			if tempDate in self.root.currentDays:
 				col_num = int(self.root.currentDays[tempDate].grid_info()['column'])
 				start_h = int(self.tkhvar_from.get())
@@ -246,6 +254,7 @@ class CreateEvent(object):
 					start_time, end_time, tempDate, category, color, dscrp, self.idx, 1))
 				self.root.eventLabels[self.idx] = self.event
 				print(self.idx, self.root.idx)
+				# EXPLAIN THIS
 				if self.exist == 0:
 					self.root.idx += 1
 				self.master.destroy()
@@ -257,6 +266,7 @@ class CreateEvent(object):
 		print(self.idx)
 		self.root.eventLabels[self.idx].destroy()
 		self.root.eventLabels.pop(self.idx, None)
+		# EXPLAIN THIS
 		self.root.idx -= 1
 		self.master.destroy()
 
@@ -295,7 +305,7 @@ class DatePicker:
 
 	def clear(self):
 		'''
-
+		# EXPLAIN THIS
 		'''
 		for w in self.wid[:]:
 			w.grid_forget()
@@ -303,7 +313,8 @@ class DatePicker:
 
 	def go_prev(self):
 		'''
-
+		# EXPLAIN THIS
+		# HANDLE IF THE MONTH IS 1?
 		'''
 		if self.month > 1:
 			self.month -= 1
@@ -315,7 +326,7 @@ class DatePicker:
 
 	def go_next(self):
 		'''
-
+		# EXPLAIN THIS
 		'''
 		if self.month < 12:
 			self.month += 1
@@ -329,7 +340,7 @@ class DatePicker:
 
 	def selection(self, day, name):
 		'''
-
+		Stores selected day, month, year.
 		'''
 		self.day_selected = day
 		self.month_selected = self.month
@@ -344,8 +355,9 @@ class DatePicker:
 		
 	def setup(self, y, m):
 		'''
-
+		# EXPLAIN THIS
 		'''
+		# EXPLAIN THIS
 		left = Button(self.parent, text='<', command=self.go_prev)
 		self.wid.append(left)
 		left.grid(row=0, column=1)
@@ -357,13 +369,13 @@ class DatePicker:
 		right = Button(self.parent, text='>', command=self.go_next)
 		self.wid.append(right)
 		right.grid(row=0, column=5)
-		
+		# EXPLAIN THIS
 		days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 		for num, name in enumerate(days):
 			t = Label(self.parent, text=name[:3])
 			self.wid.append(t)
 			t.grid(row=1, column=num)
-
+		# EXPLAIN THIS
 		for w, week in enumerate(self.cal.monthdayscalendar(y, m), 2):
 			for d, day in enumerate(week):
 				if day:
@@ -384,7 +396,7 @@ class DatePicker:
 
 	def onDone(self):
 		'''
-
+		# EXPLAIN THIS
 		'''
 		self.p_label['text'] = self.selectedDate
 		self.p_label['fg'] = "black"

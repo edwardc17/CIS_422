@@ -63,18 +63,21 @@ class event:
 class Calendar:
 	'''
 	Stores events in a file to use between program uses.
+	Filename must be given, but if the file does not exist, it will be created in loadFile or saveFile
+	whichever is called first.
 	
 	AS
 	'''
 	def __init__(self, filename):
 		self.events = {} # Keys are date strings, values are event objects
-		self.file = filename # String filename
+		self.filename = filename # String
+
 	
 	def loadFile(self):
 		'''
 		Returns a dictionary: keys are date strings and values are event objects.
 		'''
-		with open(self.file, 'rb') as file:
+		with open(self.filename, 'rb+') as file:
 			obj = pickle.load(file)
 			return obj
 
@@ -82,7 +85,7 @@ class Calendar:
 		'''
 		Saves entire dictionary to file. Every save overwrites previous data.
 		'''
-		with open(self.file, 'wb') as file:
+		with open(self.filename, 'wb+') as file:
 			pickle.dump(self.events, file, protocol=2)
 
 	def addEvent(self, event, day):
