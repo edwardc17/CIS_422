@@ -20,11 +20,9 @@ class GUI(Frame):
 	'''
 	Main window.
 
-	JC, GC
+	JC, JN, GC
 	'''
 	def __init__(self, rt):
-		# this seems like it was required to get windows with data transfer
-		# 	working properly - john
 		super(GUI, self).\
 			__init__(rt)
 
@@ -43,18 +41,6 @@ class GUI(Frame):
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
 		self.load_data()	#test part for pickle
-
-	def load_data(self):	#test part for pickle
-		'''
-
-		'''
-		with open('calendar.pickle','rb') as f:
-			calendar = pickle.load(f)
-		calendarData = calendar
-		for date,event_dic in calendarData.items():   
-			if date == '2019-02-03':
-				for event,eventItem in event_dic.items():
-					print(eventItem[0])
 
 	def create_widgets(self):
 		'''
@@ -110,7 +96,7 @@ class GUI(Frame):
 		'''
 		row = 0
 		for time in self.timeScale:
-			# Timeslot label
+			# Timeslot label - rowspan divides each label into 12 parts, so that time can be partitioned down to 5 minutes
 			Label(self.scrollFrame.viewPort, text=time, relief=RIDGE,width=15, height=2).grid(row=row,column=0, rowspan = 12)
 			
 			# Creates empty timeslot slots
