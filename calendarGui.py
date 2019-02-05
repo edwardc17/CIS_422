@@ -14,21 +14,7 @@ if sys.version[0] == '2':
 else:
 	from tkinter import *
 
-timeSlots = []
-dayOneEvent = []
-dayTwoEvent = []
-dayThreeEvent = []
 calendarData = {}	#test part for pickle save load data
-
-#### timeslot class used for time labels
-class TimeSlot:
-	'''
-	JN, GC
-	'''
-	def __init__(self, begin, label):
-		self.label = label
-		self.bTime = begin	# beginning time
-		
 
 class GUI(Frame):
 	'''
@@ -127,15 +113,12 @@ class GUI(Frame):
 			# creates empty timeslot slots
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayOneTime.grid(row=row, column=1, rowspan = 12)
-			dayOneEvent.append(dayOneTime)
 
 			dayTwoTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
 			dayTwoTime.grid(row=row,column=2,  rowspan = 12)
-			dayTwoEvent.append(dayTwoTime)
 
 			dayThreeTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayThreeTime.grid(row=row,column=3,  rowspan = 12)
-			dayThreeEvent.append(dayThreeTime)
 
 			dayFourTime = Label(self.scrollFrame.viewPort, bg= 'grey', relief=GROOVE,width=20, height=2)
 			dayFourTime.grid(row=row,column=4,  rowspan = 12)
@@ -143,15 +126,6 @@ class GUI(Frame):
 			dayFiveTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayFiveTime.grid(row=row,column=5,  rowspan = 12)
 			
-			#### declare timeslot to add to array (begintime, label)
-			slot1 = TimeSlot(time, dayOneTime)
-			slot2 = TimeSlot(time, dayTwoTime)
-			slot3 = TimeSlot(time, dayThreeTime)
-
-			timeSlots.append(slot1)
-			timeSlots.append(slot2)
-			timeSlots.append(slot3)
-
 			row = row + 12 
 			
 
