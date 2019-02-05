@@ -1,9 +1,9 @@
 import pickle
 
-
 class event:
 	'''
 	Contains all data needed to show and manipulate event.
+	
 	AS
 	'''
 	def __init__(self, start_time, end_time, name, desc, category, color, index):
@@ -63,6 +63,7 @@ class event:
 class Calendar:
 	'''
 	Stores events in a file to use between program uses.
+	
 	AS
 	'''
 	def __init__(self, filename):
@@ -110,13 +111,13 @@ class Calendar:
 	def editEvent(self, event, start_time=None, end_time=None, name=None, desc=None, category=None, color=None):
 		'''
 		All editing functions of an event are grouped into one place.
-		This makes it easier to change the event class in future updates, 
-		None(s) must be used for non-existant parameters up until the last existant parameter.
+		This makes it easier to change the event class in future updates, and to use/find all editing methods.
+		But it also requires filling non-used parameters with None(s) up until the last provided parameter.
 		
 		Examples:
 		cal.editEvent(event, None, None, "Running")
 		cal.editEvent(event, "01:30am")
-		cal.editEvent(event, None, None, "10:05pm", None, None, "Blue")
+		cal.editEvent(event, None, "10:05pm", None, None, None, "Blue")
 		'''
 		if start_time:
 			event.editEventTime(start_time)

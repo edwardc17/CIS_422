@@ -9,6 +9,10 @@ else:
     from tkinter import *
 
 class UpdateCalendar():
+	'''
+
+	JC
+	'''
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
 
@@ -16,7 +20,6 @@ class UpdateCalendar():
 		'''
 		Creates template for 5 days on main window. 
 		One column per day with the date at the top.
-		JC
 		'''
 		for i in range(5):
 			# Get correct day based on current day and number of days in the future.
@@ -25,12 +28,12 @@ class UpdateCalendar():
 			# Date label
 			l_date = Label(mainFrame, width = 20, text = "{}".format(tempDate.strftime("%Y-%m-%d")))
 			l_date.grid(row = 1, column = i + 1)
+			# Store date label
 			frame.currentDays[l_date.cget("text")] = l_date	
 
 	def updateFiveDays(self, frame, plusOrMinus, currentCoef):
 		'''
 		
-		JC
 		'''
 		for i in range(5):
 			oldDateDelta = datetime.timedelta(days = i + self.dayPtr)
@@ -43,6 +46,7 @@ class UpdateCalendar():
 
 if __name__ == "__main__":
 	'''
+	Runs the program.
 
 	JC
 	'''
@@ -70,8 +74,10 @@ if __name__ == "__main__":
 	time_region = Label(f1, text = "GMT-08")
 	time_region.grid(row = 1, column = 0)
 
+	#
 	update.createFiveDays(currentDay, f1, f2)
 
+	# 
 	f1.grid(row = 0, column = 0, padx = 10, sticky=W)
 	f2.grid(row = 1, column = 0, sticky = N+S+W+E)
 

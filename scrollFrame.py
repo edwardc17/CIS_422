@@ -8,6 +8,11 @@ else:
 # Scrollable Frame Class
 # ************************
 class ScrollFrame(tk.Frame):
+    '''
+    DO YOU HAVE TO CITE ANYONE?
+
+    JC
+    '''
     def __init__(self, parent):
         super().__init__(parent) # create a frame (self)
 
@@ -24,5 +29,7 @@ class ScrollFrame(tk.Frame):
         self.viewPort.bind("<Configure>", self.onFrameConfigure)                       #bind an event whenever the size of the viewPort frame changes.
 
     def onFrameConfigure(self, event):                                              
-        '''Reset the scroll region to encompass the inner frame'''
+        '''
+        Reset the scroll region to encompass the inner frame
+        '''
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))                #whenever the size of the frame changes, alter the scroll region respectively.

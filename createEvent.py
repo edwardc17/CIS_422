@@ -9,11 +9,20 @@ else:
 	from tkinter import *
 
 class CreateEvent(object):
+	'''
+	Create event popup window.
+
+	AS - binding functions to labels
+	JC - everything else
+	'''
 	def __init__(self, canvas, root, master, event_name, start_time, \
 		end_time, date, category, color, description, idx, exist):
+		# WHAT IS THIS
 		self.canvas = canvas
 		self.root = root
+		# WHAT IS THIS
 		self.master = master
+		# Window
 		self.frame = Frame(self.master)
 		self.event_name = event_name
 		self.start_time = start_time
@@ -22,10 +31,14 @@ class CreateEvent(object):
 		self.category = category
 		self.color = color
 		self.description = description
+		# Index for placement
 		self.idx = idx
+		# To check whether user is accessing "Create" button (0) or event label (>0)
 		self.exist = exist
 		self.pickDateOpened = False
+		# WHAT IS THIS
 		self.count = 6
+		# Create layout of popup window
 		self.widget()
 
 	def widget(self):
@@ -35,24 +48,24 @@ class CreateEvent(object):
 		minuteChoices = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
 		
 		# 'l' stands for label, 'e' stands for entry, 'b' stands for button
-		# Creating Labels and Entries for event name and description
+		# Creating Label and Entry for event name
 		self.l_name = Label(self.master, width = 17, text = "Event name: ")
 		self.e_name = Entry(self.master)
 		self.l_name.grid(row = 0, column = 0, pady = 20)
 		self.e_name.grid(row = 0, column = 1, columnspan = 3, pady = 20, sticky = W)
-
+		# Creating Label and Entry for event category
 		self.l_category = Label(self.master, width = 17, text = "Event category: ")
 		self.e_category = Entry(self.master)
 		self.l_category.grid(row = 1, column = 0, pady = 20)
 		self.e_category.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky =W)
-
+		# Creating button for choosing event color
 		self.b_color = Button(self.master, width = 9, text = "Event Color", command = self.setColor)
 		self.b_color.grid(row = 1, column = 4, pady = 20)
-
-		self.l_dscrp = Label(self.master, width = 17, text = "Event description: ")
-		self.e_dscrp = Text(self.master, width = 30, height = 6)
-		self.l_dscrp.grid(row = 2, column = 0, pady = 20)
-		self.e_dscrp.grid(row = 2, column = 1, columnspan = 3, pady = 20, sticky = W)
+		# Creating Label and Entry for event description
+		self.l_desc = Label(self.master, width = 17, text = "Event description: ")
+		self.e_desc = Text(self.master, width = 30, height = 6)
+		self.l_desc.grid(row = 2, column = 0, pady = 20)
+		self.e_desc.grid(row = 2, column = 1, columnspan = 3, pady = 20, sticky = W)
 		
 		# Creating tk variable for drop down menus
 		# tkvar stands for tk variable
@@ -69,6 +82,7 @@ class CreateEvent(object):
 		self.tkmvar_to.set('00')
 
 		# Creating Labels, Entries, and drop down menus for choosing time slacks FROM
+		# 'l' stands for label
 		self.l_dateFrom = Label(self.master, width = 17, text = "From: ")
 		self.dropDown_hour_from = OptionMenu(self.master, self.tkhvar_from, *hourChoices)
 		self.l_semicolon1 = Label(self.master, width = 2, text = ":")
@@ -78,6 +92,7 @@ class CreateEvent(object):
 		
 		# Adding datePicker button and arranging
 		# the button calls the onDatePicker with argument 0, which means the caller is "From"
+		# 'l' stands for label, 'b' stands for button
 		self.l_selectDate = Label(self.master, text = "Select date:", width = 15)
 		self.l_selectDate.grid(row = 3, column = 0)
 		self.l_pickDate = Label(self.master, text = datetime.datetime.now()\
@@ -88,12 +103,14 @@ class CreateEvent(object):
 		self.b_dateFrom.grid(row = 3, column = 4, padx = 10, pady = 20, sticky = W)
 
 		# Arranging grids
+		# 'l' stands for label
 		self.l_dateFrom.grid(row = 4, column = 0, pady = 20)
 		self.dropDown_hour_from.grid(row = 4, column = 1, pady = 20, sticky = E)
 		self.l_semicolon1.grid(row = 4, column = 2, sticky = N+S+W+E)
 		self.dropDown_minute_from.grid(row = 4, column = 3, pady = 20, sticky = W)
 
 		# Creating Labels, Entries, and drop down menus for choosing time slacks TO
+		# 'l' stands for label
 		self.l_dateTo = Label(self.master, width = 17, text = "to: ")
 		self.dropDown_hour_to = OptionMenu(self.master, self.tkhvar_to, *hourChoices)
 		self.l_semicolon2 = Label(self.master, width = 2, text = ":")
@@ -102,19 +119,26 @@ class CreateEvent(object):
 		self.dropDown_minute_to.config(width = 6)
 
 		# Arraning grids
+		# 'l' stands for label
 		self.l_dateTo.grid(row = 5, column = 0, pady = 20)
 		self.dropDown_hour_to.grid(row = 5, column = 1, pady = 20, sticky = E)
 		self.l_semicolon2.grid(row = 5, column = 2, sticky = N+S+W+E)
 		self.dropDown_minute_to.grid(row = 5, column = 3, pady = 20, sticky = W)
 
 		# Adding "Submit" and "Delete" buttons
-		# submit will call onSubmit, it stores entered event and display it on the main window
-		# delete will call clear, it clears all entries
+		# Submit will call onSubmit, it stores entered event and displays it on the main window
+		# Delete will call clear, it clears all entries
+		# 'b' stands for button
+
+		# Submit button
 		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit)
-		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear)
+		# Clear button
+		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear) 
 		self.b_sub.grid(row = 5, column = 4, padx = 10)
 		self.b_clr.grid(row = 5, column = 5, padx = 10)
 		if self.exist != 0:
+			# User didn't click "create event" button
+			# Remove button
 			self.b_rm = Button(self.master, width = 15, text = "Delete this event", \
 				command = self.onRemove)
 			self.b_rm.grid(row = 6, column = 4, columnspan = 2, pady = 20)
@@ -123,7 +147,7 @@ class CreateEvent(object):
 			self.e_name.insert(0, "{}".format(self.event_name))
 			self.e_category.insert(0, "{}".format(self.category))
 			self.b_color["bg"] = self.color
-			self.e_dscrp.insert(1.0, "{}".format(self.description))
+			self.e_desc.insert(1.0, "{}".format(self.description))
 			self.tkhvar_from.set("{}".format(self.start_time[0]+self.start_time[1]))
 			self.tkmvar_from.set("{}".format(self.start_time[2]+self.start_time[3]))
 			self.tkhvar_to.set("{}".format(self.end_time[0]+self.end_time[1]))
@@ -131,11 +155,15 @@ class CreateEvent(object):
 			self.l_pickDate["text"] = self.date
 
 		# Creating Error Message 
+		# 'l' stands for label, 'n' STANDS FOR
 		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red")
 		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red")
 	
-	# Reset all the entries, drop down menus
 	def clear(self):
+		'''
+		Resets all entries and drop down menus.
+		'''
+		# 'l' stands for label, 'b' stands for button, 'e' stands for event
 		self.e_name.delete(0, END)
 		self.e_category.delete(0, END)
 		self.e_dscrp.delete(1.0, END)
@@ -148,10 +176,16 @@ class CreateEvent(object):
 		self.tkmvar_to.set('00')
 
 	def setColor(self):
-		color = askcolor()[1]
-		self.b_color["bg"] = color
+		'''
+		Sets event color chosen by user.
+		'''
+		color = askcolor()[1] # Get color choice from user
+		self.b_color["bg"] = color # Set the color
 
 	def check_empty(self, event_name):
+		'''
+		Checks if fields in event are empty.
+		'''
 		for i in event_name:
 			if i != ' ':
 				return False
@@ -159,11 +193,17 @@ class CreateEvent(object):
 
 
 	def cal_time_slack(self):
+		'''
+
+		'''
 		return int(self.tkhvar_to.get()) * 100 + int(self.tkmvar_to.get())\
 		 - int(self.tkhvar_from.get()) * 100 - int(self.tkmvar_from.get())
 
 	# store the event, display it at the right spot
 	def onSubmit(self):
+		'''
+
+		'''
 		#self.event = Button(self.root, height = 6, text = "event")
 		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
@@ -210,17 +250,21 @@ class CreateEvent(object):
 					self.root.idx += 1
 				self.master.destroy()
 
-	# remove an event, will add prompt later
 	def onRemove(self):
+		'''
+		Removes an event from window. Prompt will be added later.
+		'''
 		print(self.idx)
 		self.root.eventLabels[self.idx].destroy()
 		self.root.eventLabels.pop(self.idx, None)
 		self.root.idx -= 1
 		self.master.destroy()
 
-	# pop up the datePicker
-	# if there's already a datePicker onpened, close it and pop up a new one
 	def onDatePicker(self, fromOrTo):
+		'''
+		Open datePicker popup window. 
+		If there's already a datePicker onpened, close it and pop up a new one.
+		'''
 		if self.pickDateOpened == True:
 			self.datePicker.destroy()
 		self.datePicker = Toplevel()
@@ -228,10 +272,13 @@ class CreateEvent(object):
 			self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
 
-# DatePicker class is an open-sourced work 
-# that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
-# Our implementation did some modifications.  
+
 class DatePicker:
+	'''
+	DatePicker class is an open-sourced work 
+	that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
+	Our implementation did some modifications. WHICH MODIFICATIONS
+	'''
 	def __init__(self, parent, p_label):
 		self.parent = parent
 		self.cal = calendar.TextCalendar(calendar.SUNDAY)
@@ -247,37 +294,46 @@ class DatePicker:
 		self.setup(self.year, self.month)
 
 	def clear(self):
+		'''
+
+		'''
 		for w in self.wid[:]:
 			w.grid_forget()
-			#w.destroy()
 			self.wid.remove(w)
 
 	def go_prev(self):
+		'''
+
+		'''
 		if self.month > 1:
 			self.month -= 1
 		else:
 			self.month = 12
 			self.year -= 1
-		#self.selected = (self.month, self.year)
 		self.clear()
 		self.setup(self.year, self.month)
 
 	def go_next(self):
+		'''
+
+		'''
 		if self.month < 12:
 			self.month += 1
 		else:
+			# Reset to January
 			self.month = 1
 			self.year += 1
 		 
-		#self.selected = (self.month, self.year)
 		self.clear()
 		self.setup(self.year, self.month)
 
 	def selection(self, day, name):
+		'''
+
+		'''
 		self.day_selected = day
 		self.month_selected = self.month
 		self.year_selected = self.year
-
 
 		#data
 		self.selectedDate = datetime.date(self.year, self.month, day)
@@ -287,6 +343,9 @@ class DatePicker:
 		self.setup(self.year, self.month)
 		
 	def setup(self, y, m):
+		'''
+
+		'''
 		left = Button(self.parent, text='<', command=self.go_prev)
 		self.wid.append(left)
 		left.grid(row=0, column=1)
@@ -324,6 +383,9 @@ class DatePicker:
 		done.grid(row=9, column=0, columnspan=7, pady = 10)
 
 	def onDone(self):
+		'''
+
+		'''
 		self.p_label['text'] = self.selectedDate
 		self.p_label['fg'] = "black"
 		self.parent.pickDateOpened = False

@@ -7,14 +7,11 @@ import datetime
 import calendar
 import random
 import gc
-import pickle #test part for pickle save load data
 
 if sys.version[0] == '2':
 	from Tkinter import *
 else:
 	from tkinter import *
-
-calendarData = {}	#test part for pickle save load data
 
 class GUI(Frame):
 	'''
@@ -27,20 +24,23 @@ class GUI(Frame):
 			__init__(rt)
 
 		Frame.__init__(self, rt)
+		# Allows a scrollbar to see all 24 hours
 		self.scrollFrame = ScrollFrame(self)
 		self.rt = rt
 		rt.title("Calendar")
 		# For storing events
 		self.cal = Calendar("saveFile.dat")
 		self.labels = []
+		# Stores 5 days currently shown
 		self.currentDays = {}
 		# Current index
 		self.idx = 0
+		# Stores all even
 		self.eventLabels = {}
+		# Creates initial layout
 		self.create_widgets()
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
-		self.load_data()	#test part for pickle
 
 	def create_widgets(self):
 		'''
@@ -56,6 +56,7 @@ class GUI(Frame):
 						'06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM', '11:00 PM']
 		# Handles upper left corner red x button
 		self.master.protocol("WM_DELETE_WINDOW", self.exit)
+		# Create layout with timescale labels
 		self.createTimescale()
 
 	def exit(self):
@@ -66,8 +67,10 @@ class GUI(Frame):
 		
 		CP
 		'''
+		# Accesses popup window to manipulate it
 		window = Toplevel()
 
+		# Inital title and text
 		window.title('warning')
 		message = "You may lose any unsaved changes"
 		Label(window, text=message).pack()
@@ -82,9 +85,9 @@ class GUI(Frame):
 
 		CP, JC
 		'''
-		gc.collect()
-		self.scrollFrame.viewPort.destroy()
-		self.rt.destroy()
+		gc.collect() # Python's garbage collector
+		self.scrollFrame.viewPort.destroy() # Destroy frame placed on top of main frame
+		self.rt.destroy() # Destroy everything else
 
 
 	def createTimescale(self):
@@ -99,7 +102,7 @@ class GUI(Frame):
 			# Timeslot label - rowspan divides each label into 12 parts, so that time can be partitioned down to 5 minutes
 			Label(self.scrollFrame.viewPort, text=time, relief=RIDGE,width=15, height=2).grid(row=row,column=0, rowspan = 12)
 			
-			# Creates empty timeslot slots
+			# Creates empty timeslot slots for each day/column
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayOneTime.grid(row=row, column=1, rowspan = 12)
 
@@ -115,19 +118,23 @@ class GUI(Frame):
 			dayFiveTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayFiveTime.grid(row=row,column=5,  rowspan = 12)
 			
+			# Row is adjusted for the 12 partitions given to each label.
 			row = row + 12 
 			
 
-	# when clicking on event display
 	def onClick(self, event_name, start_time, end_time, date, category, color, description, idx, exist):
 		'''
-
+		Handles user clicking on events or "Create" button.
+		
+		JC
 		'''
-		self.top = Toplevel()
+		self.top = Toplevel() # To provide main window access to "CreateEvent" class
 		if exist == 0:
+			# User clicked "Create" button in upper left corner of main window
 			self.top.title("Adding an Event")
 		else:
+			# User clicked on a previously created event in calendar
 			self.top.title("Editing Or Removing an Event")
-
+		# Open popup window to add or create event
 		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, \
 			event_name, start_time, end_time, date, category, color, description, idx, exist)
