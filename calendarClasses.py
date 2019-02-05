@@ -1,4 +1,5 @@
 import pickle
+import os.path
 
 class event:
 	'''
@@ -77,10 +78,19 @@ class Calendar:
 		'''
 		Returns a dictionary: keys are date strings and values are event objects.
 		'''
-		with open(self.filename, 'rb+') as file:
-			obj = pickle.load(file)
-			return obj
+		if not os.path.isfile(self.filename):
+			# If self.filename doesn't exist, create it with 'w+'
+			with open(self.filename, 'w+') as file:
+				# Don't do anything else with file, as it's empty
+				pass
+		
+		else:
+			# self.filename exists, so open and read it
+			with open(self.filename, 'rb') as file:
+				obj = pickle.load(file)
+				return obj
 
+	
 	def saveFile(self):
 		'''
 		Saves entire dictionary to file. Every save overwrites previous data.
@@ -88,9 +98,10 @@ class Calendar:
 		with open(self.filename, 'wb+') as file:
 			pickle.dump(self.events, file, protocol=2)
 
+	
 	def addEvent(self, event, day):
 		'''
-		Adds an already created event to the events dict and save the new data to the file.
+		Adds an already created event to the events dict and saves the new data to the file.
 		'''
 		# List already exists
 		if day in self.events:
@@ -104,19 +115,19 @@ class Calendar:
 
 	def removeEvent(self, event, day):
 		'''
-		Remove event from events dict, save and load new 
+		Remove event from events dict, saves it. 
 		'''
 		self.events[day].remove(event)
 		self.saveFile()
-		#new = self.loadFile()
-		#return new
+
 
 	def editEvent(self, event, start_time=None, end_time=None, name=None, desc=None, category=None, color=None):
 		'''
 		All editing functions of an event are grouped into one place.
 		This makes it easier to change the event class in future updates, and to use/find all editing methods.
 		But it also requires filling non-used parameters with None(s) up until the last provided parameter.
-		
+		Data is then saved.
+
 		Examples:
 		cal.editEvent(event, None, None, "Running")
 		cal.editEvent(event, "01:30am")
@@ -138,8 +149,6 @@ class Calendar:
 			event.editEventIndex(index)
 		
 		self.saveFile()
-		#new = self.loadFile()
-		#return new
 
 	def printCal(self):
 		'''
@@ -151,4 +160,7 @@ class Calendar:
 
 	def getEvents(self):
 		return self.events
+
+cal = Calendar("sover.dat")
+obj = cal.loadFile()
 
