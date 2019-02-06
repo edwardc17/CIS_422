@@ -1,7 +1,38 @@
 '''
+<<<<<<< HEAD
 All code produced by the team - specifically Jiazhen Cao.
 '''
 
+=======
+ *===========================================================================================================
+ |
+ |       Author:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GDC),John Nemeth(JN), Jiazhen Cao(JZC)
+ |. Update date:  Feburary 5, 2019
+ |     Language:  python3
+ |   To Compile:  run python3 mainGui.py on Terminal
+ |
+ |        Class:  CIS422
+ |   Instructor:  Anthony Hornof
+ |     Due Date:  Feburary 5, 2019
+ |
+ |  Description:  This application is for a single user who wants a simple way to organize their events. 
+ |                They expect to see their events for the next 5 days and use buttons to add, delete, or 
+ |                edit an event.The user should have previous experience using simple GUIs. Their current 
+ |                technology usage patterns are that they visit their calendar every day to see what they 
+ |                are doing for the current and the next 5 days.
+ |    
+ | Features Included: 
+ |						1.Create an event to the calendar.
+ |						2.Event attribute: Category, start time, end time, 
+ |										   event color, event description, event name, event date.
+ |                      3.Save and load event data.
+ |
+ |
+ |Code Reference: 
+ |
+ *===========================================================================================================
+ '''
+>>>>>>> ab9b0bd599643d5bb63d2fba966242bb92172c73
 import sys
 from calendarGui import *
 from calendarClasses import *
@@ -17,7 +48,7 @@ class UpdateCalendar():
 	'''
 	Creates and updates layout of 5 days.
 
-	JC
+	JZC
 	'''
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
@@ -61,7 +92,7 @@ if __name__ == "__main__":
 	'''
 	Runs the program.
 
-	JC
+	JZC
 	'''
 	root=Tk()
 	root.resizable(width=False, height=False)
