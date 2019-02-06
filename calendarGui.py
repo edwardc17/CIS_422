@@ -178,6 +178,7 @@ class InitLabel(object):
 		'''
 		Create a label from an event stored in file.
 		AS - event label borders
+		JN - binds labels
 		'''
 		# 'h' stands for hour, 'm' stands for minute, 'l' stands for label
 		# Column number
