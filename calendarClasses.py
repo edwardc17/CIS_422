@@ -1,5 +1,6 @@
 '''
-All code created by team - specfically Anna Saltveit.
+Author:  Anna Saltveit(AS)
+Update date:  Feburary 5, 2019
 '''
 
 import pickle
@@ -64,6 +65,7 @@ class EventObj:
 	def getIndex(self):
 		return self.index
 
+	# For testing.
 	def printEvent(self):
 		print("Event: ", self.name)
 		print("Event category: ", self.category)
@@ -95,7 +97,6 @@ class Calendar:
 			with open(self.filename, 'w+') as file:
 				# Don't do anything else with file, as it's empty
 				return {}
-		
 		else:
 			# self.filename exists, so open and read it
 			with open(self.filename, 'rb') as file:
@@ -132,35 +133,6 @@ class Calendar:
 		self.events[day].remove(event)
 		self.saveFile()
 
-
-	def editEvent(self, event, start_time=None, end_time=None, name=None, desc=None, category=None, color=None):
-		'''
-		All editing functions of an event are grouped into one place.
-		This makes it easier to change the event class in future updates, and to use/find all editing methods.
-		But it also requires filling non-used parameters with None(s) up until the last provided parameter.
-		Data is then saved.
-
-		Examples:
-		cal.editEvent(event, None, None, "Running")
-		cal.editEvent(event, "01:30am")
-		cal.editEvent(event, None, "10:05pm", None, None, None, "Blue")
-		'''
-		if start_time:
-			event.editEventTime(start_time)
-		if end_time:
-			event.editEventDate(end_time)
-		if name:
-			event.editEventName(name)
-		if desc:
-			event.editEventDesc(desc)
-		if category:
-			event.editEventCategory(category)
-		if color:
-			event.editEventColor(color)
-		if index:
-			event.editEventIndex(index)
-		
-		self.saveFile()
 
 	def printCal(self):
 		'''

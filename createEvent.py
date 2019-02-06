@@ -1,4 +1,7 @@
 '''
+Author(s): Jiazhen Cao(JC), Anna Saltveit(AS), John Nemeth(JN)
+Update date:  Feburary 5, 2019
+
 DatePicker class is an open-sourced work 
 that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
 
@@ -23,11 +26,11 @@ class CreateEvent(object):
 	JC - everything else
 	'''
 	def __init__(self, canvas, root, master, eventObject, date, idx, exist):
-		# WHAT IS THIS
+		# Scroll frame
 		self.canvas = canvas
-		# WHAT IS THIS
+		# Calendar GUI
 		self.root = root
-		# WHAT IS THIS
+		# Top level
 		self.master = master
 		# Window
 		self.frame = Frame(self.master)
@@ -151,14 +154,19 @@ class CreateEvent(object):
 			self.b_rm.grid(row = 6, column = 4, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
-			# EXPLAIN THIS
+			# Set labels to their given values
+			# 'e' stands for entry, 'b' stands for button
 			self.e_name.insert(0, "{}".format(self.event_name))
 			self.e_category.insert(0, "{}".format(self.category))
 			self.b_color["bg"] = self.color
 			self.e_desc.insert(1.0, "{}".format(self.description))
+			# tk hour from variable
 			self.tkhvar_from.set("{}".format(self.start_time[0]+self.start_time[1]))
+			# tk minute from variable
 			self.tkmvar_from.set("{}".format(self.start_time[2]+self.start_time[3]))
+			# tk hour to variable
 			self.tkhvar_to.set("{}".format(self.end_time[0]+self.end_time[1]))
+			# tk minute to variable
 			self.tkmvar_to.set("{}".format(self.end_time[2]+self.end_time[3]))
 			self.l_pickDate["text"] = self.date
 
@@ -208,25 +216,37 @@ class CreateEvent(object):
 		 - int(self.tkhvar_from.get()) * 100 - int(self.tkmvar_from.get())
 
 	def checkTimeConflict(self):
+		'''
+		Compares starting and ending times of every event in a day
+		to check for overlapping.
+		'''
+		# 'h' stands for hour, 'm' stands for minute, 'e' stands for event
 		date = self.l_pickDate["text"]
 		if date in self.root.cal.events:
 			eventList = self.root.cal.events[date]
+			# Current event's times
 			start_h = int(self.tkhvar_from.get())
 			end_h = int(self.tkhvar_to.get())
 			start_m = int(self.tkmvar_from.get())
 			end_m = int(self.tkmvar_to.get())
 			start_time = start_h * 100 + start_m
 			end_time = end_h * 100 + end_m
+			
 			for event in eventList:
+				# Other event to compare
 				e_start_time = int(event.start_time)
 				e_end_time = int(event.end_time)
+<<<<<<< HEAD
 				if event == self.eventObj:
 					continue
+=======
+				# There's a conflict
+>>>>>>> 99082ec251b386e4e10fe80c8c383e690c91ea34
 				if e_start_time <= start_time < e_end_time or \
 					e_start_time < end_time <= e_end_time:
+					# Create popup window
 					window = Toplevel()
-
-					# Inital title and text
+					# Warning text
 					window.title('Time Conflicts')
 					message1 = "Time conflicts with existing events."
 					message2 = "Please change the time slice."
@@ -235,9 +255,10 @@ class CreateEvent(object):
 					# Destroys current popup window, returns to main window
 					Button(window, text='OK', command=window.destroy).pack()
 					return False
+		
 		return True
 
-	# store the event, display it at the right spot
+
 	def onSubmit(self):
 		'''
 		Store event and display it at the correct spot.
@@ -259,8 +280,16 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
+<<<<<<< HEAD
 		if self.checkTimeConflict() == False:
 			self.ready_to_submit = False
+=======
+		# New event being created
+		if self.exist == 0:
+			# There's a conflict
+			if self.checkTimeConflict() == False:
+				self.ready_to_submit = False
+>>>>>>> 99082ec251b386e4e10fe80c8c383e690c91ea34
 
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
