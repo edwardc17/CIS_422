@@ -187,7 +187,7 @@ class InitLabel(object):
 		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
 		# Create label
 		self.l_event = Label(self.canvas, text = "{}".format(self.event.name), \
-			bg = self.event.color)
+			bg = self.event.color, borderwidth=2)
 		# Place label
 		self.l_event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
 			column = col_num, rowspan = int(span), sticky = N+S+W+E)
