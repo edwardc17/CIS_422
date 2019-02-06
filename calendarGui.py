@@ -160,6 +160,7 @@ class GUI(Frame):
 		
 		JC
 		'''
+		# If popup window open, close it
 		if self.eventWindowOpened == True:
 			self.top.destroy()
 		self.top = Toplevel() # To provide main window access to "CreateEvent" class
