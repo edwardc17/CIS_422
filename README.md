@@ -1,9 +1,12 @@
 # Basic Calendar
 Authors:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
+
 Class:  CIS422
+
 Instructor:  Anthony Hornof
 
 Language:  python3
+
 Update date:  Feburary 5, 2019
 
 ## Features
