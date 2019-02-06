@@ -30,8 +30,8 @@ class GUI(Frame):
 		rt.title("Calendar")
 		# For storing events
 		self.cal = Calendar("saveFile.dat")
+		# Initial collection of events
 		self.cal.events = self.cal.loadFile()
-		self.labels = []
 		# Stores 5 days currently shown
 		self.currentDays = {}
 		# Current index
@@ -73,12 +73,12 @@ class GUI(Frame):
 
 		# Inital title and text
 		window.title('warning')
-		message = "You may lose any unsaved changes"
+		message = "Do you really want to quit?"
 		Label(window, text=message).pack()
 		# Destroys current popup window, returns to main window
 		Button(window, text='Go back to calendar', command=window.destroy).pack()
 		# destroys current popup window and main window, exits program
-		Button(window, text='I already saved my changes!', command=self.deleteAll).pack()
+		Button(window, text="I'm done", command=self.deleteAll).pack()
 
 	def deleteAll(self):
 		'''
@@ -126,17 +126,18 @@ class GUI(Frame):
 			
 	def loadLabels(self):
 		'''
-		Load Labels that in current 5 days from saveFile.dat
+		Create Labels for events in the current 5 days from saveFile.dat
 		
 		JC
 		'''
-		i = 0
+		index = 0
 		for day in self.currentDays:
 			if day in self.cal.events:
-				for e in self.cal.events[day]:
-					initLabel = InitLabel(self, self.scrollFrame.viewPort, day, e, i)
-					i += 1
-		self.idx = i
+				for event in self.cal.events[day]:
+					# Create label for event
+					initLabel = InitLabel(self, self.scrollFrame.viewPort, day, event, index)
+					index += 1
+		self.idx = index
 
 	def onClick(self, event, date, idx, exist):
 		'''
@@ -156,26 +157,41 @@ class GUI(Frame):
 			event, date, idx, exist)
 
 class InitLabel(object):
-	def __init__(self, root, canvas, day, eventObject, i):
+	'''
+	Label made from file, not direct user input.
+
+	JC
+	'''
+	def __init__(self, root, canvas, day, eventObject, index):
 		self.root = root
 		self.canvas = canvas
 		self.day = day
-		self.e = eventObject
-		self.i = i
+		self.event = eventObject
+		self.index = index
 		self.createLabel()
 
 	def createLabel(self):
+		'''
+		Create a label from an event stored in file.
+		'''
+		# 'h' stands for hour, 'm' stands for minute, 'l' stands for label
+		# Column number
 		col_num = int(self.root.currentDays[self.day].grid_info()['column'])
-		start_h = int(self.e.start_time[0] + self.e.start_time[1])
-		start_m = int(self.e.start_time[2] + self.e.start_time[3])
-		end_h = int(self.e.end_time[0] + self.e.end_time[1])
-		end_m = int(self.e.end_time[2] + self.e.end_time[3])
+		start_h = int(self.event.start_time[0] + self.event.start_time[1])
+		start_m = int(self.event.start_time[2] + self.e.start_time[3])
+		end_h = int(self.event.end_time[0] + self.event.end_time[1])
+		end_m = int(self.event.end_time[2] + self.event.end_time[3])
+		# How long the event is
 		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
-		self.l_event = Label(self.canvas, text = "{}".format(self.e.name), \
-			bg = self.e.color)
+		# Create label
+		self.l_event = Label(self.canvas, text = "{}".format(self.event.name), \
+			bg = self.event.color)
+		# Place label
 		self.l_event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
 			column = col_num, rowspan = int(span), sticky = N+S+W+E)
-		self.root.eventLabels[self.i] = self.l_event
-		self.root.eventLabels[self.i].bind("<1>", \
-			lambda event : self.root.onClick(self.e, self.day, self.i, 1))
+		# Add label to eventLabels
+		self.root.eventLabels[self.index] = self.l_event
+		# Connect clickable function to label, for editing/removing
+		self.root.eventLabels[self.index].bind("<1>", \
+			lambda event : self.root.onClick(self.event, self.day, self.index, 1))
 

@@ -111,11 +111,11 @@ class Calendar:
 		'''
 		Adds an already created event to the events dict and saves the new data to the file.
 		'''
-		# List already exists
+		# List of events already exists
 		if day in self.events:
 			self.events[day].append(event)
 		else:
-			# Create new list for that day
+			# Create new list of events for that day
 			self.events[day] = [event]
 		
 		self.saveFile() 

@@ -38,14 +38,13 @@ class CreateEvent(object):
 		self.exist = exist
 		# Whether a date picker window is open
 		self.pickDateOpened = False
-
-		# WHAT IS THIS
-		#self.count = 6
-
 		# Create layout of popup window
 		self.widget()
 
 	def widget(self):
+		'''
+		Creates layout - buttons, labels, dropdown menus for popup window.
+		'''
 		# Creating two list of options for drop down menus
 		hourChoices = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', \
 		'12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
@@ -133,18 +132,14 @@ class CreateEvent(object):
 		# Submit will call onSubmit, it stores entered event and displays it on the main window
 		# Delete will call clear, it clears all entries
 		# 'b' stands for button
-
-		# Submit button
-		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit)
-		# Clear button
-		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear) 
+		self.b_sub = Button(self.master, width = 8, text = "submit",command = self.onSubmit) # Submit button
+		self.b_clr = Button(self.master, width = 8, text = "clear", command = self.clear) # Clear button
 		self.b_sub.grid(row = 5, column = 4, padx = 10)
 		self.b_clr.grid(row = 5, column = 5, padx = 10)
 		if self.exist != 0:
 			# User didn't click "create event" button
-			# Remove button
 			self.b_rm = Button(self.master, width = 15, text = "Delete this event", \
-				command = self.onRemove)
+				command = self.onRemove) # Remove button
 			self.b_rm.grid(row = 6, column = 4, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
@@ -161,8 +156,8 @@ class CreateEvent(object):
 
 		# Creating Error Message 
 		# 'l' stands for label, 'n' STANDS FOR
-		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red")
-		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red")
+		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red") # Name error
+		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red") # Time error
 	
 	def clear(self):
 		'''
@@ -175,7 +170,7 @@ class CreateEvent(object):
 		self.b_color["text"] = "Event Color"
 		self.b_color["bg"] = self.master.cget('bg')
 		self.l_pickDate['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
-		# EXPLAIN THESE
+		# Reset start and end time menu defaults
 		self.tkhvar_from.set('12')
 		self.tkmvar_from.set('00')
 		self.tkhvar_to.set('13')
@@ -200,7 +195,7 @@ class CreateEvent(object):
 
 	def cal_time_slack(self):
 		'''
-		# EXPLAIN THIS
+		Check if the start time is after the end time.
 		'''
 		return int(self.tkhvar_to.get()) * 100 + int(self.tkmvar_to.get())\
 		 - int(self.tkhvar_from.get()) * 100 - int(self.tkmvar_from.get())
@@ -208,12 +203,11 @@ class CreateEvent(object):
 	# store the event, display it at the right spot
 	def onSubmit(self):
 		'''
-		# EXPLAIN THIS
+		Store event and display it at the correct spot.
 		'''
-		#self.event = Button(self.root, height = 6, text = "event")
 		self.ready_to_submit = True
 		time_slack = self.cal_time_slack()
-		# EXPLAIN THIS
+		# No name given for event
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
 			self.l_n_error["text"] = "Name is empty!"
 			self.l_n_error.grid(row = 0, column = 3, columnspan = 2)
@@ -227,13 +221,15 @@ class CreateEvent(object):
 			self.ready_to_submit = False
 		else:
 			self.l_t_error["text"] = ""
-		# EXPLAIN THIS
+		# All fields are correct input, able to create event
 		if self.ready_to_submit:
 			if self.exist == 1:
+				# EXPLAIN THIS
 				self.root.eventLabels[self.idx].destroy()
 				self.root.eventLabels.pop(self.idx, None)
 			tempDate = self.l_pickDate.cget("text")
-			# EXPLAIN THIS
+			# Collect all data given into variables
+			# 'h' stands for hour, 'm' stands for minute
 			start_h = int(self.tkhvar_from.get())
 			end_h = int(self.tkhvar_to.get())
 			start_m = int(self.tkmvar_from.get())
@@ -244,36 +240,51 @@ class CreateEvent(object):
 			category = self.e_category.get()
 			color = self.b_color["bg"]
 			desc = self.e_desc.get("1.0", END)
+			# Create event for saving
 			eventObj = EventObj(start_time, end_time, name, desc, category, color, self.idx)
+			# Chosen date is currently shown on main screen
 			if tempDate in self.root.currentDays:
+				# Add event label to that day
 				self.createLabels(start_h, end_h, start_m, end_m, tempDate, name, eventObj)	
+			# Add event to Calendar for saving
 			self.root.cal.addEvent(eventObj, tempDate)
-			#self.root.cal.printCal()
+			# Destroy popup window
 			self.master.destroy()
 
 	def createLabels(self, start_h, end_h, start_m, end_m, tempDate, name, eventObj):
-		col_num = int(self.root.currentDays[tempDate].grid_info()['column'])
-		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60
+		'''
+		Create an event label for a day currently shown on main window
+		'''
+		col_num = int(self.root.currentDays[tempDate].grid_info()['column']) # Column number
+		# How much time/space the label should use.
+		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60 
+		# Event label with text and color
 		self.event = Label(self.canvas, text = "{}".format(name), \
 			bg = eventObj.color)
+		# Place it in day on main window
 		self.event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
 			column = col_num, rowspan = int(span), sticky = N+S+W+E)
 		self.event.bind("<1>", lambda event : self.root.onClick(eventObj, \
 			tempDate, self.idx, 1))
+		# Save label in eventLabels by index
 		self.root.eventLabels[self.idx] = self.event
-		# EXPLAIN THIS
+		# Event made from "Create" button
 		if self.exist == 0:
+			# Increase index for placing in list next time
 			self.root.idx += 1
 
 	def onRemove(self):
 		'''
 		Removes an event from window. Prompt will be added later.
 		'''
+		# Remove event from saved file
 		self.root.cal.removeEvent(self.eventObj, self.date)
+		# Destroy event label
 		self.root.eventLabels[self.idx].destroy()
+		# Remove index from list and decrease it
 		self.root.eventLabels.pop(self.idx, None)
-		# EXPLAIN THIS
 		self.root.idx -= 1
+		# EXPLAIN THIS
 		self.master.destroy()
 
 	def onDatePicker(self, fromOrTo):
@@ -281,9 +292,11 @@ class CreateEvent(object):
 		Open datePicker popup window. 
 		If there's already a datePicker onpened, close it and pop up a new one.
 		'''
+		# Destroy currently open date picker window
 		if self.pickDateOpened == True:
 			self.datePicker.destroy()
 		self.datePicker = Toplevel()
+		# EXPLAIN THIS
 		if fromOrTo == 0:
 			self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
