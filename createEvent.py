@@ -62,7 +62,8 @@ class CreateEvent(object):
 		self.l_category.grid(row = 1, column = 0, pady = 20)
 		self.e_category.grid(row = 1, column = 1, columnspan = 3, pady = 20, sticky =W)
 		# Creating button for choosing event color
-		self.b_color = Button(self.master, width = 9, text = "Event Color", command = self.setColor)
+		self.b_color = Button(self.master, width = 9, text = "Event Color", bg = "#33A1C9", \
+			command = self.setColor)
 		self.b_color.grid(row = 1, column = 4, pady = 20)
 		# Creating Label and Entry for event description
 		self.l_desc = Label(self.master, width = 17, text = "Event description: ")
@@ -168,7 +169,7 @@ class CreateEvent(object):
 		self.e_category.delete(0, END)
 		self.e_desc.delete(1.0, END)
 		self.b_color["text"] = "Event Color"
-		self.b_color["bg"] = self.master.cget('bg')
+		self.b_color["bg"] = "#33A1C9"
 		self.l_pickDate['text'] = datetime.datetime.now().strftime("%Y-%m-%d")
 		# Reset start and end time menu defaults
 		self.tkhvar_from.set('12')
@@ -299,6 +300,7 @@ class CreateEvent(object):
 			self.datePicker.destroy()
 		self.datePicker = Toplevel()
 		# DatePicker is open
+		self.child = DatePicker(self.datePicker, self.l_pickDate)
 		self.pickDateOpened = True
 
 
