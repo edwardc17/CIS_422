@@ -53,6 +53,8 @@ class GUI(Frame):
 		self.create_widgets()
 		# For scroll bar
 		self.scrollFrame.pack(side="top", fill="both", expand=True)
+		# Check if window opened twice
+		self.eventWindowOpened = False
 
 	def create_widgets(self):
 		'''
@@ -158,6 +160,8 @@ class GUI(Frame):
 		
 		JC
 		'''
+		if self.eventWindowOpened == True:
+			self.top.destroy()
 		self.top = Toplevel() # To provide main window access to "CreateEvent" class
 		if exist == 0:
 			# User clicked "Create" button in upper left corner of main window
@@ -168,6 +172,7 @@ class GUI(Frame):
 		# Open popup window to add or create event
 		self.appc = CreateEvent(self.scrollFrame.viewPort, self, self.top, \
 			event, date, idx, exist)
+		self.eventWindowOpened = True
 
 class InitLabel(object):
 	'''
