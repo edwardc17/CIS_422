@@ -261,7 +261,7 @@ class CreateEvent(object):
 		span = (end_h * 60 + end_m - start_h * 60 - start_m) * 12 / 60 
 		# Event label with text and color
 		self.event = Label(self.canvas, text = "{}".format(name), \
-			bg = eventObj.color, borderwidth=2)
+			bg = eventObj.color, borderwidth=2, relief="solid")
 		# Place it in day on main window
 		self.event.grid(row = int(start_h * 12 + start_m * 12 / 60) , \
 			column = col_num, rowspan = int(span), sticky = N+S+W+E)
