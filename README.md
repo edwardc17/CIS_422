@@ -1,7 +1,7 @@
 # Basic Calendar
-Authors:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
+Authors:  Anna Saltveit (AS), Claire Phillips (CP), Guodong Chen (GC), John Nemeth (JN), Jiazhen Cao (JC)
 
-Class:  CIS422
+Class:  CIS 422
 
 Instructor:  Anthony Hornof
 
