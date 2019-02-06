@@ -1,5 +1,8 @@
 '''
-All code created by ___________________________.
+This class is an open-sourced code from github.
+All code created by mp035.
+https://gist.github.com/mp035/9f2027c3ef9172264532fcd6262f3b01
+JC only modified canvas size
 '''
 
 import sys
