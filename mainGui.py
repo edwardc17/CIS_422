@@ -60,13 +60,15 @@ if __name__ == "__main__":
 	'''
 	root=Tk()
 	root.resizable(width=False, height=False)
+	# Layout of top of main window - main buttons and day labels
 	f1 = Frame()
+	# Layout of rest of window - day columns with events, hour labels
 	f2 = GUI(root)
 	dayPtr = 0
 	update = UpdateCalendar(dayPtr)
 	currentDay = datetime.datetime.now()
 
-	#
+	# Inital layout of five days
 	update.createFiveDays(currentDay, f1, f2)
 
 	# Create main window buttons
@@ -86,10 +88,10 @@ if __name__ == "__main__":
 	time_region = Label(f1, text = "GMT-08")
 	time_region.grid(row = 1, column = 0)
 
-	#
+	# Load events from last use of program
 	update.initCalendar(f2)
 
-	# 
+	# Create grids for each frame
 	f1.grid(row = 0, column = 0, padx = 10, sticky=W)
 	f2.grid(row = 1, column = 0, sticky = N+S+W+E)
 

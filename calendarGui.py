@@ -1,8 +1,4 @@
-#from Tkinter import *
 import sys
-from calendarClasses import *
-from createEvent import *
-from scrollFrame import *
 import datetime
 import calendar
 import random
@@ -12,6 +8,12 @@ if sys.version[0] == '2':
 	from Tkinter import *
 else:
 	from tkinter import *
+
+# Team created files
+from calendarClasses import *
+from createEvent import *
+from scrollFrame import *
+
 
 class GUI(Frame):
 	'''
@@ -104,7 +106,7 @@ class GUI(Frame):
 			# so that time can be partitioned down to 5 minutes
 			Label(self.scrollFrame.viewPort, text=time, relief=RIDGE,width=15, height=2)\
 			.grid(row=row,column=0, rowspan = 12)
-			
+	
 			# Creates empty timeslot slots for each day/column
 			dayOneTime = Label(self.scrollFrame.viewPort, bg= 'white', relief=GROOVE,width=20, height=2)
 			dayOneTime.grid(row=row, column=1, rowspan = 12)
@@ -178,7 +180,7 @@ class InitLabel(object):
 		# Column number
 		col_num = int(self.root.currentDays[self.day].grid_info()['column'])
 		start_h = int(self.event.start_time[0] + self.event.start_time[1])
-		start_m = int(self.event.start_time[2] + self.e.start_time[3])
+		start_m = int(self.event.start_time[2] + self.event.start_time[3])
 		end_h = int(self.event.end_time[0] + self.event.end_time[1])
 		end_m = int(self.event.end_time[2] + self.event.end_time[3])
 		# How long the event is
