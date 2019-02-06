@@ -236,12 +236,9 @@ class CreateEvent(object):
 				# Other event to compare
 				e_start_time = int(event.start_time)
 				e_end_time = int(event.end_time)
-<<<<<<< HEAD
 				if event == self.eventObj:
 					continue
-=======
 				# There's a conflict
->>>>>>> 99082ec251b386e4e10fe80c8c383e690c91ea34
 				if e_start_time <= start_time < e_end_time or \
 					e_start_time < end_time <= e_end_time:
 					# Create popup window
@@ -280,16 +277,14 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
-<<<<<<< HEAD
 		if self.checkTimeConflict() == False:
 			self.ready_to_submit = False
-=======
+
 		# New event being created
 		if self.exist == 0:
 			# There's a conflict
 			if self.checkTimeConflict() == False:
 				self.ready_to_submit = False
->>>>>>> 99082ec251b386e4e10fe80c8c383e690c91ea34
 
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
