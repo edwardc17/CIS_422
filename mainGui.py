@@ -1,5 +1,5 @@
 '''
-Authors:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
+Authors:  Anna Saltveit (AS), Claire Phillips (CP), Guodong Chen (GC),John Nemeth (JN), Jiazhen Cao (JC)
 Update date:  Feburary 5, 2019
 Language:  python3
 To Compile:  run python3 mainGui.py on Terminal
@@ -13,14 +13,6 @@ Description:  This application is for a single user who wants a simple way to or
                 edit an event.The user should have previous experience using simple GUIs. Their current 
                 technology usage patterns are that they visit their calendar every day to see what they 
                 are doing for the current and the next 5 days.
-    
-Features Included: 
-						1.Create an event to the calendar.
-						2.Event attribute: Category, start time, end time, 
-										   event color, event description, event name, event date.
-                        3.Save and load event data.
-
-Code Reference: 
 '''
 
 import sys
@@ -38,7 +30,7 @@ class UpdateCalendar():
 	'''
 	Creates and updates layout of 5 days.
 
-	JZC
+	JC
 	'''
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
