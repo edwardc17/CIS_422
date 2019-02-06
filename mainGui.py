@@ -1,3 +1,7 @@
+'''
+All code produced by the team - specifically Jiazhen Cao.
+'''
+
 import sys
 from calendarGui import *
 from calendarClasses import *
@@ -11,6 +15,7 @@ else:
 
 class UpdateCalendar():
 	'''
+	Creates and updates layout of 5 days.
 
 	JC
 	'''

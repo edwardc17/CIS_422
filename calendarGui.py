@@ -1,3 +1,9 @@
+'''
+The exit popup window used https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
+
+All other code is made by the team - individual work marked in methods and classes.
+'''
+
 import sys
 import datetime
 import calendar
@@ -19,7 +25,7 @@ class GUI(Frame):
 	'''
 	Main window.
 
-	JC, JN, GC
+	JC, JN, GC, CP
 	'''
 	def __init__(self, rt):
 		super(GUI, self).\

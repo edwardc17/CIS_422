@@ -1,3 +1,7 @@
+'''
+All code created by team - specfically Anna Saltveit
+'''
+
 import pickle
 import os.path
 

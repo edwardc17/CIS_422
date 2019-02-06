@@ -1,3 +1,10 @@
+'''
+DatePicker class is an open-sourced work 
+that was done by Max-Planck-Institut fur Radioastronomie, Bonn, Germany, 2016.
+
+All other code is made by the team - individual work marked in methods and classes.
+'''
+
 import sys
 from calendarClasses import *
 from tkinter.colorchooser import *
@@ -12,7 +19,6 @@ class CreateEvent(object):
 	'''
 	Create event popup window.
 
-	AS - binding functions to labels
 	JC - everything else
 	'''
 	def __init__(self, canvas, root, master, eventObject, date, idx, exist):
@@ -223,9 +229,9 @@ class CreateEvent(object):
 			self.l_time_error["text"] = ""
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
-			# Popup created by clicking on "create" button
+			# Popup created by clicking on event label
 			if self.exist == 1:
-				# EXPLAIN THIS
+				# Delete current event label
 				self.root.eventLabels[self.idx].destroy()
 				self.root.eventLabels.pop(self.idx, None)
 			tempDate = self.l_pickDate.cget("text")
@@ -402,7 +408,7 @@ class DatePicker:
 						day:self.selection(day, calendar.day_name[(day-1) % 7]))
 					self.wid.append(b)
 					b.grid(row=w, column=d)
-					
+		# EXPLAIN THIS		
 		sel = Label(self.parent, height=2, text='{} {} {} {}'.format(
 			self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
 		self.wid.append(sel)
