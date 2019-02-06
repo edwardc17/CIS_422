@@ -38,7 +38,7 @@ class UpdateCalendar():
 	'''
 	Creates and updates layout of 5 days.
 
-	JZC
+	JC
 	'''
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
