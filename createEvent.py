@@ -200,7 +200,7 @@ class CreateEvent(object):
 				return False
 		return True
 
-	def cal_time_slack(self):
+	def cal_time_slice(self):
 		'''
 		Check if the start time is after the end time.
 		'''
@@ -220,6 +220,8 @@ class CreateEvent(object):
 			for event in eventList:
 				e_start_time = int(event.start_time)
 				e_end_time = int(event.end_time)
+				if event == self.eventObj:
+					continue
 				if e_start_time <= start_time < e_end_time or \
 					e_start_time < end_time <= e_end_time:
 					window = Toplevel()
@@ -241,7 +243,7 @@ class CreateEvent(object):
 		Store event and display it at the correct spot.
 		'''
 		self.ready_to_submit = True
-		time_slack = self.cal_time_slack()
+		time_slice = self.cal_time_slice()
 		# No name given for event
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
 			self.l_name_error["text"] = "Name is empty!"
@@ -250,16 +252,15 @@ class CreateEvent(object):
 		else:
 			self.l_name_error["text"] = ""
 		# Start time is after end time
-		if time_slack <= 0:
+		if time_slice <= 0:
 			self.l_time_error["text"] = "Time slack incorrect!"
 			self.l_time_error.grid(row = 3, column = 4, columnspan = 2)
 			self.ready_to_submit = False
 		else:
 			self.l_time_error["text"] = ""
 
-		if self.exist == 0:
-			if self.checkTimeConflict() == False:
-				self.ready_to_submit = False
+		if self.checkTimeConflict() == False:
+			self.ready_to_submit = False
 
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
