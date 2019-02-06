@@ -41,7 +41,7 @@ else:
 class UpdateCalendar():
 	'''
 
-	JC
+	JZC
 	'''
 	def __init__(self, dayPtr):
 		self.dayPtr = dayPtr
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 	'''
 	Runs the program.
 
-	JC
+	JZC
 	'''
 	root=Tk()
 	root.resizable(width=False, height=False)
