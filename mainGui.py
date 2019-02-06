@@ -1,5 +1,5 @@
 '''
-Author:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
+Authors:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
 Update date:  Feburary 5, 2019
 Language:  python3
 To Compile:  run python3 mainGui.py on Terminal

@@ -275,7 +275,9 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
+		# New event being created
 		if self.exist == 0:
+			# There's a conflict
 			if self.checkTimeConflict() == False:
 				self.ready_to_submit = False
 
