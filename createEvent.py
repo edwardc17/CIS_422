@@ -34,14 +34,14 @@ class CreateEvent(object):
 		self.master = master
 		# Window
 		self.frame = Frame(self.master)
-		self.eventObj = eventObject
-		self.event_name = eventObject.name
-		self.start_time = eventObject.start_time
-		self.end_time = eventObject.end_time
-		self.category = eventObject.category
-		self.color = eventObject.color
-		self.description = eventObject.desc
-		self.date = date
+		self.eventObj = eventObject					# reference event object
+		self.event_name = eventObject.name 			# reference event name
+		self.start_time = eventObject.start_time 	# reference event start_time
+		self.end_time = eventObject.end_time 		# reference event end_time
+		self.category = eventObject.category 		# reference event category
+		self.color = eventObject.color 				# reference event color
+		self.description = eventObject.desc 		# reference event description
+		self.date = date 							# reference event date
 		# Index for placement
 		self.idx = idx
 		# To check whether user is accessing "Create" button (0) or event label (>0)
@@ -104,7 +104,7 @@ class CreateEvent(object):
 		self.dropDown_hour_from.config(width = 6)
 		self.dropDown_minute_from.config(width = 6)
 		
-		# Adding datePicker button and arranging
+		# Adding datePicker button and labels for instruction, and arranging
 		# the button calls the onDatePicker with argument 0, which means the caller is "From"
 		# 'l' stands for label, 'b' stands for button
 		self.l_selectDate = Label(self.master, text = "Select date:", width = 15)
@@ -116,7 +116,7 @@ class CreateEvent(object):
 			command = lambda: self.onDatePicker())
 		self.b_dateFrom.grid(row = 3, column = 4, padx = 10, pady = 20, sticky = W)
 
-		# Arranging grids
+		# Arranging widgets
 		# 'l' stands for label
 		self.l_dateFrom.grid(row = 4, column = 0, pady = 20)
 		self.dropDown_hour_from.grid(row = 4, column = 1, pady = 20, sticky = E)
@@ -132,7 +132,7 @@ class CreateEvent(object):
 		self.dropDown_hour_to.config(width = 6)
 		self.dropDown_minute_to.config(width = 6)
 
-		# Arraning grids
+		# Arraning widgets
 		# 'l' stands for label
 		self.l_dateTo.grid(row = 5, column = 0, pady = 20)
 		self.dropDown_hour_to.grid(row = 5, column = 1, pady = 20, sticky = E)
@@ -222,8 +222,8 @@ class CreateEvent(object):
 		'''
 		# 'h' stands for hour, 'm' stands for minute, 'e' stands for event
 		date = self.l_pickDate["text"]
-		if date in self.root.cal.events:
-			eventList = self.root.cal.events[date]
+		if date in self.root.cal.events: 						# check if the day exist in dict
+			eventList = self.root.cal.events[date] 				# assign the events to a list
 			# Current event's times
 			start_h = int(self.tkhvar_from.get())
 			end_h = int(self.tkhvar_to.get())
@@ -231,13 +231,12 @@ class CreateEvent(object):
 			end_m = int(self.tkmvar_to.get())
 			start_time = start_h * 100 + start_m
 			end_time = end_h * 100 + end_m
-			
-			for event in eventList:
+			for event in eventList: 							# iterating the event list
 				# Other event to compare
 				e_start_time = int(event.start_time)
 				e_end_time = int(event.end_time)
-				if event == self.eventObj:
-					continue
+				if event == self.eventObj: 						# if event exist, upon just editing, continue
+					continue 									# don't need check if time doesn't change
 				# There's a conflict
 				if e_start_time <= start_time < e_end_time or \
 					e_start_time < end_time <= e_end_time:
@@ -260,7 +259,9 @@ class CreateEvent(object):
 		'''
 		Store event and display it at the correct spot.
 		'''
+		# Assign a boolean to check if a event is eligble for submit and save
 		self.ready_to_submit = True
+		# assign the time slice to time_slice
 		time_slice = self.cal_time_slice()
 		# No name given for event
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
@@ -269,6 +270,7 @@ class CreateEvent(object):
 			self.ready_to_submit = False
 		else:
 			self.l_name_error["text"] = ""
+		
 		# Start time is after end time
 		if time_slice <= 0:
 			self.l_time_error["text"] = "Time slack incorrect!"
@@ -277,6 +279,7 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
+		# Check if there's time confliction
 		if self.checkTimeConflict() == False:
 			self.ready_to_submit = False
 
@@ -291,22 +294,23 @@ class CreateEvent(object):
 			# Popup created by clicking on event label
 			if self.exist == 1:
 				# Delete current event label
+				# Delete the object that stored in the calendar class and save
 				self.root.eventLabels[self.idx].destroy()
 				self.root.eventLabels.pop(self.idx, None)
 				self.root.cal.removeEvent(self.eventObj, self.date)
 			tempDate = self.l_pickDate.cget("text")
 			# Collect all data given into variables
 			# 'h' stands for hour, 'm' stands for minute
-			start_h = int(self.tkhvar_from.get())
-			end_h = int(self.tkhvar_to.get())
-			start_m = int(self.tkmvar_from.get())
-			end_m = int(self.tkmvar_to.get())
-			start_time = self.tkhvar_from.get() + self.tkmvar_from.get()
-			end_time = self.tkhvar_to.get() + self.tkmvar_to.get()
-			name = self.e_name.get()
-			category = self.e_category.get()
-			color = self.b_color["bg"]
-			desc = self.e_desc.get("1.0", END)
+			start_h = int(self.tkhvar_from.get()) 							# get start hour in int 
+			end_h = int(self.tkhvar_to.get()) 								# get end hour in int
+			start_m = int(self.tkmvar_from.get()) 							# get start minute in int
+			end_m = int(self.tkmvar_to.get()) 								# get end hour in int
+			start_time = self.tkhvar_from.get() + self.tkmvar_from.get() 	# concat start_h and start_m
+			end_time = self.tkhvar_to.get() + self.tkmvar_to.get() 			# concat end_h and end_m
+			name = self.e_name.get() 										# assign name entry text to name
+			category = self.e_category.get() 								# assign category
+			color = self.b_color["bg"] 										# assign color
+			desc = self.e_desc.get("1.0", END) 								# assign description
 			# Create event for saving
 			eventObj = EventObj(start_time, end_time, name, desc, category, color, self.idx)
 			# Chosen date is currently shown on main screen
@@ -376,22 +380,22 @@ class DatePicker:
 	Our implementation did some modifications. WHICH MODIFICATIONS
 	'''
 	def __init__(self, parent, p_label):
-		self.parent = parent
-		self.cal = calendar.TextCalendar(calendar.SUNDAY)
-		self.year = datetime.date.today().year
-		self.month = datetime.date.today().month
-		self.wid = []
-		self.day_selected = 1
-		self.month_selected = self.month
-		self.year_selected = self.year
-		self.day_name = ''
-		self.selectedDate = datetime.date.today()
-		self.p_label = p_label
-		self.setup(self.year, self.month)
+		self.parent = parent								# reference parent
+		self.cal = calendar.TextCalendar(calendar.SUNDAY) 	# reference cal
+		self.year = datetime.date.today().year 				# reference year
+		self.month = datetime.date.today().month 			# reference month
+		self.wid = [] 										# reference a empty widget list
+		self.day_selected = 1								# reference initial day_selected to 1
+		self.month_selected = self.month 					# reference month_selected
+		self.year_selected = self.year 						# reference year_selected
+		self.day_name = '' 									# reference day_name to emptry str
+		self.selectedDate = datetime.date.today() 			# reference selectedDate to the current day
+		self.p_label = p_label 								# reference p_label to l_pickDate from the parent
+		self.setup(self.year, self.month)					# call the setup()
 
 	def clear(self):
 		'''
-		# EXPLAIN THIS
+		clear function that remove all the widgets
 		'''
 		for w in self.wid[:]:
 			w.grid_forget()
@@ -399,8 +403,7 @@ class DatePicker:
 
 	def go_prev(self):
 		'''
-		# EXPLAIN THIS
-		# HANDLE IF THE MONTH IS 1?
+		Update the month and year to previous upon < button clicked
 		'''
 		if self.month > 1:
 			self.month -= 1
@@ -412,7 +415,7 @@ class DatePicker:
 
 	def go_next(self):
 		'''
-		# EXPLAIN THIS
+		Update the month and year to next upon > button clicked
 		'''
 		if self.month < 12:
 			self.month += 1
@@ -432,7 +435,8 @@ class DatePicker:
 		self.month_selected = self.month
 		self.year_selected = self.year
 
-		#data
+		# selectDate get the Date selected in numerical format
+		# day_name get the selected date in word
 		self.selectedDate = datetime.date(self.year, self.month, day)
 		self.day_name = self.selectedDate.strftime("%A")
 		
@@ -441,27 +445,31 @@ class DatePicker:
 		
 	def setup(self, y, m):
 		'''
-		# EXPLAIN THIS
+		set up the DatePicker Layout
 		'''
-		# EXPLAIN THIS
+		# create a < button for previous month
 		left = Button(self.parent, text='<', command=self.go_prev)
 		self.wid.append(left)
 		left.grid(row=0, column=1)
 		
+		# create middle for displaying the month
 		header = Label(self.parent, height=2, text='{}   {}'.format(calendar.month_abbr[m], str(y)))
 		self.wid.append(header)
 		header.grid(row=0, column=2, columnspan=3)
 		
+		# create a > button for next month
 		right = Button(self.parent, text='>', command=self.go_next)
 		self.wid.append(right)
 		right.grid(row=0, column=5)
-		# EXPLAIN THIS
+		
+		# create labels displaying days
 		days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 		for num, name in enumerate(days):
 			t = Label(self.parent, text=name[:3])
 			self.wid.append(t)
 			t.grid(row=1, column=num)
-		# EXPLAIN THIS
+		
+		# create buttons for day selecting and set up their layout
 		for w, week in enumerate(self.cal.monthdayscalendar(y, m), 2):
 			for d, day in enumerate(week):
 				if day:
@@ -469,22 +477,25 @@ class DatePicker:
 						day:self.selection(day, calendar.day_name[(day-1) % 7]))
 					self.wid.append(b)
 					b.grid(row=w, column=d)
-		# EXPLAIN THIS		
+		
+		# create a label at the very buttom that display the chosen date
 		sel = Label(self.parent, height=2, text='{} {} {} {}'.format(
 			self.day_name, calendar.month_name[self.month_selected], self.day_selected, self.year_selected))
 		self.wid.append(sel)
 		sel['text'] = self.selectedDate
 		sel.grid(row=8, column=0, columnspan=7)
 
+		# create a button that calls onDonw function
 		done = Button(self.parent, text = "Done Choosing", command=self.onDone)
 		self.wid.append(done)
 		done.grid(row=9, column=0, columnspan=7, pady = 10)
 
 	def onDone(self):
 		'''
-		# EXPLAIN THIS
+		The function change the text of the label 'l_pickDate' on the event window.
 		'''
 		self.p_label['text'] = self.selectedDate
 		self.p_label['fg'] = "black"
+		# set pickDateOpened to False and destroy the child datePicker window.
 		self.parent.pickDateOpened = False
 		self.parent.destroy()
