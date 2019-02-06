@@ -255,6 +255,7 @@ class CreateEvent(object):
 	def createLabels(self, start_h, end_h, start_m, end_m, tempDate, name, eventObj):
 		'''
 		Create an event label for a day currently shown on main window
+		AS - event label borders
 		'''
 		col_num = int(self.root.currentDays[tempDate].grid_info()['column']) # Column number
 		# How much time/space the label should use.

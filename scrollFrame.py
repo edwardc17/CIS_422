@@ -9,9 +9,7 @@ else:
 # ************************
 class ScrollFrame(tk.Frame):
     '''
-    DO YOU HAVE TO CITE ANYONE?
-
-    JC
+    
     '''
     def __init__(self, parent):
         super().__init__(parent) # create a frame (self)
