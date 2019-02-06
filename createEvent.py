@@ -23,11 +23,11 @@ class CreateEvent(object):
 	JC - everything else
 	'''
 	def __init__(self, canvas, root, master, eventObject, date, idx, exist):
-		# WHAT IS THIS
+		# Scroll frame
 		self.canvas = canvas
-		# WHAT IS THIS
+		# Calendar GUI
 		self.root = root
-		# WHAT IS THIS
+		# Top level
 		self.master = master
 		# Window
 		self.frame = Frame(self.master)
@@ -151,14 +151,19 @@ class CreateEvent(object):
 			self.b_rm.grid(row = 6, column = 4, columnspan = 2, pady = 20)
 
 		if self.event_name != "":
-			# EXPLAIN THIS
+			# Set labels to their given values
+			# 'e' stands for entry, 'b' stands for button
 			self.e_name.insert(0, "{}".format(self.event_name))
 			self.e_category.insert(0, "{}".format(self.category))
 			self.b_color["bg"] = self.color
 			self.e_desc.insert(1.0, "{}".format(self.description))
+			# tk hour from variable
 			self.tkhvar_from.set("{}".format(self.start_time[0]+self.start_time[1]))
+			# tk minute from variable
 			self.tkmvar_from.set("{}".format(self.start_time[2]+self.start_time[3]))
+			# tk hour to variable
 			self.tkhvar_to.set("{}".format(self.end_time[0]+self.end_time[1]))
+			# tk minute to variable
 			self.tkmvar_to.set("{}".format(self.end_time[2]+self.end_time[3]))
 			self.l_pickDate["text"] = self.date
 

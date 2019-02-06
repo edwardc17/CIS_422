@@ -64,6 +64,7 @@ class EventObj:
 	def getIndex(self):
 		return self.index
 
+	# For testing.
 	def printEvent(self):
 		print("Event: ", self.name)
 		print("Event category: ", self.category)
