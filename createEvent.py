@@ -257,7 +257,7 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
-		if self.checkTimeConflict() == False:
+		if self.checkTimeConflict() == False and self.exist == 0:
 			self.ready_to_submit = False
 
 		# All fields are correct input, able to create event
