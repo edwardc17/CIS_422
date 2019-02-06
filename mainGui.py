@@ -1,3 +1,28 @@
+'''
+ *===========================================================================================================
+ |
+ |       Author:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GDC),John Nemeth(JN), Jiazhen Cao(JZC)
+ |. Update date:  Feburary 5, 2019
+ |     Language:  python3
+ |   To Compile:  run python3 mainGui.py on Terminal
+ |
+ |        Class:  CIS422
+ |   Instructor:  Anthony Hornof
+ |     Due Date:  Feburary 5, 2019
+ |
+ |  Description:  
+ |    
+ | Features Included: 
+ |						1.Create an event to the calendar.
+ |						2.Event attribute: Category, start time, end time, 
+ |										   event color, event description, event name, event date.
+ |                       3.Save and load event data.
+ |
+ |
+ |Code Reference: 
+ |
+ *===========================================================================================================
+ '''
 import sys
 from calendarGui import *
 from calendarClasses import *
