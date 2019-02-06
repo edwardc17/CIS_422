@@ -56,10 +56,13 @@ class UpdateCalendar():
 		to change the current days.
 		'''
 		for i in range(5):
+			# get change of days by using datetime.timedelta
 			oldDateDelta = datetime.timedelta(days = i + self.dayPtr)
 			newDateDelta = datetime.timedelta(days = i + (self.dayPtr + plusOrMinus * 5) * currentCoef)
+			# assign tempDates to our date format
 			oldTempDate = (currentDay + oldDateDelta).strftime("%Y-%m-%d")
 			newTempDate = (currentDay + newDateDelta).strftime("%Y-%m-%d")
+			# change keys and associated labels of the currentDays dict
 			frame.currentDays[newTempDate] = frame.currentDays.pop(oldTempDate)
 			frame.currentDays[newTempDate]["text"] = newTempDate
 		# Destroy 
@@ -70,6 +73,7 @@ class UpdateCalendar():
 		self.dayPtr = (self.dayPtr + 5 * plusOrMinus) * currentCoef
 
 	def initCalendar(self, frame):
+		# call the loadLabels() to load the saveFile.dat and create event labels
 		frame.loadLabels()
 
 if __name__ == "__main__":
