@@ -200,13 +200,40 @@ class CreateEvent(object):
 				return False
 		return True
 
-
 	def cal_time_slack(self):
 		'''
 		Check if the start time is after the end time.
 		'''
 		return int(self.tkhvar_to.get()) * 100 + int(self.tkmvar_to.get())\
 		 - int(self.tkhvar_from.get()) * 100 - int(self.tkmvar_from.get())
+
+	def checkTimeConflict(self):
+		date = self.l_pickDate["text"]
+		if date in self.root.cal.events:
+			eventList = self.root.cal.events[date]
+			start_h = int(self.tkhvar_from.get())
+			end_h = int(self.tkhvar_to.get())
+			start_m = int(self.tkmvar_from.get())
+			end_m = int(self.tkmvar_to.get())
+			start_time = start_h * 100 + start_m
+			end_time = end_h * 100 + end_m
+			for event in eventList:
+				e_start_time = int(event.start_time)
+				e_end_time = int(event.end_time)
+				if e_start_time <= start_time < e_end_time or \
+					e_start_time < end_time <= e_end_time:
+					window = Toplevel()
+
+					# Inital title and text
+					window.title('Time Conflicts')
+					message1 = "Time conflicts with existing events."
+					message2 = "Please change the time slice."
+					Label(window, text=message1).pack()
+					Label(window, text=message2).pack()
+					# Destroys current popup window, returns to main window
+					Button(window, text='OK', command=window.destroy).pack()
+					return False
+		return True
 
 	# store the event, display it at the right spot
 	def onSubmit(self):
@@ -229,6 +256,10 @@ class CreateEvent(object):
 			self.ready_to_submit = False
 		else:
 			self.l_time_error["text"] = ""
+
+		if self.checkTimeConflict() == False:
+			self.ready_to_submit = False
+			
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
 			# Popup created by clicking on event label

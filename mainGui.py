@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 All code produced by the team - specifically Jiazhen Cao.
 '''
-
+"""
 =======
  *===========================================================================================================
  |
@@ -32,7 +32,7 @@ All code produced by the team - specifically Jiazhen Cao.
  |
  *===========================================================================================================
  '''
->>>>>>> ab9b0bd599643d5bb63d2fba966242bb92172c73
+ """
 import sys
 from calendarGui import *
 from calendarClasses import *
