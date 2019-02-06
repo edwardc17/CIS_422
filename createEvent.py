@@ -102,7 +102,7 @@ class CreateEvent(object):
 			.strftime("%Y-%m-%d"), width = 15)
 		self.l_pickDate.grid(row = 3, column = 1, columnspan = 3)
 		self.b_dateFrom = Button(self.master, width = 8, text = "DatePicker", \
-			command = lambda: self.onDatePicker(0))
+			command = lambda: self.onDatePicker())
 		self.b_dateFrom.grid(row = 3, column = 4, padx = 10, pady = 20, sticky = W)
 
 		# Arranging grids
@@ -256,6 +256,7 @@ class CreateEvent(object):
 		'''
 		Create an event label for a day currently shown on main window
 		AS - event label borders
+		JN - binds labels
 		'''
 		col_num = int(self.root.currentDays[tempDate].grid_info()['column']) # Column number
 		# How much time/space the label should use.
@@ -283,12 +284,12 @@ class CreateEvent(object):
 		self.root.cal.removeEvent(self.eventObj, self.date)
 		# Destroy event label
 		self.root.eventLabels[self.idx].destroy()
-		# Remove index from list and decrease it
+		# Remove index from list and decrease index
 		self.root.eventLabels.pop(self.idx, None)
 		self.root.idx -= 1
 		self.master.destroy()
 
-	def onDatePicker(self, fromOrTo):
+	def onDatePicker(self):
 		'''
 		Open datePicker popup window. 
 		If there's already a datePicker onpened, close it and pop up a new one.
@@ -297,9 +298,7 @@ class CreateEvent(object):
 		if self.pickDateOpened == True:
 			self.datePicker.destroy()
 		self.datePicker = Toplevel()
-		# EXPLAIN THIS
-		if fromOrTo == 0:
-			self.child = DatePicker(self.datePicker, self.l_pickDate)
+		# DatePicker is open
 		self.pickDateOpened = True
 
 
