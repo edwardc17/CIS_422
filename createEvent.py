@@ -275,9 +275,10 @@ class CreateEvent(object):
 		else:
 			self.l_time_error["text"] = ""
 
-		if self.checkTimeConflict() == False:
-			self.ready_to_submit = False
-			
+		if self.exist == 0:
+			if self.checkTimeConflict() == False:
+				self.ready_to_submit = False
+
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
 			# Popup created by clicking on event label
@@ -285,6 +286,7 @@ class CreateEvent(object):
 				# Delete current event label
 				self.root.eventLabels[self.idx].destroy()
 				self.root.eventLabels.pop(self.idx, None)
+				self.root.cal.removeEvent(self.eventObj, self.date)
 			tempDate = self.l_pickDate.cget("text")
 			# Collect all data given into variables
 			# 'h' stands for hour, 'm' stands for minute
