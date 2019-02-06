@@ -45,7 +45,7 @@ class UpdateCalendar():
 			frame.currentDays[newTempDate]["text"] = newTempDate
 		for dayKey in frame.eventLabels:
 			frame.eventLabels[dayKey].destroy()
-			frame.eventLabels.pop(dayKey)
+			#frame.eventLabels.pop(dayKey)
 		frame.loadLabels()
 		self.dayPtr = (self.dayPtr + 5 * plusOrMinus) * currentCoef
 
