@@ -13,7 +13,7 @@ class CreateEvent(object):
 	Create event popup window.
 
 	AS - binding functions to labels
-	JC - everything else
+	JZC - everything else
 	'''
 	def __init__(self, canvas, root, master, eventObject, date, idx, exist):
 		# WHAT IS THIS

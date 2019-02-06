@@ -19,7 +19,7 @@ class GUI(Frame):
 	'''
 	Main window.
 
-	JC, JN, GC
+	JZC, JN, GDC
 	'''
 	def __init__(self, rt):
 		super(GUI, self).\
@@ -50,7 +50,7 @@ class GUI(Frame):
 		Creates initial layout of main window with time scale labels
 		and a popup window upon clicking the upper left corner exit button.
 
-		GC, JC
+		GDC, JZC
 		'''
 		#Time scale label text
 		self.timeScale = ['00:00 AM', '01:00 AM' , '02:00 AM', '03:00 AM', '04:00 AM', '05:00 AM',
@@ -88,7 +88,7 @@ class GUI(Frame):
 		'''
 		Destroy everything in main window and close program.
 
-		CP, JC
+		CP, JZC
 		'''
 		gc.collect() # Python's garbage collector
 		self.scrollFrame.viewPort.destroy() # Destroy frame placed on top of main frame
@@ -100,7 +100,7 @@ class GUI(Frame):
 		Creates timescale slots in each of three dates for events to appear.
 		Each label has 12 parts horizontally to allow for choosing at 5 minute intervals.
 
-		GC, JN
+		GDC, JN
 		'''
 		row = 0
 		for time in self.timeScale:
@@ -132,7 +132,7 @@ class GUI(Frame):
 		'''
 		Create Labels for events in the current 5 days from saveFile.dat
 		
-		JC
+		JZC
 		'''
 		index = 0
 		for day in self.currentDays:
@@ -147,7 +147,7 @@ class GUI(Frame):
 		'''
 		Handles user clicking on events or "Create" button.
 		
-		JC
+		JZC
 		'''
 		self.top = Toplevel() # To provide main window access to "CreateEvent" class
 		if exist == 0:
@@ -164,7 +164,7 @@ class InitLabel(object):
 	'''
 	Label made from file, not direct user input.
 
-	JC
+	JZC
 	'''
 	def __init__(self, root, canvas, day, eventObject, index):
 		self.root = root
