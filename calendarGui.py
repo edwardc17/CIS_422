@@ -1,4 +1,7 @@
 '''
+Author:  Anna Saltveit(AS), Claire Phillips(CP), Guodong Chen(GC),John Nemeth(JN), Jiazhen Cao(JC)
+Update date:  Feburary 5, 2019
+
 The exit popup window used https://stackoverflow.com/questions/16242782/change-words-on-tkinter-messagebox-buttons
 
 All other code is made by the team - individual work marked in methods and classes.
