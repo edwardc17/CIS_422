@@ -75,8 +75,10 @@ class GUI(Frame):
 
 		# Inital title and text
 		window.title('warning')
-		message = "Do you really want to quit?"
-		Label(window, text=message).pack()
+		message1 = "All events have been SAVED."
+		message2 = "Do you want to quit?"
+		Label(window, text=message1).pack()
+		Label(window, text=message2).pack()
 		# Destroys current popup window, returns to main window
 		Button(window, text='Go back to calendar', command=window.destroy).pack()
 		# destroys current popup window and main window, exits program
