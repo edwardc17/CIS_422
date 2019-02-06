@@ -1,5 +1,5 @@
 '''
-All code created by team - specfically Anna Saltveit
+All code created by team - specfically Anna Saltveit.
 '''
 
 import pickle

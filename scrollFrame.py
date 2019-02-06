@@ -1,5 +1,5 @@
 '''
-All code created by ___________________________
+All code created by ___________________________.
 '''
 
 import sys
