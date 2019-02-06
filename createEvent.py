@@ -155,9 +155,9 @@ class CreateEvent(object):
 			self.l_pickDate["text"] = self.date
 
 		# Creating Error Message 
-		# 'l' stands for label, 'n' STANDS FOR
-		self.l_n_error = Label(self.master, text = "Name is empty!", fg = "red") # Name error
-		self.l_t_error = Label(self.master, text = "Time slack incorrect!", fg = "red") # Time error
+		# 'l' stands for label
+		self.l_name_error = Label(self.master, text = "Name is empty!", fg = "red") # Name error label
+		self.l_time_error = Label(self.master, text = "Time slack incorrect!", fg = "red") # Time error label
 	
 	def clear(self):
 		'''
@@ -209,20 +209,21 @@ class CreateEvent(object):
 		time_slack = self.cal_time_slack()
 		# No name given for event
 		if not self.e_name.get() or self.check_empty(self.e_name.get()):
-			self.l_n_error["text"] = "Name is empty!"
-			self.l_n_error.grid(row = 0, column = 3, columnspan = 2)
+			self.l_name_error["text"] = "Name is empty!"
+			self.l_name_error.grid(row = 0, column = 3, columnspan = 2)
 			self.ready_to_submit = False
 		else:
-			self.l_n_error["text"] = ""
-		# EXPLAIN THIS
+			self.l_name_error["text"] = ""
+		# Start time is after end time
 		if time_slack <= 0:
-			self.l_t_error["text"] = "Time slack incorrect!"
-			self.l_t_error.grid(row = 3, column = 4, columnspan = 2)
+			self.l_time_error["text"] = "Time slack incorrect!"
+			self.l_time_error.grid(row = 3, column = 4, columnspan = 2)
 			self.ready_to_submit = False
 		else:
-			self.l_t_error["text"] = ""
+			self.l_time_error["text"] = ""
 		# All fields are correct input, able to create event
 		if self.ready_to_submit:
+			# Popup created by clicking on "create" button
 			if self.exist == 1:
 				# EXPLAIN THIS
 				self.root.eventLabels[self.idx].destroy()
@@ -284,7 +285,6 @@ class CreateEvent(object):
 		# Remove index from list and decrease it
 		self.root.eventLabels.pop(self.idx, None)
 		self.root.idx -= 1
-		# EXPLAIN THIS
 		self.master.destroy()
 
 	def onDatePicker(self, fromOrTo):
